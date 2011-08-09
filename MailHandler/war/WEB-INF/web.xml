@@ -7,6 +7,7 @@
 		<servlet-name>MailHandler</servlet-name>
   <url-pattern>/_ah/mail/*</url-pattern>
 </servlet-mapping>
+
 <security-constraint>
   <web-resource-collection>
     <url-pattern>/_ah/mail/*</url-pattern>
@@ -19,7 +20,6 @@
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
 	
-
 
 
 <!--OnPositive Tools-->
