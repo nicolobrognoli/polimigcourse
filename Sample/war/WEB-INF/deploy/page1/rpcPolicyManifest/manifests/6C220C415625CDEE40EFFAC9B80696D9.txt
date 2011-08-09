@@ -1,0 +1,2 @@
+serviceClass: it.gocloud.sample.client.StoreStringService
+path: 5137EC5A49016FDF16CAE764C3708421.gwt.rpc

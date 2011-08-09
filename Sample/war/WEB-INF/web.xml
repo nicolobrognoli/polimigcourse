@@ -1,0 +1,78 @@
+<web-app>
+  
+  <!-- Servlets -->
+  <servlet>
+    <servlet-name>storeServlet</servlet-name>
+    <servlet-class>it.gocloud.sample.server.StoreStringServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>storeServlet</servlet-name>
+    <url-pattern>/page1/store</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>loadServlet</servlet-name>
+    <servlet-class>it.gocloud.sample.server.LoadStringServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>loadServlet</servlet-name>
+    <url-pattern>/page2/load</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>page1.html</welcome-file>
+  </welcome-file-list>
+
+<!--OnPositive Tools-->
+<servlet>
+		<servlet-name>baseViewerServlet</servlet-name>
+		<servlet-class>com.onpositive.gae.tools.servlets.BaseViewerServlet
+		</servlet-class>
+	</servlet>
+<servlet-mapping>
+		<servlet-name>baseViewerServlet</servlet-name>
+		<url-pattern>/appwrench/baseviewer</url-pattern>
+	</servlet-mapping>
+<servlet>
+		<servlet-name>SessionAuth</servlet-name>
+		<servlet-class>com.onpositive.auth.AuthServlet</servlet-class>
+	</servlet>
+<servlet-mapping>
+		<servlet-name>SessionAuth</servlet-name>
+		<url-pattern>/appwrench/auth</url-pattern>
+	</servlet-mapping>
+<servlet>
+		<servlet-name>QueueHandler</servlet-name>
+		<servlet-class>com.onpositive.gae.tools.servlets.QueueHandlerServlet
+		</servlet-class>
+	</servlet>
+<servlet-mapping>
+		<servlet-name>QueueHandler</servlet-name>
+		<url-pattern>/appwrench/queuehandler</url-pattern>
+	</servlet-mapping>
+<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/appwrench/queuehandler</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+<servlet>
+		<servlet-name>profilerConsoleServlet</servlet-name>
+		<servlet-class>com.onpositive.gae.tools.servlets.ConsoleServlet
+		</servlet-class>
+	</servlet>
+<servlet-mapping>
+		<servlet-name>profilerConsoleServlet</servlet-name>
+		<url-pattern>/appwrench/console</url-pattern>
+	</servlet-mapping>
+<servlet>
+<servlet-name>SessionAuth</servlet-name>
+<servlet-class>com.onpositive.auth.AuthServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>SessionAuth</servlet-name>
+<url-pattern>/appwrench/auth</url-pattern>
+</servlet-mapping>
+</web-app>
