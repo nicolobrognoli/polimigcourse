@@ -1,0 +1,3 @@
+# Module it.polimi.ProvaPosta
+# RPC service class, partial path of RPC policy file
+it.polimi.client.GetParameterService, EB363C0223DB5EC3226101DDF732A518.gwt.rpc

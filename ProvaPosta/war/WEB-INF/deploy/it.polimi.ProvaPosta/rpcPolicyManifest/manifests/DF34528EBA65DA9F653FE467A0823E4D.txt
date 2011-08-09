@@ -1,0 +1,2 @@
+serviceClass: it.polimi.client.GetParameterService
+path: EB363C0223DB5EC3226101DDF732A518.gwt.rpc
