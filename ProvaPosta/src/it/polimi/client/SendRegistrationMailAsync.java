@@ -4,6 +4,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface SendRegistrationMailAsync {
 
-	void sendMail(String param, AsyncCallback<Void> callback);
+	void sendMail(String param, AsyncCallback<String> asyncCallback);
 
 }

@@ -62,7 +62,7 @@ public class Register implements EntryPoint {
 			@Override
 			public void onClick(ClickEvent event) {
 				String mitt = textBox.getText();
-				sendRegistrationService.sendMail(mitt, new AsyncCallback<Void>() {
+				sendRegistrationService.sendMail(mitt, new AsyncCallback<String>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
@@ -72,10 +72,10 @@ public class Register implements EntryPoint {
 					}
 
 					@Override
-					public void onSuccess(Void result) {
+					public void onSuccess(String result) {
 						
 						// display success
-						Window.alert("Message sent...");
+						Window.alert(result);
 					}
 				});
 			}
