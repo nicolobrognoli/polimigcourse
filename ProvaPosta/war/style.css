@@ -1,0 +1,41 @@
+@CHARSET "UTF-8";
+body,td,a,div,.p{font-family:arial,sans-serif}
+div,td{color:#000000}
+a:link,.w,.w a:link{color:#0000cc}
+a:visited{color:#551a8b}
+a:active{color:#ff0000}
+
+
+
+.loginPrompt {
+  background: #dddddd;
+	font-style: italic;
+	margin-bottom: 20px;
+	padding: 10px;
+	font-size: 1.25em;
+	border: thin solid #aaaaaa;
+}
+
+.gwtsolutions-Message {
+    padding: 20px;
+    margin-bottom: 10px;
+	font-style: italic;
+	border: thick solid red;
+	background: lightGray;
+	width: 250px;
+	height: 2em;
+}
+
+.nameField {
+	width: 15em;
+}
+
+.passwordField {
+	width: 8em;
+}
+
+.welcomeMsg {
+  margin-bottom: 20px;
+	font-style: italic;
+	color: blue;
+}

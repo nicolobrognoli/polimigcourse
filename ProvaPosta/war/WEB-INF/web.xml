@@ -5,16 +5,25 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
-	<servlet>
-    <servlet-name>GetParameterServiceImpl</servlet-name>
-    <servlet-class>it.polimi.server.GetParameterServiceImpl</servlet-class>
+  <servlet>
+    <servlet-name>SendRegistrationMailImpl</servlet-name>
+    <servlet-class>it.polimi.server.SendRegistrationMailImpl</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>GetParameterServiceImpl</servlet-name>
-    <url-pattern>/it.polimi.ProvaPosta/getparameter</url-pattern>
+    <servlet-name>SendRegistrationMailImpl</servlet-name>
+    <url-pattern>/it.polimi.ProvaPosta/sendregistration</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ConfirmRegistration</servlet-name>
+    <servlet-class>it.polimi.server.ConfirmRegistrationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ConfirmRegistration</servlet-name>
+    <url-pattern>/confirmregistration</url-pattern>
   </servlet-mapping>
   
   <welcome-file-list>
-    <welcome-file>prova.html</welcome-file>
+    <welcome-file>register.html</welcome-file>
   </welcome-file-list>
 </web-app>

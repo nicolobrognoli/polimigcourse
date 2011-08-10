@@ -3,5 +3,5 @@
 <module>
 	<inherits name="com.google.gwt.user.User" />
 	<source path="client" />
-	<entry-point class="it.polimi.client.ProvaPosta" />
+	<entry-point class="it.polimi.client.Register" />
 </module>
