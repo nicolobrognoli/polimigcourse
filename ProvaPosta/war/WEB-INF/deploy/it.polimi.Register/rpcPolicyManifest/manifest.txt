@@ -1,0 +1,3 @@
+# Module it.polimi.Register
+# RPC service class, partial path of RPC policy file
+it.polimi.client.SendRegistrationMail, C3960EBC81A2FAAB24F5DF1C2C0689A7.gwt.rpc

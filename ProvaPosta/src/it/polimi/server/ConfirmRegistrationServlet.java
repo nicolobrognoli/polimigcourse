@@ -22,12 +22,19 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 	
 	@SuppressWarnings("unchecked")
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		resp.setContentType("text/plain");
+		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 		String email = req.getParameter("email");
+		
+		out.println("<html>");
+		out.println("<head>");
+		out.println("<title> Confirm registration </title>");
+		out.println("</head>");
+		out.println("<body>");
 		out.println("Confirm registration of: " + email);
+		
 		// get persistence manager
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		
@@ -41,7 +48,7 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 			// check empty results
 			if (results.isEmpty())
 			{
-				out.println("\n\nERROR: Nessuna mail corrispondente trovata");
+				out.println("ERROR: Nessuna mail corrispondente trovata");
 			}
 			else 
 			{
@@ -58,21 +65,16 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 				//write the results in the web page
 				if(ok)
 				{
-					/*out.println("<html>");
-					out.println("<head>");
-					out.println("<title> Confirm registration </title>");
-					out.println("</head>");
-					out.println("<body>");
-					out.println("<h1>"+welcomeMessage+"</h1>");
-					out.println("<a href="/servletexample/pages/form.html">"+"Click here to go back to input page "+"</a>");
-					out.println("</body>");
-					out.println("</html>");
-					out.close();*/
-					out.println("\n\nAccount confermato...");
+					
+					
+					out.println("<h1> Account confermato...</h1>");
+					out.println("<a href=complete_registration.html>"+" Completa la registrazione "+"</a>");
+					
+					
 				}
 					
 				else
-					out.println("\n\nERROR: Account gia confermato oppure nessuna corrispondenza trovata.");
+					out.println("ERROR: Account gia confermato oppure nessuna corrispondenza trovata.");
 					
 			}
 			
@@ -81,5 +83,7 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 			// close persistence manager
 			pm.close();
 		}
+		out.println("</body>");
+		out.println("</html>");
 	}
 }
