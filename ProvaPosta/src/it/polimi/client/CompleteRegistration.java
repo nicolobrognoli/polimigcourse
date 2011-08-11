@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.Button;
 public class CompleteRegistration implements EntryPoint {
 
 	private final SessionHandlerAsync sessionHandlerService = GWT.create(SessionHandler.class);
-	private final LoadStoreServiceAsync loadStoreService = GWT.create( LoadStoreService.class);
+	private final LoadStoreServiceAsync loadStoreService = GWT.create(LoadStoreService.class);
 	String email;
 	
 	@Override
@@ -147,31 +147,31 @@ public class CompleteRegistration implements EntryPoint {
 		
 		btnProsegui.addClickHandler(new ClickHandler() {
 
+			boolean professor;
 			String nickname;
 			@Override
 			public void onClick(ClickEvent event){
+				
 				if(rdbtnDocente.getValue())
-				{
-					
-					nickname = name.getText();
-					loadStoreService.updateUser(email, nickname, true, new AsyncCallback<String>() {
-
-						@Override
-						public void onFailure(Throwable caught) {
-							// display error
-							Window.alert("Store error!");
-						}
-
-						@Override
-						public void onSuccess(String result) {
-							Window.alert(result);
-						}
-					});
-				}
+					professor = true;
 				else
-				{
-					
-				}
+					professor = false;
+				
+				nickname = name.getText();
+				loadStoreService.updateUser(email, nickname, professor, new AsyncCallback<String>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// display error
+						Window.alert("Store error!");
+					}
+
+					@Override
+					public void onSuccess(String result) {
+						//Window.alert(result);
+					}
+				});
+				
 			}
 		});
 	}

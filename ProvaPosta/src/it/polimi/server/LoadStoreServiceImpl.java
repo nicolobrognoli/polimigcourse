@@ -6,7 +6,13 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.google.appengine.api.users.User;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Transaction;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import it.polimi.client.LoadStoreService;
@@ -19,6 +25,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 	@SuppressWarnings("unchecked")
 	@Override
 	public String updateUser(String email, String name, boolean professor) throws IllegalArgumentException {
+		System.out.println("Mail loadstore:" + email);
 		// get persistence manager
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
@@ -32,14 +39,12 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 				return "email not found";
 			else 
 			{
-				
 				do{
 					userTemp = (UserPO) iter.next();
 					if(userTemp.getUser().getEmail().equals(email))					
 					{
 						userTemp.setNickname(name);
 						userTemp.setProfessor(professor);
-						pm.flush();
 					}
 				}while(iter.hasNext());									
 			}
@@ -48,7 +53,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			// close persistence manager
 			pm.close();
 		}
-		return "ok";
+		return "Updated";
 	}
 
 }
