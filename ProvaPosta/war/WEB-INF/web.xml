@@ -15,6 +15,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   </servlet-mapping>
   
   <servlet>
+    <servlet-name>SessionHandlerImpl</servlet-name>
+    <servlet-class>it.polimi.server.SessionHandlerImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SessionHandlerImpl</servlet-name>
+    <url-pattern>/it.polimi.CompleteReg/sessionhandler</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
     <servlet-name>ConfirmRegistration</servlet-name>
     <servlet-class>it.polimi.server.ConfirmRegistrationServlet</servlet-class>
   </servlet>

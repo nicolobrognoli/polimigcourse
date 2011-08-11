@@ -16,6 +16,7 @@ import javax.mail.Session;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @SuppressWarnings("serial")
 public class ConfirmRegistrationServlet extends HttpServlet {
@@ -25,15 +26,14 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
 		Properties props = new Properties();
-		Session session = Session.getDefaultInstance(props, null);
+		HttpSession session = req.getSession();
+	
 		String email = req.getParameter("email");
 		
 		out.println("<html>");
 		out.println("<head>");
 		out.println("<title> Confirm registration </title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("Confirm registration of: " + email);
+		
 		
 		// get persistence manager
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -44,37 +44,53 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 			Query query = pm.newQuery(UserPO.class);
 			List<UserPO> results = (List<UserPO>)query.execute();
 			Iterator<UserPO> iter = results.iterator();
-			UserPO user;
+			UserPO userTemp;
 			// check empty results
 			if (results.isEmpty())
 			{
-				out.println("ERROR: Nessuna mail corrispondente trovata");
+				out.println("</head>");
+				out.println("<body>");
+				out.println("Confirm registration of: " + email);
+				out.println("<br>ERROR: Nessuna mail corrispondente trovata");
 			}
 			else 
 			{
 				boolean ok = false;
 				do{
-					user = (UserPO) iter.next();
-					if(user.getUser().getEmail().equals(email) && !user.isConfirmed())
+					userTemp = (UserPO) iter.next();
+					if(userTemp.getUser().getEmail().equals(email) && !userTemp.isConfirmed())
 					{
-						user.setConfirmed(true);	
+						userTemp.setConfirmed(true);	
 						ok = true;
+						session.setAttribute("email", email);
 					}
 						
 				}while(iter.hasNext());		
 				//write the results in the web page
 				if(ok)
 				{
-					
-					
-					out.println("<h1> Account confermato...</h1>");
-					out.println("<a href=complete_registration.html>"+" Completa la registrazione "+"</a>");
-					
-					
+					out.println("<head>");
+					out.println("<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">");
+					out.println("<title>Registrazione</title>");
+					out.println("<script type=\"text/javascript\" language=\"javascript\" src=\"/it.polimi.CompleteReg/it.polimi.CompleteReg.nocache.js\"></script>");
+					out.println("</head>");
+					out.println("<body>");
+					out.println("<iframe src=\"javascript:''\" id=\"__gwt_historyFrame\" tabIndex='-1' style=\"position:absolute;width:0;height:0;border:0\"></iframe>");
+					out.println("<noscript>");
+					out.println("<div style=\"width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif\">");
+					out.println("Your web browser must have JavaScript enabled");
+					out.println("in order for this application to display correctly.");
+					out.println("</div>");
+					out.println("</noscript>");					
+				}
+				else
+				{
+					out.println("</head>");
+					out.println("<body>");
+					out.println("Confirm registration of: " + email);
+					out.println("<br>ERROR: Account gia confermato oppure nessuna corrispondenza trovata.");
 				}
 					
-				else
-					out.println("ERROR: Account gia confermato oppure nessuna corrispondenza trovata.");
 					
 			}
 			

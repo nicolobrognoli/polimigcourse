@@ -68,7 +68,7 @@ public class SendRegistrationMailImpl extends RemoteServiceServlet implements Se
 				UserPO userPO = new UserPO();
 				userPO.setUser(user);
 				userPO.setConfirmed(false);
-				
+				userPO.setProfessor(false);
 				// store object into DataStore
 				pm.makePersistent(userPO);		
 				return "Mail sent...";
