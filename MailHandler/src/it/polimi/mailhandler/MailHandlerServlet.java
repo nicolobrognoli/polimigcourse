@@ -26,6 +26,7 @@ import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.Session; 
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -55,42 +56,23 @@ public class MailHandlerServlet extends HttpServlet {
             throws IOException { 
         Properties props = new Properties(); 
         Session session = Session.getDefaultInstance(props, null); 
-        String msgBody = "Messaggio ricevuto.";      
 
         try {
 			MimeMessage message = new MimeMessage(session, req.getInputStream());
-			String mittente=message.getFrom()[0].toString();
-            Multipart multipart=(Multipart)message.getContent();
-           //OutputStream out=resp.getOutputStream();
-            /*
-            for (int i = 0; i < multipart.getCount(); i++) {
-            	  BodyPart part =  multipart.getBodyPart(i);
-            	  System.out.println(part.getFileName());
-            	  msgBody=msgBody+"Parte "+i+": "+part.getFileName()+" ";
-            	  if(part.getFileName()!=null){
-                      Entity entity = new Entity("File "+part.getFileName(),key);
-                      datastore.put(entity);
-            		  InputStream input=part.getInputStream();
-            		  int j,size;
-            		  size=part.getSize();
-            		  for(j=0;j<size;j++){
-            			 input.read();
-            		  }
-            	  }
-            }*/
+			String subject,mittente=message.getFrom()[0].toString(),text="",msgBody = "Messaggio ricevuto.";
+        	Object o=message.getContent();
+        	subject=message.getSubject();
+            Message msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress("reply@polimigcourse.appspotmail.com", "PolimiGCourse"));
+            System.out.println(mittente);
+            msg.addRecipient(Message.RecipientType.TO,message.getFrom()[0]);
+            msg.setSubject("Your Example.com account has been activated");
+            MimeMultipart multipart=(MimeMultipart)o;
 	        try {
-
-	            
-	            Message msg = new MimeMessage(session);
-	            msg.setFrom(new InternetAddress("reply@polimigcourse.appspotmail.com", "PolimiGCourse"));
-	            System.out.println(mittente);
-	            msg.addRecipient(Message.RecipientType.TO,message.getFrom()[0]);
-	            //msg.addRecipient(Message.RecipientType.TO, new InternetAddress("andrea.colombo88@gmail.com", "Mr. User"));
-	            msg.setSubject("Your Example.com account has been activated");
-	            for (int i = 0; i < multipart.getCount(); i++) {
-	            	  BodyPart part =  multipart.getBodyPart(i);
+	        	for (int i = 0; i < multipart.getCount(); i++) {
+	            	  Part part =  multipart.getBodyPart(i);
 	            	  System.out.println(part.getFileName());
-	            	  msgBody=msgBody+"Parte "+i+": "+part.getFileName()+" ";
+	            	  msgBody=msgBody+"Parte "+i+": "+part.getFileName()+"Tipo: "+part.getContentType();
 	            	  if(part.getFileName()!=null){
 	            		  InputStream input=part.getInputStream();
 	            		  int j,size;
@@ -98,16 +80,44 @@ public class MailHandlerServlet extends HttpServlet {
 	            		  for(j=0;j<size;j++){
 	            			 input.read();
 	            		  }
+	            	  }else{
+	            		  if(part.isMimeType("text/plain")||part.isMimeType("text/html")){
+	            			  msgBody=msgBody+(String)part.getContent();
+	            			  text=text+(String)part.getContent();
+	            		 }
+	            		  else{
+	            			  Multipart multipart2=(Multipart)part.getContent();
+	            			  for(int j=0;j<multipart2.getCount();j++){
+	            				  Part part2=multipart2.getBodyPart(j);
+	            				  msgBody=msgBody+"Tipo: "+part2.getContentType()+"Contenuto: "+part2.getContent();
+		            			  text=text+(String)part2.getContent();
+	            			  }
+	            		  }
 	            	  }
 	            }
+	        	if(subject.contains("Upload")){
+	        		msgBody=msgBody+"upload yes";
+	        		/*Azioni per il caricamento su Google site del file mandato come allegato.*/
+	        	}
+	        	else{
+	        		msgBody=msgBody+"upload no";
+	        		if(subject.contains("Post")){
+	        			msgBody=msgBody+"Post yes";
+	        			/*Azioni per il caricamento su Google Site di un post di comunicazione*/
+	        		}else{
+	        			msgBody=msgBody+"Errore";
+	        			/*Errore oppure un'altra azione*/
+	        		}
+	        	}
 	            msg.setText(msgBody);
-	            Transport.send(msg);
 
-	        } catch (AddressException e) {
-	            // ...
-	        } catch (MessagingException e) {
-	            // ...
-	        }
+    	        } catch (AddressException e) {
+    	            // ...
+    	        } catch (MessagingException e) {
+    	            // ...
+    	        }
+            Transport.send(msg);
+
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
