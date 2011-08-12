@@ -1,0 +1,2 @@
+serviceClass: it.polimi.client.SendRegistrationMail
+path: C3960EBC81A2FAAB24F5DF1C2C0689A7.gwt.rpc
