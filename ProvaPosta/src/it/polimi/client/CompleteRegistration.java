@@ -26,8 +26,6 @@ public class CompleteRegistration implements EntryPoint {
 	
 	@Override
 	public void onModuleLoad() {
-	
-		
 		
 		
 		// add widgets to layout panel
@@ -168,7 +166,7 @@ public class CompleteRegistration implements EntryPoint {
 
 					@Override
 					public void onSuccess(String result) {
-						//Window.alert(result);
+						Window.open("home.html",  "_self", "");
 					}
 				});
 				
