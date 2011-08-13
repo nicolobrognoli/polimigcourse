@@ -59,8 +59,8 @@ private static final long serialVersionUID = 589282201651899809L;
 	
 	public String buildContentFeedUrl() {
 		  String domain = "site";  // OR if the Site is hosted on Google Apps, your domain (e.g. example.com)
-		  String siteName = "modellopolimigcourse";
-		  return "https://sites.google.com/feeds/content/" + domain + "/" + siteName + "?access_token=ya29.AHES6ZRByLwDkIhHXjHKsGkoN-YP1g4eXmXqNHMiyfTeMXI";
+		  String siteName = "projectgcourse";
+		  return "https://sites.google.com/feeds/content/" + domain + "/" + siteName + "?access_token=ya29.AHES6ZQ6yMG9VoQEgjmvt_OxJsokiXcj8eCQrm0wemAQFA";
 		}
 
 }

@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class GSitesEntryPoint implements EntryPoint {
 
-private final GSitesServiceAsync pageCreatorService = GWT.create(GSitesService.class);
+	private final GSitesServiceAsync pageCreatorService = GWT.create(GSitesService.class);
 	
 	@Override
 	public void onModuleLoad() {

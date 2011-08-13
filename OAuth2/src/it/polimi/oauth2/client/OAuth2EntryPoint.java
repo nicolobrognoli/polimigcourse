@@ -25,7 +25,7 @@ public class OAuth2EntryPoint implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		String AUTH_URL = "https://accounts.google.com/o/oauth2/auth";
-		String CLIENT_ID = "199146616344.apps.googleusercontent.com"; // available from the APIs console
+		String CLIENT_ID = "267706380696.apps.googleusercontent.com"; // available from the APIs console
 		String SITES_SCOPE = "https://sites.google.com/feeds/";
 		String GMAIL_SCOPE = "https://mail.google.com/mail/feed/atom";
 		String CONTACTS_SCOPE = "https://www.google.com/m8/feeds/";

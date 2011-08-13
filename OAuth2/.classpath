@@ -10,5 +10,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-client-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-core-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gdata-sites-2.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/auth.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/baseViewerImpl.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
