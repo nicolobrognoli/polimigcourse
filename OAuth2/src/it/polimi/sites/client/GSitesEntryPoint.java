@@ -77,7 +77,7 @@ public class GSitesEntryPoint implements EntryPoint {
 		btnCrea.setText("Crea");
 		layoutPanel.add(btnCrea);
 		layoutPanel.setWidgetLeftWidth(btnCrea, 121.0, Unit.PX, 98.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(btnCrea, 190.0, Unit.PX, 22.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(btnCrea, 290.0, Unit.PX, 22.0, Unit.PX);
 		
 		btnCrea.addClickHandler(new ClickHandler() {
 
