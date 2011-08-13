@@ -1,0 +1,2 @@
+serviceClass: it.polimi.sites.client.GSitesService
+path: 2ACFC5521B30B63C6778516DC04F82D7.gwt.rpc

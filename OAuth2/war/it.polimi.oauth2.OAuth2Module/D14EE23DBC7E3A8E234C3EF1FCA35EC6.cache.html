@@ -1,0 +1,2414 @@
+<html>
+<head><meta charset="UTF-8" /><script>
+var $gwt_version = "2.4.0-rc1";
+var $wnd = parent;
+var $doc = $wnd.document;
+var $moduleName, $moduleBase;
+var $strongName = 'D14EE23DBC7E3A8E234C3EF1FCA35EC6';
+var $stats = $wnd.__gwtStatsEvent ? function(a) {return $wnd.__gwtStatsEvent(a);} : null,
+$sessionId = $wnd.__gwtStatsSessionId ? $wnd.__gwtStatsSessionId : null;
+$stats && $stats({moduleName:'it.polimi.oauth2.OAuth2Module',sessionId:$sessionId,subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalStart'});
+</script></head>
+<body>
+<script><!--
+var $intern_0 = '', $intern_7 = ' ', $intern_4 = '&', $intern_11 = '(', $intern_1 = ')', $intern_18 = ', ', $intern_6 = '-----', $intern_19 = '0', $intern_17 = ':', $intern_9 = ': ', $intern_5 = '=', $intern_3 = '?', $intern_14 = 'CSS1Compat', $intern_10 = 'String', $intern_2 = 'Token: ', $intern_22 = '[Ljava.lang.', $intern_21 = 'com.google.api.gwt.oauth2.client.', $intern_23 = 'com.google.gwt.core.client.', $intern_24 = 'com.google.gwt.core.client.impl.', $intern_25 = 'com.google.gwt.storage.client.', $intern_12 = 'gecko1_8', $intern_8 = 'gwt-oauth2-', $intern_20 = 'java.lang.', $intern_26 = 'java.util.', $intern_16 = 'msie', $intern_15 = 'opera', $intern_13 = 'undefined';
+var _, P0_longLit = {l:0, m:0, h:0}, Q$java_lang_Object = 0, Q$java_lang_String = 1, Q$com_google_gwt_lang_LongLibBase$LongEmul = 2, Q$java_io_Serializable = 3, Q$java_lang_CharSequence = 4, Q$java_lang_Comparable = 5, Q$java_lang_Double = 6, Q$java_lang_RuntimeException = 7, Q$java_lang_StackTraceElement = 8, Q$java_lang_Throwable = 9, Q$java_util_Date = 10, Q$java_util_List = 11, Q$java_util_Map = 12, Q$java_util_Map$Entry = 13, Q$java_util_Set = 14;
+function makeCastMap(a){
+  var result = {};
+  for (var i = 0, c = a.length; i < c; ++i) {
+    result[a[i]] = 1;
+  }
+  return result;
+}
+
+function nullMethod(){
+}
+
+function java_lang_Object(){
+}
+
+_ = java_lang_Object.prototype = {};
+_.equals__Ljava_lang_Object_2Z$ = function java_lang_Object_equals__Ljava_lang_Object_2Z(other){
+  return this === other;
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_Object_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Object_12_1classLit;
+}
+;
+_.hashCode__I$ = function java_lang_Object_hashCode__I(){
+  return com_google_gwt_core_client_impl_Impl_getHashCode__Ljava_lang_Object_2I(this);
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_lang_Object_toString__Ljava_lang_String_2(){
+  return this.getClass__Ljava_lang_Class_2$().java_lang_Class_typeName + '@' + java_lang_Integer_toPowerOfTwoString__IILjava_lang_String_2(this.hashCode__I$());
+}
+;
+_.toString = function(){
+  return this.toString__Ljava_lang_String_2$();
+}
+;
+_.java_lang_Object_typeMarker$ = nullMethod;
+_.java_lang_Object_castableTypeMap$ = {};
+function com_google_api_gwt_oauth2_client_Auth_$finish__Lcom_google_api_gwt_oauth2_client_Auth_2Ljava_lang_String_2V(this$static, hash){
+  var error, errorDesc, errorUri, expiresIn, idx, info, key, nextAmp, nextEq, val;
+  info = new com_google_api_gwt_oauth2_client_Auth$TokenInfo_Auth$TokenInfo__V;
+  error = null;
+  errorDesc = $intern_0;
+  errorUri = $intern_0;
+  idx = 1;
+  while (idx < hash.length - 1) {
+    nextEq = java_lang_String_$indexOf__Ljava_lang_String_2Ljava_lang_String_2II(hash, java_lang_String_fromCodePoint__ILjava_lang_String_2(61), idx);
+    if (nextEq < 0) {
+      break;
+    }
+    key = hash.substr(idx, nextEq - idx);
+    nextAmp = java_lang_String_$indexOf__Ljava_lang_String_2Ljava_lang_String_2II(hash, java_lang_String_fromCodePoint__ILjava_lang_String_2(38), nextEq);
+    nextAmp = nextAmp < 0?hash.length:nextAmp;
+    val = hash.substr(nextEq + 1, nextAmp - (nextEq + 1));
+    idx = nextAmp + 1;
+    if (java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z(key, 'access_token')) {
+      info.com_google_api_gwt_oauth2_client_Auth$TokenInfo_accessToken = val;
+    }
+     else if (java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z(key, 'expires_in')) {
+      expiresIn = new java_lang_Double_Double__DV((new java_lang_Double_Double__DV(java_lang_Number__1_1parseAndValidateDouble__Ljava_lang_String_2D(val))).java_lang_Double_value * 1000);
+      info.com_google_api_gwt_oauth2_client_Auth$TokenInfo_expires = $intern_0 + (com_google_gwt_core_client_Duration_currentTimeMillis__D() + expiresIn.java_lang_Double_value);
+    }
+     else 
+      java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z(key, 'error')?(error = val):java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z(key, 'error_description')?(errorDesc = ' (' + val + $intern_1):java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z(key, 'error_uri') && (errorUri = '; see: ' + val);
+  }
+  if (error != null) {
+    com_google_gwt_user_client_Window_alert__Ljava_lang_String_2V((new java_lang_RuntimeException_RuntimeException__Ljava_lang_String_2V('Error from provider: ' + error + errorDesc + errorUri)).getMessage__Ljava_lang_String_2());
+  }
+   else if (info.com_google_api_gwt_oauth2_client_Auth$TokenInfo_accessToken == null) {
+    com_google_gwt_user_client_Window_alert__Ljava_lang_String_2V((new java_lang_RuntimeException_RuntimeException__Ljava_lang_String_2V('Could not find access_token in hash ' + hash)).getMessage__Ljava_lang_String_2());
+  }
+   else {
+    com_google_api_gwt_oauth2_client_Auth_$setToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2V(this$static, this$static.com_google_api_gwt_oauth2_client_Auth_lastRequest, info);
+    com_google_gwt_user_client_Window_alert__Ljava_lang_String_2V($intern_2 + info.com_google_api_gwt_oauth2_client_Auth$TokenInfo_accessToken);
+  }
+}
+
+function com_google_api_gwt_oauth2_client_Auth_$login__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Callback_2V(this$static, req){
+  var authUrl, info, com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_tokenStr_0, com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_com_google_api_gwt_oauth2_client_Auth$TokenInfo_fromString__Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_info_0_0, com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_com_google_api_gwt_oauth2_client_Auth$TokenInfo_fromString__Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_parts_0_0;
+  this$static.com_google_api_gwt_oauth2_client_Auth_lastRequest = req;
+  authUrl = java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(new java_lang_StringBuilder_StringBuilder__Ljava_lang_String_2V(req.com_google_api_gwt_oauth2_client_AuthRequest_authUrl), req.com_google_api_gwt_oauth2_client_AuthRequest_authUrl.indexOf($intern_3) != -1?$intern_4:$intern_3), 'client_id'), $intern_5), com_google_api_gwt_oauth2_client_AuthImpl$RealUrlCodex_$encode__Lcom_google_api_gwt_oauth2_client_AuthImpl$RealUrlCodex_2Ljava_lang_String_2Ljava_lang_String_2(req.com_google_api_gwt_oauth2_client_AuthRequest_clientId)), $intern_4), 'response_type'), $intern_5), 'token'), $intern_4), 'scope'), $intern_5), com_google_api_gwt_oauth2_client_AuthImpl$RealUrlCodex_$encode__Lcom_google_api_gwt_oauth2_client_AuthImpl$RealUrlCodex_2Ljava_lang_String_2Ljava_lang_String_2(com_google_api_gwt_oauth2_client_AuthRequest_$scopesToString__Lcom_google_api_gwt_oauth2_client_AuthRequest_2Ljava_lang_String_2(req))).java_lang_StringBuilder_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string + '&redirect_uri=' + com_google_api_gwt_oauth2_client_AuthImpl$RealUrlCodex_$encode__Lcom_google_api_gwt_oauth2_client_AuthImpl$RealUrlCodex_2Ljava_lang_String_2Ljava_lang_String_2(this$static.com_google_api_gwt_oauth2_client_Auth_oauthWindowUrl);
+  info = (com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_tokenStr_0 = this$static.com_google_api_gwt_oauth2_client_Auth_tokenStore.get__Ljava_lang_String_2Ljava_lang_String_2(req.com_google_api_gwt_oauth2_client_AuthRequest_clientId + $intern_6 + com_google_api_gwt_oauth2_client_AuthRequest_$scopesToString__Lcom_google_api_gwt_oauth2_client_AuthRequest_2Ljava_lang_String_2(req)) , com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_tokenStr_0 != null?(com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_com_google_api_gwt_oauth2_client_Auth$TokenInfo_fromString__Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_parts_0_0 = java_lang_String_$split__Ljava_lang_String_2Ljava_lang_String_2I_3Ljava_lang_String_2(com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_tokenStr_0, $intern_6, 0) , com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_com_google_api_gwt_oauth2_client_Auth$TokenInfo_fromString__Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_info_0_0 = new com_google_api_gwt_oauth2_client_Auth$TokenInfo_Auth$TokenInfo__V , com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_com_google_api_gwt_oauth2_client_Auth$TokenInfo_fromString__Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_info_0_0.com_google_api_gwt_oauth2_client_Auth$TokenInfo_accessToken = com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_com_google_api_gwt_oauth2_client_Auth$TokenInfo_fromString__Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_parts_0_0[0] , com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_com_google_api_gwt_oauth2_client_Auth$TokenInfo_fromString__Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_info_0_0.com_google_api_gwt_oauth2_client_Auth$TokenInfo_expires = com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_com_google_api_gwt_oauth2_client_Auth$TokenInfo_fromString__Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_parts_0_0.length > 1?com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_com_google_api_gwt_oauth2_client_Auth$TokenInfo_fromString__Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_parts_0_0[1]:null , com_google_api_gwt_oauth2_client_Auth_$getToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_com_google_api_gwt_oauth2_client_Auth$TokenInfo_fromString__Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2_info_0_0):null);
+  !info || info.com_google_api_gwt_oauth2_client_Auth$TokenInfo_expires == null || (new java_lang_Double_Double__DV(java_lang_Number__1_1parseAndValidateDouble__Ljava_lang_String_2D(info.com_google_api_gwt_oauth2_client_Auth$TokenInfo_expires))).java_lang_Double_value < com_google_gwt_core_client_Duration_currentTimeMillis__D() + 600000?com_google_api_gwt_oauth2_client_AuthImpl_$doLogin__Lcom_google_api_gwt_oauth2_client_AuthImpl_2Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Callback_2V(this$static, authUrl):com_google_gwt_core_client_impl_SchedulerImpl_$scheduleDeferred__Lcom_google_gwt_core_client_impl_SchedulerImpl_2Lcom_google_gwt_core_client_Scheduler$ScheduledCommand_2V(this$static.com_google_api_gwt_oauth2_client_Auth_scheduler, new com_google_api_gwt_oauth2_client_Auth$1_Auth$1__Lcom_google_api_gwt_oauth2_client_Auth_2V(info));
+}
+
+function com_google_api_gwt_oauth2_client_Auth_$setToken__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Auth$TokenInfo_2V(this$static, req, info){
+  this$static.com_google_api_gwt_oauth2_client_Auth_tokenStore.set__Ljava_lang_String_2Ljava_lang_String_2V(req.com_google_api_gwt_oauth2_client_AuthRequest_clientId + $intern_6 + com_google_api_gwt_oauth2_client_AuthRequest_$scopesToString__Lcom_google_api_gwt_oauth2_client_AuthRequest_2Ljava_lang_String_2(req), info.com_google_api_gwt_oauth2_client_Auth$TokenInfo_accessToken + $intern_6 + (info.com_google_api_gwt_oauth2_client_Auth$TokenInfo_expires == null?$intern_0:info.com_google_api_gwt_oauth2_client_Auth$TokenInfo_expires));
+}
+
+function com_google_api_gwt_oauth2_client_Auth_Auth__Lcom_google_api_gwt_oauth2_client_TokenStore_2Lcom_google_api_gwt_oauth2_client_Auth$Clock_2Lcom_google_api_gwt_oauth2_client_Auth$UrlCodex_2Lcom_google_gwt_core_client_Scheduler_2Ljava_lang_String_2V(tokenStore, scheduler, oauthWindowUrl){
+  this.com_google_api_gwt_oauth2_client_Auth_tokenStore = tokenStore;
+  this.com_google_api_gwt_oauth2_client_Auth_scheduler = scheduler;
+  this.com_google_api_gwt_oauth2_client_Auth_oauthWindowUrl = oauthWindowUrl;
+}
+
+function com_google_api_gwt_oauth2_client_Auth(){
+}
+
+_ = com_google_api_gwt_oauth2_client_Auth.prototype = new java_lang_Object;
+_.finish__Ljava_lang_String_2V = function com_google_api_gwt_oauth2_client_Auth_finish__Ljava_lang_String_2V(hash){
+  com_google_api_gwt_oauth2_client_Auth_$finish__Lcom_google_api_gwt_oauth2_client_Auth_2Ljava_lang_String_2V(this, hash);
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function com_google_api_gwt_oauth2_client_Auth_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1Auth_12_1classLit;
+}
+;
+_.com_google_api_gwt_oauth2_client_Auth_lastRequest = null;
+_.com_google_api_gwt_oauth2_client_Auth_oauthWindowUrl = null;
+_.com_google_api_gwt_oauth2_client_Auth_scheduler = null;
+_.com_google_api_gwt_oauth2_client_Auth_tokenStore = null;
+function com_google_api_gwt_oauth2_client_Auth$1_Auth$1__Lcom_google_api_gwt_oauth2_client_Auth_2V(val$info){
+  this.com_google_api_gwt_oauth2_client_Auth$1_val$info = val$info;
+}
+
+function com_google_api_gwt_oauth2_client_Auth$1(){
+}
+
+_ = com_google_api_gwt_oauth2_client_Auth$1_Auth$1__Lcom_google_api_gwt_oauth2_client_Auth_2V.prototype = com_google_api_gwt_oauth2_client_Auth$1.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function com_google_api_gwt_oauth2_client_Auth$1_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1Auth$1_12_1classLit;
+}
+;
+_.com_google_api_gwt_oauth2_client_Auth$1_val$info = null;
+function com_google_api_gwt_oauth2_client_Auth$TokenInfo_Auth$TokenInfo__V(){
+}
+
+function com_google_api_gwt_oauth2_client_Auth$TokenInfo(){
+}
+
+_ = com_google_api_gwt_oauth2_client_Auth$TokenInfo_Auth$TokenInfo__V.prototype = com_google_api_gwt_oauth2_client_Auth$TokenInfo.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function com_google_api_gwt_oauth2_client_Auth$TokenInfo_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1Auth$TokenInfo_12_1classLit;
+}
+;
+_.com_google_api_gwt_oauth2_client_Auth$TokenInfo_accessToken = null;
+_.com_google_api_gwt_oauth2_client_Auth$TokenInfo_expires = null;
+function com_google_api_gwt_oauth2_client_AuthImpl_$clinit__V(){
+  com_google_api_gwt_oauth2_client_AuthImpl_$clinit__V = nullMethod;
+  com_google_api_gwt_oauth2_client_AuthImpl_INSTANCE = new com_google_api_gwt_oauth2_client_AuthImpl_AuthImpl__V;
+}
+
+function com_google_api_gwt_oauth2_client_AuthImpl_$doLogin__Lcom_google_api_gwt_oauth2_client_AuthImpl_2Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_Callback_2V(this$static, authUrl){
+  if (!!this$static.com_google_api_gwt_oauth2_client_AuthImpl_window && !this$static.com_google_api_gwt_oauth2_client_AuthImpl_window.closed) {
+    com_google_gwt_user_client_Window_alert__Ljava_lang_String_2V((new java_lang_IllegalStateException_IllegalStateException__Ljava_lang_String_2V).java_lang_Throwable_detailMessage);
+  }
+   else {
+    this$static.com_google_api_gwt_oauth2_client_AuthImpl_window = $wnd.open(authUrl, 'popupWindow', 'width=800,height=600');
+    !this$static.com_google_api_gwt_oauth2_client_AuthImpl_window && com_google_gwt_user_client_Window_alert__Ljava_lang_String_2V((new java_lang_RuntimeException_RuntimeException__Ljava_lang_String_2V('The authentication popup window appears to have been blocked')).getMessage__Ljava_lang_String_2());
+  }
+}
+
+function com_google_api_gwt_oauth2_client_AuthImpl_$register__Lcom_google_api_gwt_oauth2_client_AuthImpl_2V(this$static){
+  var self = this$static;
+  !$wnd.doLogin && ($wnd.doLogin = $entry(function(hash){
+    self.finish__Ljava_lang_String_2V(hash);
+  }
+  ));
+}
+
+function com_google_api_gwt_oauth2_client_AuthImpl_AuthImpl__V(){
+  com_google_api_gwt_oauth2_client_Auth_Auth__Lcom_google_api_gwt_oauth2_client_TokenStore_2Lcom_google_api_gwt_oauth2_client_Auth$Clock_2Lcom_google_api_gwt_oauth2_client_Auth$UrlCodex_2Lcom_google_gwt_core_client_Scheduler_2Ljava_lang_String_2V.call(this, (!com_google_gwt_storage_client_Storage_supportDetectorImpl && (com_google_gwt_storage_client_Storage_supportDetectorImpl = new com_google_gwt_storage_client_Storage$StorageSupportDetector_Storage$StorageSupportDetector__V) , com_google_gwt_storage_client_Storage_supportDetectorImpl.com_google_gwt_storage_client_Storage$StorageSupportDetector_isLocalStorageSupported?new com_google_api_gwt_oauth2_client_TokenStoreImpl_TokenStoreImpl__V:new com_google_api_gwt_oauth2_client_CookieStoreImpl_CookieStoreImpl__V), (com_google_gwt_core_client_impl_SchedulerImpl_$clinit__V() , com_google_gwt_core_client_impl_SchedulerImpl_INSTANCE), $moduleBase + 'oauthWindow.html');
+  com_google_api_gwt_oauth2_client_AuthImpl_$register__Lcom_google_api_gwt_oauth2_client_AuthImpl_2V(this);
+}
+
+function com_google_api_gwt_oauth2_client_AuthImpl(){
+}
+
+_ = com_google_api_gwt_oauth2_client_AuthImpl_AuthImpl__V.prototype = com_google_api_gwt_oauth2_client_AuthImpl.prototype = new com_google_api_gwt_oauth2_client_Auth;
+_.finish__Ljava_lang_String_2V = function com_google_api_gwt_oauth2_client_AuthImpl_finish__Ljava_lang_String_2V(hash){
+  !!this.com_google_api_gwt_oauth2_client_AuthImpl_window && !this.com_google_api_gwt_oauth2_client_AuthImpl_window.closed && (this.com_google_api_gwt_oauth2_client_AuthImpl_window.close() , undefined);
+  com_google_api_gwt_oauth2_client_Auth_$finish__Lcom_google_api_gwt_oauth2_client_Auth_2Ljava_lang_String_2V(this, hash);
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function com_google_api_gwt_oauth2_client_AuthImpl_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1AuthImpl_12_1classLit;
+}
+;
+_.com_google_api_gwt_oauth2_client_AuthImpl_window = null;
+var com_google_api_gwt_oauth2_client_AuthImpl_INSTANCE;
+function com_google_api_gwt_oauth2_client_AuthImpl$RealUrlCodex_$encode__Lcom_google_api_gwt_oauth2_client_AuthImpl$RealUrlCodex_2Ljava_lang_String_2Ljava_lang_String_2(url){
+  return com_google_gwt_http_client_StringValidator_throwIfNull__Ljava_lang_String_2Ljava_lang_Object_2V(url) , encodeURI(url);
+}
+
+function com_google_gwt_core_client_JavaScriptObject_equals_1_1devirtual$__Ljava_lang_Object_2Ljava_lang_Object_2Z(this$static, other){
+  var maybeJsoInvocation;
+  return maybeJsoInvocation = this$static , com_google_gwt_lang_Cast_isJavaObject__Ljava_lang_Object_2Z(maybeJsoInvocation)?maybeJsoInvocation.equals__Ljava_lang_Object_2Z$(other):maybeJsoInvocation === other;
+}
+
+function com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Ljava_lang_Object_2I(this$static){
+  var maybeJsoInvocation;
+  return maybeJsoInvocation = this$static , com_google_gwt_lang_Cast_isJavaObject__Ljava_lang_Object_2Z(maybeJsoInvocation)?maybeJsoInvocation.hashCode__I$():com_google_gwt_core_client_impl_Impl_getHashCode__Ljava_lang_Object_2I(maybeJsoInvocation);
+}
+
+function com_google_api_gwt_oauth2_client_AuthRequest_$scopesToString__Lcom_google_api_gwt_oauth2_client_AuthRequest_2Ljava_lang_String_2(this$static){
+  var needsSeparator, sb, scope, scope$array, scope$index, scope$max;
+  if (this$static.com_google_api_gwt_oauth2_client_AuthRequest_scopes == null || this$static.com_google_api_gwt_oauth2_client_AuthRequest_scopes.length == 0) {
+    return $intern_0;
+  }
+  sb = new java_lang_StringBuilder_StringBuilder__V;
+  needsSeparator = false;
+  for (scope$array = this$static.com_google_api_gwt_oauth2_client_AuthRequest_scopes , scope$index = 0 , scope$max = scope$array.length; scope$index < scope$max; ++scope$index) {
+    scope = scope$array[scope$index];
+    needsSeparator && (sb.java_lang_StringBuilder_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string += $intern_7 , sb);
+    needsSeparator = true;
+    com_google_gwt_core_client_impl_StringBufferImplAppend_$append__Lcom_google_gwt_core_client_impl_StringBufferImplAppend_2Ljava_lang_Object_2Ljava_lang_String_2V(sb.java_lang_StringBuilder_impl, scope);
+  }
+  return sb.java_lang_StringBuilder_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string;
+}
+
+function com_google_api_gwt_oauth2_client_AuthRequest_$withScopes__Lcom_google_api_gwt_oauth2_client_AuthRequest_2_3Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2(this$static, scopes){
+  this$static.com_google_api_gwt_oauth2_client_AuthRequest_scopes = scopes;
+  return this$static;
+}
+
+function com_google_api_gwt_oauth2_client_AuthRequest_AuthRequest__Ljava_lang_String_2Ljava_lang_String_2V(){
+  this.com_google_api_gwt_oauth2_client_AuthRequest_authUrl = 'https://accounts.google.com/o/oauth2/auth';
+  this.com_google_api_gwt_oauth2_client_AuthRequest_clientId = '199146616344.apps.googleusercontent.com';
+}
+
+function com_google_api_gwt_oauth2_client_AuthRequest(){
+}
+
+_ = com_google_api_gwt_oauth2_client_AuthRequest_AuthRequest__Ljava_lang_String_2Ljava_lang_String_2V.prototype = com_google_api_gwt_oauth2_client_AuthRequest.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function com_google_api_gwt_oauth2_client_AuthRequest_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1AuthRequest_12_1classLit;
+}
+;
+_.com_google_api_gwt_oauth2_client_AuthRequest_authUrl = null;
+_.com_google_api_gwt_oauth2_client_AuthRequest_clientId = null;
+_.com_google_api_gwt_oauth2_client_AuthRequest_scopes = null;
+function com_google_api_gwt_oauth2_client_TokenStoreImpl_$clinit__V(){
+  com_google_api_gwt_oauth2_client_TokenStoreImpl_$clinit__V = nullMethod;
+  com_google_api_gwt_oauth2_client_TokenStoreImpl_STORAGE = com_google_gwt_storage_client_Storage_getLocalStorageIfSupported__Lcom_google_gwt_storage_client_Storage_2();
+  if (!com_google_api_gwt_oauth2_client_TokenStoreImpl_STORAGE) {
+    throw new java_lang_NullPointerException_NullPointerException__Ljava_lang_String_2V('Storage is null');
+  }
+}
+
+function com_google_api_gwt_oauth2_client_TokenStoreImpl_TokenStoreImpl__V(){
+  com_google_api_gwt_oauth2_client_TokenStoreImpl_$clinit__V();
+}
+
+function com_google_api_gwt_oauth2_client_TokenStoreImpl(){
+}
+
+_ = com_google_api_gwt_oauth2_client_TokenStoreImpl_TokenStoreImpl__V.prototype = com_google_api_gwt_oauth2_client_TokenStoreImpl.prototype = new java_lang_Object;
+_.get__Ljava_lang_String_2Ljava_lang_String_2 = function com_google_api_gwt_oauth2_client_TokenStoreImpl_get__Ljava_lang_String_2Ljava_lang_String_2(key){
+  return com_google_gwt_storage_client_Storage_$getItem__Lcom_google_gwt_storage_client_Storage_2Ljava_lang_String_2Ljava_lang_String_2(com_google_api_gwt_oauth2_client_TokenStoreImpl_STORAGE, key);
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function com_google_api_gwt_oauth2_client_TokenStoreImpl_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1TokenStoreImpl_12_1classLit;
+}
+;
+_.set__Ljava_lang_String_2Ljava_lang_String_2V = function com_google_api_gwt_oauth2_client_TokenStoreImpl_set__Ljava_lang_String_2Ljava_lang_String_2V(key, value){
+  com_google_gwt_storage_client_Storage_$setItem__Lcom_google_gwt_storage_client_Storage_2Ljava_lang_String_2Ljava_lang_String_2V(com_google_api_gwt_oauth2_client_TokenStoreImpl_STORAGE, key, value);
+}
+;
+var com_google_api_gwt_oauth2_client_TokenStoreImpl_STORAGE;
+function com_google_api_gwt_oauth2_client_CookieStoreImpl_CookieStoreImpl__V(){
+  com_google_api_gwt_oauth2_client_TokenStoreImpl_$clinit__V();
+}
+
+function com_google_api_gwt_oauth2_client_CookieStoreImpl(){
+}
+
+_ = com_google_api_gwt_oauth2_client_CookieStoreImpl_CookieStoreImpl__V.prototype = com_google_api_gwt_oauth2_client_CookieStoreImpl.prototype = new com_google_api_gwt_oauth2_client_TokenStoreImpl;
+_.get__Ljava_lang_String_2Ljava_lang_String_2 = function com_google_api_gwt_oauth2_client_CookieStoreImpl_get__Ljava_lang_String_2Ljava_lang_String_2(key){
+  var com_google_gwt_user_client_Cookies_getCookie__Ljava_lang_String_2Ljava_lang_String_2_cookiesMap_0;
+  return com_google_gwt_user_client_Cookies_getCookie__Ljava_lang_String_2Ljava_lang_String_2_cookiesMap_0 = com_google_gwt_user_client_Cookies_ensureCookies__Ljava_util_HashMap_2() , com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2($intern_8 + key == null?com_google_gwt_user_client_Cookies_getCookie__Ljava_lang_String_2Ljava_lang_String_2_cookiesMap_0.java_util_AbstractHashMap_nullSlot:$intern_8 + key != null?com_google_gwt_user_client_Cookies_getCookie__Ljava_lang_String_2Ljava_lang_String_2_cookiesMap_0.java_util_AbstractHashMap_stringMap[':gwt-oauth2-' + key]:java_util_AbstractHashMap_$getHashValue__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2ILjava_lang_Object_2(com_google_gwt_user_client_Cookies_getCookie__Ljava_lang_String_2Ljava_lang_String_2_cookiesMap_0, null, ~~java_lang_String$HashCache_getHashCode__Ljava_lang_String_2I(null)), Q$java_lang_String);
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function com_google_api_gwt_oauth2_client_CookieStoreImpl_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1CookieStoreImpl_12_1classLit;
+}
+;
+_.set__Ljava_lang_String_2Ljava_lang_String_2V = function com_google_api_gwt_oauth2_client_CookieStoreImpl_set__Ljava_lang_String_2Ljava_lang_String_2V(key, value){
+  com_google_gwt_user_client_Cookies_setCookie__Ljava_lang_String_2Ljava_lang_String_2Ljava_util_Date_2Ljava_lang_String_2Ljava_lang_String_2ZV($intern_8 + key, value, new java_util_Date_Date__IIIV);
+}
+;
+function com_google_gwt_core_client_Duration_currentTimeMillis__D(){
+  return (new Date).getTime();
+}
+
+function java_lang_Throwable_$setStackTrace__Ljava_lang_Throwable_2_3Ljava_lang_StackTraceElement_2V(stackTrace){
+  var c, copy, i;
+  copy = com_google_gwt_lang_Array_initDim__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2IIILcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1StackTraceElement_12_1classLit, makeCastMap([Q$java_io_Serializable]), Q$java_lang_StackTraceElement, stackTrace.length, 0);
+  for (i = 0 , c = stackTrace.length; i < c; ++i) {
+    if (!stackTrace[i]) {
+      throw new java_lang_NullPointerException_NullPointerException__V;
+    }
+    copy[i] = stackTrace[i];
+  }
+}
+
+function java_lang_Throwable(){
+}
+
+_ = java_lang_Throwable.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_Throwable_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Throwable_12_1classLit;
+}
+;
+_.getMessage__Ljava_lang_String_2 = function java_lang_Throwable_getMessage__Ljava_lang_String_2(){
+  return this.java_lang_Throwable_detailMessage;
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_lang_Throwable_toString__Ljava_lang_String_2(){
+  var className, msg;
+  className = this.getClass__Ljava_lang_Class_2$().java_lang_Class_typeName;
+  msg = this.getMessage__Ljava_lang_String_2();
+  return msg != null?className + $intern_9 + msg:className;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_Throwable]);
+_.java_lang_Throwable_detailMessage = null;
+function java_lang_Exception(){
+}
+
+--></script>
+<script><!--
+_ = java_lang_Exception.prototype = new java_lang_Throwable;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_Exception_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Exception_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_Throwable]);
+function java_lang_RuntimeException_RuntimeException__Ljava_lang_String_2V(message){
+  com_google_gwt_core_client_impl_StackTraceCreator$Collector_$fillInStackTrace__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Ljava_lang_Throwable_2V();
+  this.java_lang_Throwable_detailMessage = message;
+}
+
+function java_lang_RuntimeException(){
+}
+
+_ = java_lang_RuntimeException_RuntimeException__Ljava_lang_String_2V.prototype = java_lang_RuntimeException.prototype = new java_lang_Exception;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_RuntimeException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1RuntimeException_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+function com_google_gwt_core_client_JavaScriptException_JavaScriptException__Ljava_lang_Object_2V(e){
+  com_google_gwt_core_client_impl_StackTraceCreator$Collector_$fillInStackTrace__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Ljava_lang_Throwable_2V();
+  this.com_google_gwt_core_client_JavaScriptException_e = e;
+  com_google_gwt_core_client_impl_StackTraceCreator$Collector_$createStackTrace__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Lcom_google_gwt_core_client_JavaScriptException_2V(this);
+}
+
+function com_google_gwt_core_client_JavaScriptException_getDescription__Ljava_lang_Object_2Ljava_lang_String_2(e){
+  return com_google_gwt_lang_Cast_instanceOfJso__Ljava_lang_Object_2Z(e)?com_google_gwt_core_client_JavaScriptException_getDescription0__Lcom_google_gwt_core_client_JavaScriptObject_2Ljava_lang_String_2(com_google_gwt_lang_Cast_dynamicCastJso__Ljava_lang_Object_2Ljava_lang_Object_2(e)):e + $intern_0;
+}
+
+function com_google_gwt_core_client_JavaScriptException_getDescription0__Lcom_google_gwt_core_client_JavaScriptObject_2Ljava_lang_String_2(e){
+  return e == null?null:e.message;
+}
+
+function com_google_gwt_core_client_JavaScriptException_getName__Ljava_lang_Object_2Ljava_lang_String_2(e){
+  var com_google_gwt_core_client_JavaScriptObject_getClass_1_1devirtual$__Ljava_lang_Object_2Ljava_lang_Class_2_maybeJsoInvocation_0;
+  return e == null?'null':com_google_gwt_lang_Cast_instanceOfJso__Ljava_lang_Object_2Z(e)?com_google_gwt_core_client_JavaScriptException_getName0__Lcom_google_gwt_core_client_JavaScriptObject_2Ljava_lang_String_2(com_google_gwt_lang_Cast_dynamicCastJso__Ljava_lang_Object_2Ljava_lang_Object_2(e)):com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(e, Q$java_lang_String)?$intern_10:(com_google_gwt_core_client_JavaScriptObject_getClass_1_1devirtual$__Ljava_lang_Object_2Ljava_lang_Class_2_maybeJsoInvocation_0 = e , com_google_gwt_lang_Cast_isJavaObject__Ljava_lang_Object_2Z(com_google_gwt_core_client_JavaScriptObject_getClass_1_1devirtual$__Ljava_lang_Object_2Ljava_lang_Class_2_maybeJsoInvocation_0)?com_google_gwt_core_client_JavaScriptObject_getClass_1_1devirtual$__Ljava_lang_Object_2Ljava_lang_Class_2_maybeJsoInvocation_0.getClass__Ljava_lang_Class_2$():com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1JavaScriptObject_12_1classLit).java_lang_Class_typeName;
+}
+
+function com_google_gwt_core_client_JavaScriptException_getName0__Lcom_google_gwt_core_client_JavaScriptObject_2Ljava_lang_String_2(e){
+  return e == null?null:e.name;
+}
+
+function com_google_gwt_core_client_JavaScriptException_getProperties__Ljava_lang_Object_2Ljava_lang_String_2(e){
+  return com_google_gwt_lang_Cast_instanceOfJso__Ljava_lang_Object_2Z(e)?com_google_gwt_core_client_impl_StackTraceCreator$Collector_$getProperties__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Lcom_google_gwt_core_client_JavaScriptObject_2Ljava_lang_String_2(com_google_gwt_lang_Cast_dynamicCastJso__Ljava_lang_Object_2Ljava_lang_Object_2(e)):$intern_0;
+}
+
+function com_google_gwt_core_client_JavaScriptException(){
+}
+
+_ = com_google_gwt_core_client_JavaScriptException_JavaScriptException__Ljava_lang_Object_2V.prototype = com_google_gwt_core_client_JavaScriptException.prototype = new java_lang_RuntimeException;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_core_client_JavaScriptException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1JavaScriptException_12_1classLit;
+}
+;
+_.getMessage__Ljava_lang_String_2 = function com_google_gwt_core_client_JavaScriptException_getMessage__Ljava_lang_String_2(){
+  this.com_google_gwt_core_client_JavaScriptException_message == null && (this.com_google_gwt_core_client_JavaScriptException_name = com_google_gwt_core_client_JavaScriptException_getName__Ljava_lang_Object_2Ljava_lang_String_2(this.com_google_gwt_core_client_JavaScriptException_e) , this.com_google_gwt_core_client_JavaScriptException_description = com_google_gwt_core_client_JavaScriptException_getDescription__Ljava_lang_Object_2Ljava_lang_String_2(this.com_google_gwt_core_client_JavaScriptException_e) , this.com_google_gwt_core_client_JavaScriptException_message = $intern_11 + this.com_google_gwt_core_client_JavaScriptException_name + '): ' + this.com_google_gwt_core_client_JavaScriptException_description + com_google_gwt_core_client_JavaScriptException_getProperties__Ljava_lang_Object_2Ljava_lang_String_2(this.com_google_gwt_core_client_JavaScriptException_e) , undefined);
+  return this.com_google_gwt_core_client_JavaScriptException_message;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+_.com_google_gwt_core_client_JavaScriptException_description = null;
+_.com_google_gwt_core_client_JavaScriptException_e = null;
+_.com_google_gwt_core_client_JavaScriptException_message = null;
+_.com_google_gwt_core_client_JavaScriptException_name = null;
+function com_google_gwt_core_client_JsDate_$setDate__Lcom_google_gwt_core_client_JsDate_2ID(this$static, dayOfMonth){
+  return this$static.setDate(dayOfMonth);
+}
+
+function com_google_gwt_core_client_JsDate_$setTime__Lcom_google_gwt_core_client_JsDate_2DD(this$static, milliseconds){
+  return this$static.setTime(milliseconds);
+}
+
+function com_google_gwt_core_client_JsDate_create__DLcom_google_gwt_core_client_JsDate_2(milliseconds){
+  return new Date(milliseconds);
+}
+
+function com_google_gwt_core_client_JsDate_create__IIIIIIILcom_google_gwt_core_client_JsDate_2(year, month, dayOfMonth, hours, minutes, seconds, millis){
+  return new Date(year, month, dayOfMonth, hours, minutes, seconds, millis);
+}
+
+function com_google_gwt_core_client_Scheduler(){
+}
+
+_ = com_google_gwt_core_client_Scheduler.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_core_client_Scheduler_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1Scheduler_12_1classLit;
+}
+;
+function com_google_gwt_core_client_impl_Impl_apply__Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2(jsFunction, thisObj, arguments){
+  return jsFunction.apply(thisObj, arguments);
+  var _;
+}
+
+function com_google_gwt_core_client_impl_Impl_enter__Z(){
+  if (com_google_gwt_core_client_impl_Impl_entryDepth++ == 0) {
+    com_google_gwt_core_client_impl_SchedulerImpl_$flushEntryCommands__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V((com_google_gwt_core_client_impl_SchedulerImpl_$clinit__V() , com_google_gwt_core_client_impl_SchedulerImpl_INSTANCE));
+    return true;
+  }
+  return false;
+}
+
+function com_google_gwt_core_client_impl_Impl_entry__Lcom_google_gwt_core_client_JavaScriptObject_2Lcom_google_gwt_core_client_JavaScriptObject_2(jsFunction){
+  return function(){
+    try {
+      return com_google_gwt_core_client_impl_Impl_entry0__Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2(jsFunction, this, arguments);
+    }
+     catch (e) {
+      throw e;
+    }
+  }
+  ;
+}
+
+function com_google_gwt_core_client_impl_Impl_entry0__Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2(jsFunction, thisObj, arguments){
+  var initialEntry;
+  initialEntry = com_google_gwt_core_client_impl_Impl_enter__Z();
+  try {
+    return com_google_gwt_core_client_impl_Impl_apply__Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2(jsFunction, thisObj, arguments);
+  }
+   finally {
+    initialEntry && com_google_gwt_core_client_impl_SchedulerImpl_$flushFinallyCommands__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V((com_google_gwt_core_client_impl_SchedulerImpl_$clinit__V() , com_google_gwt_core_client_impl_SchedulerImpl_INSTANCE));
+    --com_google_gwt_core_client_impl_Impl_entryDepth;
+  }
+}
+
+function com_google_gwt_core_client_impl_Impl_getHashCode__Ljava_lang_Object_2I(o){
+  return o.$H || (o.$H = ++com_google_gwt_core_client_impl_Impl_sNextHashId);
+}
+
+var com_google_gwt_core_client_impl_Impl_entryDepth = 0, com_google_gwt_core_client_impl_Impl_sNextHashId = 0;
+function com_google_gwt_core_client_impl_SchedulerImpl_$clinit__V(){
+  com_google_gwt_core_client_impl_SchedulerImpl_$clinit__V = nullMethod;
+  com_google_gwt_core_client_impl_SchedulerImpl_INSTANCE = new com_google_gwt_core_client_impl_SchedulerImpl_SchedulerImpl__V;
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_$flushEntryCommands__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V(this$static){
+  var oldQueue, rescheduled;
+  if (this$static.com_google_gwt_core_client_impl_SchedulerImpl_entryCommands) {
+    rescheduled = null;
+    do {
+      oldQueue = this$static.com_google_gwt_core_client_impl_SchedulerImpl_entryCommands;
+      this$static.com_google_gwt_core_client_impl_SchedulerImpl_entryCommands = null;
+      rescheduled = com_google_gwt_core_client_impl_SchedulerImpl_runScheduledTasks__Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_JsArray_2(oldQueue, rescheduled);
+    }
+     while (this$static.com_google_gwt_core_client_impl_SchedulerImpl_entryCommands);
+    this$static.com_google_gwt_core_client_impl_SchedulerImpl_entryCommands = rescheduled;
+  }
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_$flushFinallyCommands__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V(this$static){
+  var oldQueue, rescheduled;
+  if (this$static.com_google_gwt_core_client_impl_SchedulerImpl_finallyCommands) {
+    rescheduled = null;
+    do {
+      oldQueue = this$static.com_google_gwt_core_client_impl_SchedulerImpl_finallyCommands;
+      this$static.com_google_gwt_core_client_impl_SchedulerImpl_finallyCommands = null;
+      rescheduled = com_google_gwt_core_client_impl_SchedulerImpl_runScheduledTasks__Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_JsArray_2(oldQueue, rescheduled);
+    }
+     while (this$static.com_google_gwt_core_client_impl_SchedulerImpl_finallyCommands);
+    this$static.com_google_gwt_core_client_impl_SchedulerImpl_finallyCommands = rescheduled;
+  }
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_$flushPostEventPumpCommands__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V(this$static){
+  var oldDeferred;
+  if (this$static.com_google_gwt_core_client_impl_SchedulerImpl_deferredCommands) {
+    oldDeferred = this$static.com_google_gwt_core_client_impl_SchedulerImpl_deferredCommands;
+    this$static.com_google_gwt_core_client_impl_SchedulerImpl_deferredCommands = null;
+    !this$static.com_google_gwt_core_client_impl_SchedulerImpl_incrementalCommands && (this$static.com_google_gwt_core_client_impl_SchedulerImpl_incrementalCommands = []);
+    com_google_gwt_core_client_impl_SchedulerImpl_runScheduledTasks__Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_JsArray_2(oldDeferred, this$static.com_google_gwt_core_client_impl_SchedulerImpl_incrementalCommands);
+  }
+  !!this$static.com_google_gwt_core_client_impl_SchedulerImpl_incrementalCommands && (this$static.com_google_gwt_core_client_impl_SchedulerImpl_incrementalCommands = com_google_gwt_core_client_impl_SchedulerImpl_runRepeatingTasks__Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_JsArray_2(this$static.com_google_gwt_core_client_impl_SchedulerImpl_incrementalCommands));
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_$isWorkQueued__Lcom_google_gwt_core_client_impl_SchedulerImpl_2Z(this$static){
+  return !!this$static.com_google_gwt_core_client_impl_SchedulerImpl_deferredCommands || !!this$static.com_google_gwt_core_client_impl_SchedulerImpl_incrementalCommands;
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_$maybeSchedulePostEventPumpCommands__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V(this$static){
+  if (!this$static.com_google_gwt_core_client_impl_SchedulerImpl_shouldBeRunning) {
+    this$static.com_google_gwt_core_client_impl_SchedulerImpl_shouldBeRunning = true;
+    !this$static.com_google_gwt_core_client_impl_SchedulerImpl_flusher && (this$static.com_google_gwt_core_client_impl_SchedulerImpl_flusher = new com_google_gwt_core_client_impl_SchedulerImpl$Flusher_SchedulerImpl$Flusher__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V(this$static));
+    com_google_gwt_core_client_impl_SchedulerImpl_scheduleFixedDelayImpl__Lcom_google_gwt_core_client_Scheduler$RepeatingCommand_2IV(this$static.com_google_gwt_core_client_impl_SchedulerImpl_flusher, 1);
+    !this$static.com_google_gwt_core_client_impl_SchedulerImpl_rescue && (this$static.com_google_gwt_core_client_impl_SchedulerImpl_rescue = new com_google_gwt_core_client_impl_SchedulerImpl$Rescuer_SchedulerImpl$Rescuer__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V(this$static));
+    com_google_gwt_core_client_impl_SchedulerImpl_scheduleFixedDelayImpl__Lcom_google_gwt_core_client_Scheduler$RepeatingCommand_2IV(this$static.com_google_gwt_core_client_impl_SchedulerImpl_rescue, 50);
+  }
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_$scheduleDeferred__Lcom_google_gwt_core_client_impl_SchedulerImpl_2Lcom_google_gwt_core_client_Scheduler$ScheduledCommand_2V(this$static, cmd){
+  this$static.com_google_gwt_core_client_impl_SchedulerImpl_deferredCommands = com_google_gwt_core_client_impl_SchedulerImpl_push__Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_impl_SchedulerImpl$Task_2Lcom_google_gwt_core_client_JsArray_2(this$static.com_google_gwt_core_client_impl_SchedulerImpl_deferredCommands, [cmd, false]);
+  com_google_gwt_core_client_impl_SchedulerImpl_$maybeSchedulePostEventPumpCommands__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V(this$static);
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_SchedulerImpl__V(){
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_execute__Lcom_google_gwt_core_client_Scheduler$RepeatingCommand_2Z(cmd){
+  return cmd.execute__Z();
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_push__Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_impl_SchedulerImpl$Task_2Lcom_google_gwt_core_client_JsArray_2(queue, task){
+  !queue && (queue = []);
+  queue[queue.length] = task;
+  return queue;
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_runRepeatingTasks__Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_JsArray_2(tasks){
+  var canceledSomeTasks, i, length, newTasks, start, t;
+  length = tasks.length;
+  if (length == 0) {
+    return null;
+  }
+  canceledSomeTasks = false;
+  start = com_google_gwt_core_client_Duration_currentTimeMillis__D();
+  while (com_google_gwt_core_client_Duration_currentTimeMillis__D() - start < 100) {
+    for (i = 0; i < length; ++i) {
+      t = tasks[i];
+      if (!t) {
+        continue;
+      }
+      if (!t[0].execute__Z()) {
+        tasks[i] = null;
+        canceledSomeTasks = true;
+      }
+    }
+  }
+  if (canceledSomeTasks) {
+    newTasks = [];
+    for (i = 0; i < length; ++i) {
+      !!tasks[i] && (newTasks[newTasks.length] = tasks[i] , undefined);
+    }
+    return newTasks.length == 0?null:newTasks;
+  }
+   else {
+    return tasks;
+  }
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_runScheduledTasks__Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_JsArray_2(tasks, rescheduled){
+  var $e0, i, j, t;
+  for (i = 0 , j = tasks.length; i < j; ++i) {
+    t = tasks[i];
+    try {
+      t[1]?t[0].execute__Z() && (rescheduled = com_google_gwt_core_client_impl_SchedulerImpl_push__Lcom_google_gwt_core_client_JsArray_2Lcom_google_gwt_core_client_impl_SchedulerImpl$Task_2Lcom_google_gwt_core_client_JsArray_2(rescheduled, t)):com_google_gwt_user_client_Window_alert__Ljava_lang_String_2V($intern_2 + t[0].com_google_api_gwt_oauth2_client_Auth$1_val$info.com_google_api_gwt_oauth2_client_Auth$TokenInfo_accessToken);
+    }
+     catch ($e0) {
+      $e0 = com_google_gwt_lang_Exceptions_caught__Ljava_lang_Object_2Ljava_lang_Object_2($e0);
+      if (!com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ($e0, Q$java_lang_RuntimeException))
+        throw $e0;
+    }
+  }
+  return rescheduled;
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl_scheduleFixedDelayImpl__Lcom_google_gwt_core_client_Scheduler$RepeatingCommand_2IV(cmd, delayMs){
+  com_google_gwt_core_client_impl_SchedulerImpl_$clinit__V();
+  $wnd.setTimeout(function(){
+    var ret = $entry(com_google_gwt_core_client_impl_SchedulerImpl_execute__Lcom_google_gwt_core_client_Scheduler$RepeatingCommand_2Z)(cmd);
+    ret && $wnd.setTimeout(arguments.callee, delayMs);
+  }
+  , delayMs);
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl(){
+}
+
+_ = com_google_gwt_core_client_impl_SchedulerImpl_SchedulerImpl__V.prototype = com_google_gwt_core_client_impl_SchedulerImpl.prototype = new com_google_gwt_core_client_Scheduler;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_core_client_impl_SchedulerImpl_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1SchedulerImpl_12_1classLit;
+}
+;
+_.com_google_gwt_core_client_impl_SchedulerImpl_deferredCommands = null;
+_.com_google_gwt_core_client_impl_SchedulerImpl_entryCommands = null;
+_.com_google_gwt_core_client_impl_SchedulerImpl_finallyCommands = null;
+_.com_google_gwt_core_client_impl_SchedulerImpl_flushRunning = false;
+_.com_google_gwt_core_client_impl_SchedulerImpl_flusher = null;
+_.com_google_gwt_core_client_impl_SchedulerImpl_incrementalCommands = null;
+_.com_google_gwt_core_client_impl_SchedulerImpl_rescue = null;
+_.com_google_gwt_core_client_impl_SchedulerImpl_shouldBeRunning = false;
+var com_google_gwt_core_client_impl_SchedulerImpl_INSTANCE;
+function com_google_gwt_core_client_impl_SchedulerImpl$Flusher_SchedulerImpl$Flusher__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V(this$0){
+  this.com_google_gwt_core_client_impl_SchedulerImpl$Flusher_this$0 = this$0;
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl$Flusher(){
+}
+
+_ = com_google_gwt_core_client_impl_SchedulerImpl$Flusher_SchedulerImpl$Flusher__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V.prototype = com_google_gwt_core_client_impl_SchedulerImpl$Flusher.prototype = new java_lang_Object;
+_.execute__Z = function com_google_gwt_core_client_impl_SchedulerImpl$Flusher_execute__Z(){
+  this.com_google_gwt_core_client_impl_SchedulerImpl$Flusher_this$0.com_google_gwt_core_client_impl_SchedulerImpl_flushRunning = true;
+  com_google_gwt_core_client_impl_SchedulerImpl_$flushPostEventPumpCommands__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V(this.com_google_gwt_core_client_impl_SchedulerImpl$Flusher_this$0);
+  this.com_google_gwt_core_client_impl_SchedulerImpl$Flusher_this$0.com_google_gwt_core_client_impl_SchedulerImpl_flushRunning = false;
+  return this.com_google_gwt_core_client_impl_SchedulerImpl$Flusher_this$0.com_google_gwt_core_client_impl_SchedulerImpl_shouldBeRunning = com_google_gwt_core_client_impl_SchedulerImpl_$isWorkQueued__Lcom_google_gwt_core_client_impl_SchedulerImpl_2Z(this.com_google_gwt_core_client_impl_SchedulerImpl$Flusher_this$0);
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_core_client_impl_SchedulerImpl$Flusher_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1SchedulerImpl$Flusher_12_1classLit;
+}
+;
+_.com_google_gwt_core_client_impl_SchedulerImpl$Flusher_this$0 = null;
+function com_google_gwt_core_client_impl_SchedulerImpl$Rescuer_SchedulerImpl$Rescuer__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V(this$0){
+  this.com_google_gwt_core_client_impl_SchedulerImpl$Rescuer_this$0 = this$0;
+}
+
+function com_google_gwt_core_client_impl_SchedulerImpl$Rescuer(){
+}
+
+_ = com_google_gwt_core_client_impl_SchedulerImpl$Rescuer_SchedulerImpl$Rescuer__Lcom_google_gwt_core_client_impl_SchedulerImpl_2V.prototype = com_google_gwt_core_client_impl_SchedulerImpl$Rescuer.prototype = new java_lang_Object;
+_.execute__Z = function com_google_gwt_core_client_impl_SchedulerImpl$Rescuer_execute__Z(){
+  this.com_google_gwt_core_client_impl_SchedulerImpl$Rescuer_this$0.com_google_gwt_core_client_impl_SchedulerImpl_flushRunning && com_google_gwt_core_client_impl_SchedulerImpl_scheduleFixedDelayImpl__Lcom_google_gwt_core_client_Scheduler$RepeatingCommand_2IV(this.com_google_gwt_core_client_impl_SchedulerImpl$Rescuer_this$0.com_google_gwt_core_client_impl_SchedulerImpl_flusher, 1);
+  return this.com_google_gwt_core_client_impl_SchedulerImpl$Rescuer_this$0.com_google_gwt_core_client_impl_SchedulerImpl_shouldBeRunning;
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_core_client_impl_SchedulerImpl$Rescuer_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1SchedulerImpl$Rescuer_12_1classLit;
+}
+;
+_.com_google_gwt_core_client_impl_SchedulerImpl$Rescuer_this$0 = null;
+function com_google_gwt_core_client_impl_StackTraceCreator_extractNameFromToString__Ljava_lang_String_2Ljava_lang_String_2(fnToString){
+  var index, start, toReturn;
+  toReturn = $intern_0;
+  fnToString = java_lang_String_$trim__Ljava_lang_String_2Ljava_lang_String_2(fnToString);
+  index = fnToString.indexOf($intern_11);
+  if (index != -1) {
+    start = fnToString.indexOf('function') == 0?8:0;
+    toReturn = java_lang_String_$trim__Ljava_lang_String_2Ljava_lang_String_2(fnToString.substr(start, index - start));
+  }
+  return toReturn.length > 0?toReturn:'anonymous';
+}
+
+function com_google_gwt_core_client_impl_StackTraceCreator_splice__Lcom_google_gwt_core_client_JsArrayString_2ILcom_google_gwt_core_client_JsArrayString_2(arr, length){
+  arr.length >= length && arr.splice(0, length);
+  return arr;
+}
+
+function com_google_gwt_core_client_impl_StackTraceCreator$Collector_$createStackTrace__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Lcom_google_gwt_core_client_JavaScriptException_2V(e){
+  var i, j, stack, stackTrace;
+  stack = com_google_gwt_core_client_impl_StackTraceCreator$CollectorMoz_$inferFrom__Lcom_google_gwt_core_client_impl_StackTraceCreator$CollectorMoz_2Lcom_google_gwt_core_client_JavaScriptObject_2Lcom_google_gwt_core_client_JsArrayString_2(com_google_gwt_lang_Cast_instanceOfJso__Ljava_lang_Object_2Z(e.com_google_gwt_core_client_JavaScriptException_e)?com_google_gwt_lang_Cast_dynamicCastJso__Ljava_lang_Object_2Ljava_lang_Object_2(e.com_google_gwt_core_client_JavaScriptException_e):null);
+  stackTrace = com_google_gwt_lang_Array_initDim__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2IIILcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1StackTraceElement_12_1classLit, makeCastMap([Q$java_io_Serializable]), Q$java_lang_StackTraceElement, stack.length, 0);
+  for (i = 0 , j = stackTrace.length; i < j; ++i) {
+    stackTrace[i] = new java_lang_StackTraceElement_StackTraceElement__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2IV(stack[i]);
+  }
+  java_lang_Throwable_$setStackTrace__Ljava_lang_Throwable_2_3Ljava_lang_StackTraceElement_2V(stackTrace);
+}
+
+function com_google_gwt_core_client_impl_StackTraceCreator$Collector_$fillInStackTrace__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Ljava_lang_Throwable_2V(){
+  var i, j, stack, stackTrace;
+  stack = com_google_gwt_core_client_impl_StackTraceCreator_splice__Lcom_google_gwt_core_client_JsArrayString_2ILcom_google_gwt_core_client_JsArrayString_2(com_google_gwt_core_client_impl_StackTraceCreator$CollectorMoz_$inferFrom__Lcom_google_gwt_core_client_impl_StackTraceCreator$CollectorMoz_2Lcom_google_gwt_core_client_JavaScriptObject_2Lcom_google_gwt_core_client_JsArrayString_2(com_google_gwt_core_client_impl_StackTraceCreator$Collector_$makeException__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Lcom_google_gwt_core_client_JavaScriptObject_2()), 2);
+  stackTrace = com_google_gwt_lang_Array_initDim__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2IIILcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1StackTraceElement_12_1classLit, makeCastMap([Q$java_io_Serializable]), Q$java_lang_StackTraceElement, stack.length, 0);
+  for (i = 0 , j = stackTrace.length; i < j; ++i) {
+    stackTrace[i] = new java_lang_StackTraceElement_StackTraceElement__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2IV(stack[i]);
+  }
+  java_lang_Throwable_$setStackTrace__Ljava_lang_Throwable_2_3Ljava_lang_StackTraceElement_2V(stackTrace);
+}
+
+function com_google_gwt_core_client_impl_StackTraceCreator$Collector_$getProperties__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Lcom_google_gwt_core_client_JavaScriptObject_2Ljava_lang_String_2(e){
+  var result = $intern_0;
+  try {
+    for (var prop in e) {
+      if (prop != 'name' && prop != 'message' && prop != 'toString') {
+        try {
+          result += '\n ' + prop + $intern_9 + e[prop];
+        }
+         catch (ignored) {
+        }
+      }
+    }
+  }
+   catch (ignored) {
+  }
+  return result;
+}
+
+function com_google_gwt_core_client_impl_StackTraceCreator$Collector_$makeException__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Lcom_google_gwt_core_client_JavaScriptObject_2(){
+  try {
+    null.a();
+  }
+   catch (e) {
+    return e;
+  }
+}
+
+function com_google_gwt_core_client_impl_StackTraceCreator$CollectorMoz_$inferFrom__Lcom_google_gwt_core_client_impl_StackTraceCreator$CollectorMoz_2Lcom_google_gwt_core_client_JavaScriptObject_2Lcom_google_gwt_core_client_JsArrayString_2(e){
+  var i, j, stack;
+  stack = e && e.stack?e.stack.split('\n'):[];
+  for (i = 0 , j = stack.length; i < j; ++i) {
+    stack[i] = com_google_gwt_core_client_impl_StackTraceCreator_extractNameFromToString__Ljava_lang_String_2Ljava_lang_String_2(stack[i]);
+  }
+  return stack;
+}
+
+function com_google_gwt_core_client_impl_StringBufferImpl(){
+}
+
+_ = com_google_gwt_core_client_impl_StringBufferImpl.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_core_client_impl_StringBufferImpl_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1StringBufferImpl_12_1classLit;
+}
+;
+function com_google_gwt_core_client_impl_StringBufferImplAppend_$append__Lcom_google_gwt_core_client_impl_StringBufferImplAppend_2Ljava_lang_Object_2Ljava_lang_String_2V(this$static, x){
+  this$static.com_google_gwt_core_client_impl_StringBufferImplAppend_string += x;
+}
+
+function com_google_gwt_core_client_impl_StringBufferImplAppend_StringBufferImplAppend__V(){
+}
+
+function com_google_gwt_core_client_impl_StringBufferImplAppend(){
+}
+
+_ = com_google_gwt_core_client_impl_StringBufferImplAppend_StringBufferImplAppend__V.prototype = com_google_gwt_core_client_impl_StringBufferImplAppend.prototype = new com_google_gwt_core_client_impl_StringBufferImpl;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_core_client_impl_StringBufferImplAppend_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1StringBufferImplAppend_12_1classLit;
+}
+;
+_.com_google_gwt_core_client_impl_StringBufferImplAppend_string = $intern_0;
+function com_google_gwt_http_client_StringValidator_throwIfNull__Ljava_lang_String_2Ljava_lang_Object_2V(value){
+  if (null == value) {
+    throw new java_lang_NullPointerException_NullPointerException__Ljava_lang_String_2V('decodedURL cannot be null');
+  }
+}
+
+function com_google_gwt_lang_Array_Array__V(){
+}
+
+function com_google_gwt_lang_Array_createFromSeed__IILcom_google_gwt_lang_Array_2(seedType, length){
+  var array = new Array(length);
+  if (seedType == 3) {
+    for (var i = 0; i < length; ++i) {
+      var value = new Object;
+      value.l = value.m = value.h = 0;
+      array[i] = value;
+    }
+  }
+   else if (seedType > 0) {
+    var value = [null, 0, false][seedType];
+    for (var i = 0; i < length; ++i) {
+      array[i] = value;
+    }
+  }
+  return array;
+}
+
+function com_google_gwt_lang_Array_initDim__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2IIILcom_google_gwt_lang_Array_2(arrayClass, castableTypeMap, queryId, length, seedType){
+  var result;
+  result = com_google_gwt_lang_Array_createFromSeed__IILcom_google_gwt_lang_Array_2(seedType, length);
+  com_google_gwt_lang_Array_initValues__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2ILcom_google_gwt_lang_Array_2Lcom_google_gwt_lang_Array_2(arrayClass, castableTypeMap, queryId, result);
+  return result;
+}
+
+--></script>
+<script><!--
+function com_google_gwt_lang_Array_initValues__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2ILcom_google_gwt_lang_Array_2Lcom_google_gwt_lang_Array_2(arrayClass, castableTypeMap, queryId, array){
+  com_google_gwt_lang_Array$ExpandoWrapper_$clinit__V();
+  com_google_gwt_lang_Array$ExpandoWrapper_wrapArray__Lcom_google_gwt_lang_Array_2Ljava_lang_Object_2Ljava_lang_Object_2V(array, com_google_gwt_lang_Array$ExpandoWrapper_expandoNames, com_google_gwt_lang_Array$ExpandoWrapper_expandoValues);
+  array.com_google_gwt_lang_Array_arrayClass$ = arrayClass;
+  array.java_lang_Object_castableTypeMap$ = castableTypeMap;
+  array.com_google_gwt_lang_Array_queryId$ = queryId;
+  return array;
+}
+
+function com_google_gwt_lang_Array_setCheck__Lcom_google_gwt_lang_Array_2ILjava_lang_Object_2Ljava_lang_Object_2(array, index, value){
+  if (value != null) {
+    if (array.com_google_gwt_lang_Array_queryId$ > 0 && !com_google_gwt_lang_Cast_canCastUnsafe__Ljava_lang_Object_2IZ(value, array.com_google_gwt_lang_Array_queryId$)) {
+      throw new java_lang_ArrayStoreException_ArrayStoreException__V;
+    }
+    if (array.com_google_gwt_lang_Array_queryId$ < 0 && (value.java_lang_Object_typeMarker$ == nullMethod || com_google_gwt_lang_Cast_canCast__Ljava_lang_Object_2IZ(value, 1))) {
+      throw new java_lang_ArrayStoreException_ArrayStoreException__V;
+    }
+  }
+  return array[index] = value;
+}
+
+function com_google_gwt_lang_Array(){
+}
+
+_ = com_google_gwt_lang_Array_Array__V.prototype = com_google_gwt_lang_Array.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_lang_Array_getClass__Ljava_lang_Class_2(){
+  return this.com_google_gwt_lang_Array_arrayClass$;
+}
+;
+_.com_google_gwt_lang_Array_arrayClass$ = null;
+_.com_google_gwt_lang_Array_queryId$ = 0;
+function com_google_gwt_lang_Array$ExpandoWrapper_$clinit__V(){
+  com_google_gwt_lang_Array$ExpandoWrapper_$clinit__V = nullMethod;
+  com_google_gwt_lang_Array$ExpandoWrapper_expandoNames = [];
+  com_google_gwt_lang_Array$ExpandoWrapper_expandoValues = [];
+  com_google_gwt_lang_Array$ExpandoWrapper_initExpandos__Lcom_google_gwt_lang_Array_2Ljava_lang_Object_2Ljava_lang_Object_2V(new com_google_gwt_lang_Array_Array__V, com_google_gwt_lang_Array$ExpandoWrapper_expandoNames, com_google_gwt_lang_Array$ExpandoWrapper_expandoValues);
+}
+
+function com_google_gwt_lang_Array$ExpandoWrapper_initExpandos__Lcom_google_gwt_lang_Array_2Ljava_lang_Object_2Ljava_lang_Object_2V(protoType, expandoNames, expandoValues){
+  var i = 0, value;
+  for (var name in protoType) {
+    if (value = protoType[name]) {
+      expandoNames[i] = name;
+      expandoValues[i] = value;
+      ++i;
+    }
+  }
+}
+
+function com_google_gwt_lang_Array$ExpandoWrapper_wrapArray__Lcom_google_gwt_lang_Array_2Ljava_lang_Object_2Ljava_lang_Object_2V(array, expandoNames, expandoValues){
+  com_google_gwt_lang_Array$ExpandoWrapper_$clinit__V();
+  for (var i = 0, c = expandoNames.length; i < c; ++i) {
+    array[expandoNames[i]] = expandoValues[i];
+  }
+}
+
+var com_google_gwt_lang_Array$ExpandoWrapper_expandoNames, com_google_gwt_lang_Array$ExpandoWrapper_expandoValues;
+function com_google_gwt_lang_Cast_canCast__Ljava_lang_Object_2IZ(src, dstId){
+  return src.java_lang_Object_castableTypeMap$ && !!src.java_lang_Object_castableTypeMap$[dstId];
+}
+
+function com_google_gwt_lang_Cast_canCastUnsafe__Ljava_lang_Object_2IZ(src, dstId){
+  return src.java_lang_Object_castableTypeMap$ && src.java_lang_Object_castableTypeMap$[dstId];
+}
+
+function com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(src, dstId){
+  if (src != null && !com_google_gwt_lang_Cast_canCastUnsafe__Ljava_lang_Object_2IZ(src, dstId)) {
+    throw new java_lang_ClassCastException_ClassCastException__V;
+  }
+  return src;
+}
+
+function com_google_gwt_lang_Cast_dynamicCastJso__Ljava_lang_Object_2Ljava_lang_Object_2(src){
+  if (src != null && (src.java_lang_Object_typeMarker$ == nullMethod || com_google_gwt_lang_Cast_canCast__Ljava_lang_Object_2IZ(src, 1))) {
+    throw new java_lang_ClassCastException_ClassCastException__V;
+  }
+  return src;
+}
+
+function com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(src, dstId){
+  return src != null && com_google_gwt_lang_Cast_canCast__Ljava_lang_Object_2IZ(src, dstId);
+}
+
+function com_google_gwt_lang_Cast_instanceOfJso__Ljava_lang_Object_2Z(src){
+  return src != null && src.java_lang_Object_typeMarker$ != nullMethod && !com_google_gwt_lang_Cast_canCast__Ljava_lang_Object_2IZ(src, 1);
+}
+
+function com_google_gwt_lang_Cast_isJavaObject__Ljava_lang_Object_2Z(src){
+  return src.java_lang_Object_typeMarker$ == nullMethod || com_google_gwt_lang_Cast_canCast__Ljava_lang_Object_2IZ(src, 1);
+}
+
+function com_google_gwt_lang_Cast_maskUndefined__Ljava_lang_Object_2Ljava_lang_Object_2(src){
+  return src == null?null:src;
+}
+
+function com_google_gwt_lang_Cast_round_1int__DI(x){
+  return ~~Math.max(Math.min(x, 2147483647), -2147483648);
+}
+
+function com_google_gwt_lang_EntryMethodHolder_init__V(){
+  var com_google_gwt_user_client_UserAgentAsserter_$onModuleLoad__Lcom_google_gwt_user_client_UserAgentAsserter_2V_runtimeValue_0, it_polimi_oauth2_client_OAuth2EntryPoint_$onModuleLoad__Lit_polimi_oauth2_client_OAuth2EntryPoint_2V_req_0;
+  !!$stats && com_google_gwt_lang_Stats_onModuleStart__Ljava_lang_String_2Z('com.google.gwt.user.client.UserAgentAsserter');
+  com_google_gwt_user_client_UserAgentAsserter_$onModuleLoad__Lcom_google_gwt_user_client_UserAgentAsserter_2V_runtimeValue_0 = com_google_gwt_user_client_UserAgentAsserter_1UserAgentPropertyImplGecko1_18_$getRuntimeValue__Lcom_google_gwt_user_client_UserAgentAsserter_1UserAgentPropertyImplGecko1_18_2Ljava_lang_String_2();
+  java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z($intern_12, com_google_gwt_user_client_UserAgentAsserter_$onModuleLoad__Lcom_google_gwt_user_client_UserAgentAsserter_2V_runtimeValue_0) || ($wnd.alert('ERROR: Possible problem with your *.gwt.xml module file.\nThe compile time user.agent value (gecko1_8) does not match the runtime user.agent value (' + com_google_gwt_user_client_UserAgentAsserter_$onModuleLoad__Lcom_google_gwt_user_client_UserAgentAsserter_2V_runtimeValue_0 + '). Expect more errors.\n') , undefined);
+  !!$stats && com_google_gwt_lang_Stats_onModuleStart__Ljava_lang_String_2Z('com.google.gwt.user.client.DocumentModeAsserter');
+  com_google_gwt_user_client_DocumentModeAsserter_$onModuleLoad__Lcom_google_gwt_user_client_DocumentModeAsserter_2V();
+  !!$stats && com_google_gwt_lang_Stats_onModuleStart__Ljava_lang_String_2Z('it.polimi.oauth2.client.OAuth2EntryPoint');
+  it_polimi_oauth2_client_OAuth2EntryPoint_$onModuleLoad__Lit_polimi_oauth2_client_OAuth2EntryPoint_2V_req_0 = com_google_api_gwt_oauth2_client_AuthRequest_$withScopes__Lcom_google_api_gwt_oauth2_client_AuthRequest_2_3Ljava_lang_String_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2(new com_google_api_gwt_oauth2_client_AuthRequest_AuthRequest__Ljava_lang_String_2Ljava_lang_String_2V, com_google_gwt_lang_Array_initValues__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2ILcom_google_gwt_lang_Array_2Lcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1String_12_1classLit, makeCastMap([Q$java_io_Serializable]), Q$java_lang_String, ['https://sites.google.com/feeds/', 'https://mail.google.com/mail/feed/atom', 'https://www.google.com/m8/feeds/']));
+  com_google_api_gwt_oauth2_client_Auth_$login__Lcom_google_api_gwt_oauth2_client_Auth_2Lcom_google_api_gwt_oauth2_client_AuthRequest_2Lcom_google_api_gwt_oauth2_client_Callback_2V((com_google_api_gwt_oauth2_client_AuthImpl_$clinit__V() , com_google_api_gwt_oauth2_client_AuthImpl_INSTANCE), it_polimi_oauth2_client_OAuth2EntryPoint_$onModuleLoad__Lit_polimi_oauth2_client_OAuth2EntryPoint_2V_req_0);
+}
+
+function com_google_gwt_lang_Exceptions_caught__Ljava_lang_Object_2Ljava_lang_Object_2(e){
+  if (com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(e, Q$java_lang_Throwable)) {
+    return e;
+  }
+  return new com_google_gwt_core_client_JavaScriptException_JavaScriptException__Ljava_lang_Object_2V(e);
+}
+
+function com_google_gwt_lang_LongLibBase_create__ILcom_google_gwt_lang_LongLibBase$LongEmul_2(value){
+  var a0, a1, a2;
+  a0 = value & 4194303;
+  a1 = value >> 22 & 4194303;
+  a2 = value < 0?1048575:0;
+  return com_google_gwt_lang_LongLibBase_create0__IIILcom_google_gwt_lang_LongLibBase$LongEmul_2(a0, a1, a2);
+}
+
+function com_google_gwt_lang_LongLibBase_create0__IIILcom_google_gwt_lang_LongLibBase$LongEmul_2(l, m, h){
+  return _ = new com_google_gwt_lang_LongLibBase$LongEmul_LongLibBase$LongEmul__V , _.l = l , _.m = m , _.h = h , _;
+}
+
+function com_google_gwt_lang_LongLibBase_toDoubleHelper__Lcom_google_gwt_lang_LongLibBase$LongEmul_2D(a){
+  return a.l + a.m * 4194304 + a.h * 17592186044416;
+}
+
+function com_google_gwt_lang_LongLib_eq__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2Z(a, b){
+  return a.l == b.l && a.m == b.m && a.h == b.h;
+}
+
+function com_google_gwt_lang_LongLib_fromDouble__DLcom_google_gwt_lang_LongLibBase$LongEmul_2(value){
+  var a0, a1, a2, negative, result, com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg0_0, com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg1_0, com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg2_0;
+  if (isNaN(value)) {
+    return com_google_gwt_lang_LongLib$Const_$clinit__V() , com_google_gwt_lang_LongLib$Const_ZERO;
+  }
+  if (value < -9223372036854775808) {
+    return com_google_gwt_lang_LongLib$Const_$clinit__V() , com_google_gwt_lang_LongLib$Const_MIN_1VALUE;
+  }
+  if (value >= 9223372036854775807) {
+    return com_google_gwt_lang_LongLib$Const_$clinit__V() , com_google_gwt_lang_LongLib$Const_MAX_1VALUE;
+  }
+  negative = false;
+  if (value < 0) {
+    negative = true;
+    value = -value;
+  }
+  a2 = 0;
+  if (value >= 17592186044416) {
+    a2 = com_google_gwt_lang_Cast_round_1int__DI(value / 17592186044416);
+    value -= a2 * 17592186044416;
+  }
+  a1 = 0;
+  if (value >= 4194304) {
+    a1 = com_google_gwt_lang_Cast_round_1int__DI(value / 4194304);
+    value -= a1 * 4194304;
+  }
+  a0 = com_google_gwt_lang_Cast_round_1int__DI(value);
+  result = com_google_gwt_lang_LongLibBase_create0__IIILcom_google_gwt_lang_LongLibBase$LongEmul_2(a0, a1, a2);
+  negative && (com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg0_0 = ~result.l + 1 & 4194303 , com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg1_0 = ~result.m + (com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg0_0 == 0?1:0) & 4194303 , com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg2_0 = ~result.h + (com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg0_0 == 0 && com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg1_0 == 0?1:0) & 1048575 , result.l = com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg0_0 , result.m = com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg1_0 , result.h = com_google_gwt_lang_LongLibBase_negate__Lcom_google_gwt_lang_LongLibBase$LongEmul_2V_neg2_0 , undefined);
+  return result;
+}
+
+function com_google_gwt_lang_LongLib_fromInt__ILcom_google_gwt_lang_LongLibBase$LongEmul_2(value){
+  var rebase, result;
+  if (value > -129 && value < 128) {
+    rebase = value + 128;
+    com_google_gwt_lang_LongLib_boxedValues == null && (com_google_gwt_lang_LongLib_boxedValues = com_google_gwt_lang_Array_initDim__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2IIILcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13Lcom_1google_1gwt_1lang_1LongLibBase$LongEmul_12_1classLit, makeCastMap([Q$java_io_Serializable]), Q$com_google_gwt_lang_LongLibBase$LongEmul, 256, 0));
+    result = com_google_gwt_lang_LongLib_boxedValues[rebase];
+    !result && (result = com_google_gwt_lang_LongLib_boxedValues[rebase] = com_google_gwt_lang_LongLibBase_create__ILcom_google_gwt_lang_LongLibBase$LongEmul_2(value));
+    return result;
+  }
+  return com_google_gwt_lang_LongLibBase_create__ILcom_google_gwt_lang_LongLibBase$LongEmul_2(value);
+}
+
+function com_google_gwt_lang_LongLib_gte__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2Z(a, b){
+  var signa, signb;
+  signa = a.h >> 19;
+  signb = b.h >> 19;
+  return signa == 0?signb != 0 || a.h > b.h || a.h == b.h && a.m > b.m || a.h == b.h && a.m == b.m && a.l >= b.l:!(signb == 0 || a.h < b.h || a.h == b.h && a.m < b.m || a.h == b.h && a.m == b.m && a.l < b.l);
+}
+
+function com_google_gwt_lang_LongLib_shru__Lcom_google_gwt_lang_LongLibBase$LongEmul_2ILcom_google_gwt_lang_LongLibBase$LongEmul_2(a, n){
+  var a2, res0, res1, res2;
+  n &= 63;
+  a2 = a.h & 1048575;
+  if (n < 22) {
+    res2 = a2 >>> n;
+    res1 = a.m >> n | a2 << 22 - n;
+    res0 = a.l >> n | a.m << 22 - n;
+  }
+   else if (n < 44) {
+    res2 = 0;
+    res1 = a2 >>> n - 22;
+    res0 = a.m >> n - 22 | a.h << 44 - n;
+  }
+   else {
+    res2 = 0;
+    res1 = 0;
+    res0 = a2 >>> n - 44;
+  }
+  return com_google_gwt_lang_LongLibBase_create0__IIILcom_google_gwt_lang_LongLibBase$LongEmul_2(res0 & 4194303, res1 & 4194303, res2 & 1048575);
+}
+
+function com_google_gwt_lang_LongLib_toDouble__Lcom_google_gwt_lang_LongLibBase$LongEmul_2D(a){
+  var com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg0_0, com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg1_0, com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg2_0;
+  if (com_google_gwt_lang_LongLib_eq__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2Z(a, (com_google_gwt_lang_LongLib$Const_$clinit__V() , com_google_gwt_lang_LongLib$Const_MIN_1VALUE))) {
+    return -9223372036854775808;
+  }
+  if (!com_google_gwt_lang_LongLib_gte__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2Z(a, com_google_gwt_lang_LongLib$Const_ZERO)) {
+    return -com_google_gwt_lang_LongLibBase_toDoubleHelper__Lcom_google_gwt_lang_LongLibBase$LongEmul_2D((com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg0_0 = ~a.l + 1 & 4194303 , com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg1_0 = ~a.m + (com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg0_0 == 0?1:0) & 4194303 , com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg2_0 = ~a.h + (com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg0_0 == 0 && com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg1_0 == 0?1:0) & 1048575 , com_google_gwt_lang_LongLibBase_create0__IIILcom_google_gwt_lang_LongLibBase$LongEmul_2(com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg0_0, com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg1_0, com_google_gwt_lang_LongLib_neg__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2_neg2_0)));
+  }
+  return a.l + a.m * 4194304 + a.h * 17592186044416;
+}
+
+function com_google_gwt_lang_LongLib_toInt__Lcom_google_gwt_lang_LongLibBase$LongEmul_2I(a){
+  return a.l | a.m << 22;
+}
+
+function com_google_gwt_lang_LongLib_xor__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2(a, b){
+  return com_google_gwt_lang_LongLibBase_create0__IIILcom_google_gwt_lang_LongLibBase$LongEmul_2(a.l ^ b.l, a.m ^ b.m, a.h ^ b.h);
+}
+
+var com_google_gwt_lang_LongLib_boxedValues = null;
+function com_google_gwt_lang_LongLib$Const_$clinit__V(){
+  com_google_gwt_lang_LongLib$Const_$clinit__V = nullMethod;
+  com_google_gwt_lang_LongLib$Const_MAX_1VALUE = com_google_gwt_lang_LongLibBase_create0__IIILcom_google_gwt_lang_LongLibBase$LongEmul_2(4194303, 4194303, 524287);
+  com_google_gwt_lang_LongLib$Const_MIN_1VALUE = com_google_gwt_lang_LongLibBase_create0__IIILcom_google_gwt_lang_LongLibBase$LongEmul_2(0, 0, 524288);
+  com_google_gwt_lang_LongLib_fromInt__ILcom_google_gwt_lang_LongLibBase$LongEmul_2(1);
+  com_google_gwt_lang_LongLib_fromInt__ILcom_google_gwt_lang_LongLibBase$LongEmul_2(2);
+  com_google_gwt_lang_LongLib$Const_ZERO = com_google_gwt_lang_LongLib_fromInt__ILcom_google_gwt_lang_LongLibBase$LongEmul_2(0);
+}
+
+var com_google_gwt_lang_LongLib$Const_MAX_1VALUE, com_google_gwt_lang_LongLib$Const_MIN_1VALUE, com_google_gwt_lang_LongLib$Const_ZERO;
+function com_google_gwt_lang_LongLibBase$LongEmul_LongLibBase$LongEmul__V(){
+}
+
+function com_google_gwt_lang_LongLibBase$LongEmul(){
+}
+
+_ = com_google_gwt_lang_LongLibBase$LongEmul_LongLibBase$LongEmul__V.prototype = com_google_gwt_lang_LongLibBase$LongEmul.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_lang_LongLibBase$LongEmul_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1lang_1LongLibBase$LongEmul_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$com_google_gwt_lang_LongLibBase$LongEmul]);
+function com_google_gwt_lang_Stats_onModuleStart__Ljava_lang_String_2Z(mainClassName){
+  return $stats({moduleName:$moduleName, sessionId:$sessionId, subSystem:'startup', evtGroup:'moduleStartup', millis:(new Date).getTime(), type:'onModuleLoadStart', className:mainClassName});
+}
+
+function com_google_gwt_storage_client_Storage_$getItem__Lcom_google_gwt_storage_client_Storage_2Ljava_lang_String_2Ljava_lang_String_2(this$static, key){
+  return com_google_gwt_storage_client_StorageImpl_$getItem__Lcom_google_gwt_storage_client_StorageImpl_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2(this$static.com_google_gwt_storage_client_Storage_storage, key);
+}
+
+function com_google_gwt_storage_client_Storage_$setItem__Lcom_google_gwt_storage_client_Storage_2Ljava_lang_String_2Ljava_lang_String_2V(this$static, key, data){
+  com_google_gwt_storage_client_StorageImplNonNativeEvents_$setItem__Lcom_google_gwt_storage_client_StorageImplNonNativeEvents_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2V(this$static.com_google_gwt_storage_client_Storage_storage, key, data);
+}
+
+function com_google_gwt_storage_client_Storage_Storage__Ljava_lang_String_2V(){
+  this.com_google_gwt_storage_client_Storage_storage = 'localStorage';
+}
+
+function com_google_gwt_storage_client_Storage_getLocalStorageIfSupported__Lcom_google_gwt_storage_client_Storage_2(){
+  !com_google_gwt_storage_client_Storage_supportDetectorImpl && (com_google_gwt_storage_client_Storage_supportDetectorImpl = new com_google_gwt_storage_client_Storage$StorageSupportDetector_Storage$StorageSupportDetector__V);
+  if (com_google_gwt_storage_client_Storage_supportDetectorImpl.com_google_gwt_storage_client_Storage$StorageSupportDetector_isLocalStorageSupported) {
+    !com_google_gwt_storage_client_Storage_localStorage && (com_google_gwt_storage_client_Storage_localStorage = new com_google_gwt_storage_client_Storage_Storage__Ljava_lang_String_2V);
+    return com_google_gwt_storage_client_Storage_localStorage;
+  }
+  return null;
+}
+
+function com_google_gwt_storage_client_Storage(){
+}
+
+_ = com_google_gwt_storage_client_Storage_Storage__Ljava_lang_String_2V.prototype = com_google_gwt_storage_client_Storage.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_storage_client_Storage_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1storage_1client_1Storage_12_1classLit;
+}
+;
+_.com_google_gwt_storage_client_Storage_storage = null;
+var com_google_gwt_storage_client_Storage_localStorage = null, com_google_gwt_storage_client_Storage_supportDetectorImpl = null;
+function com_google_gwt_storage_client_Storage$StorageSupportDetector_Storage$StorageSupportDetector__V(){
+  this.com_google_gwt_storage_client_Storage$StorageSupportDetector_isLocalStorageSupported = typeof $wnd.localStorage != $intern_13;
+  typeof $wnd.sessionStorage != $intern_13;
+}
+
+function com_google_gwt_storage_client_Storage$StorageSupportDetector(){
+}
+
+_ = com_google_gwt_storage_client_Storage$StorageSupportDetector_Storage$StorageSupportDetector__V.prototype = com_google_gwt_storage_client_Storage$StorageSupportDetector.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function com_google_gwt_storage_client_Storage$StorageSupportDetector_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1storage_1client_1Storage$StorageSupportDetector_12_1classLit;
+}
+;
+function com_google_gwt_storage_client_StorageImpl_$getItem__Lcom_google_gwt_storage_client_StorageImpl_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2(storage, key){
+  return $wnd[storage].getItem(key);
+}
+
+function com_google_gwt_storage_client_StorageImplNonNativeEvents_$setItem__Lcom_google_gwt_storage_client_StorageImplNonNativeEvents_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2V(storage, key, data){
+  $wnd[storage].getItem(key);
+  $wnd[storage].setItem(key, data);
+}
+
+function com_google_gwt_user_client_Cookies_ensureCookies__Ljava_util_HashMap_2(){
+  var newCachedCookies;
+  if (!com_google_gwt_user_client_Cookies_cachedCookies || com_google_gwt_user_client_Cookies_needsRefresh__Z()) {
+    newCachedCookies = new java_util_HashMap_HashMap__V;
+    com_google_gwt_user_client_Cookies_loadCookies__Ljava_util_HashMap_2V(newCachedCookies);
+    com_google_gwt_user_client_Cookies_cachedCookies = newCachedCookies;
+  }
+  return com_google_gwt_user_client_Cookies_cachedCookies;
+}
+
+function com_google_gwt_user_client_Cookies_loadCookies__Ljava_util_HashMap_2V(m){
+  var docCookie = $doc.cookie;
+  if (docCookie && docCookie != $intern_0) {
+    var crumbs = docCookie.split('; ');
+    for (var i = 0; i < crumbs.length; ++i) {
+      var name, value;
+      var eqIdx = crumbs[i].indexOf($intern_5);
+      if (eqIdx == -1) {
+        name = crumbs[i];
+        value = $intern_0;
+      }
+       else {
+        name = crumbs[i].substring(0, eqIdx);
+        value = crumbs[i].substring(eqIdx + 1);
+      }
+      if (com_google_gwt_user_client_Cookies_uriEncoding) {
+        try {
+          name = decodeURIComponent(name);
+        }
+         catch (e) {
+        }
+        try {
+          value = decodeURIComponent(value);
+        }
+         catch (e) {
+        }
+      }
+      m.put__Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2(name, value);
+    }
+  }
+}
+
+function com_google_gwt_user_client_Cookies_needsRefresh__Z(){
+  var docCookie = $doc.cookie;
+  if (docCookie != com_google_gwt_user_client_Cookies_rawCookies) {
+    com_google_gwt_user_client_Cookies_rawCookies = docCookie;
+    return true;
+  }
+   else {
+    return false;
+  }
+}
+
+function com_google_gwt_user_client_Cookies_setCookie__Ljava_lang_String_2Ljava_lang_String_2Ljava_util_Date_2Ljava_lang_String_2Ljava_lang_String_2ZV(name, value, expires){
+  name = encodeURIComponent(name);
+  value = encodeURIComponent(value);
+  com_google_gwt_user_client_Cookies_setCookieImpl__Ljava_lang_String_2Ljava_lang_String_2DLjava_lang_String_2Ljava_lang_String_2ZV(name, value, com_google_gwt_lang_LongLib_toDouble__Lcom_google_gwt_lang_LongLibBase$LongEmul_2D(!expires?P0_longLit:com_google_gwt_lang_LongLib_fromDouble__DLcom_google_gwt_lang_LongLibBase$LongEmul_2(expires.java_util_Date_jsdate.getTime())), null, null, false);
+}
+
+function com_google_gwt_user_client_Cookies_setCookieImpl__Ljava_lang_String_2Ljava_lang_String_2DLjava_lang_String_2Ljava_lang_String_2ZV(name, value, expires, domain, path, secure){
+  var c = name + $intern_5 + value;
+  expires && (c += ';expires=' + (new Date(expires)).toGMTString());
+  domain && (c += ';domain=' + domain);
+  path && (c += ';path=' + path);
+  secure && (c += ';secure');
+  $doc.cookie = c;
+}
+
+var com_google_gwt_user_client_Cookies_cachedCookies = null, com_google_gwt_user_client_Cookies_rawCookies = null, com_google_gwt_user_client_Cookies_uriEncoding = true;
+function com_google_gwt_user_client_DocumentModeAsserter_$onModuleLoad__Lcom_google_gwt_user_client_DocumentModeAsserter_2V(){
+  var allowedModes, currentMode, i;
+  currentMode = $doc.compatMode;
+  allowedModes = com_google_gwt_lang_Array_initValues__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2ILcom_google_gwt_lang_Array_2Lcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1String_12_1classLit, makeCastMap([Q$java_io_Serializable]), Q$java_lang_String, [$intern_14]);
+  for (i = 0; i < allowedModes.length; ++i) {
+    if (java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z(allowedModes[i], currentMode)) {
+      return;
+    }
+  }
+  allowedModes.length == 1 && java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z($intern_14, allowedModes[0]) && java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z('BackCompat', currentMode)?"GWT no longer supports Quirks Mode (document.compatMode=' BackCompat').<br>Make sure your application's host HTML page has a Standards Mode (document.compatMode=' CSS1Compat') doctype,<br>e.g. by using &lt;!doctype html&gt; at the start of your application's HTML page.<br><br>To continue using this unsupported rendering mode and risk layout problems, suppress this message by adding<br>the following line to your*.gwt.xml module file:<br>&nbsp;&nbsp;&lt;extend-configuration-property name=\"document.compatMode\" value=\"" + currentMode + '"/&gt;':"Your *.gwt.xml module configuration prohibits the use of the current doucment rendering mode (document.compatMode=' " + currentMode + "').<br>Modify your application's host HTML page doctype, or update your custom 'document.compatMode' configuration property settings.";
+}
+
+function com_google_gwt_user_client_UserAgentAsserter_1UserAgentPropertyImplGecko1_18_$getRuntimeValue__Lcom_google_gwt_user_client_UserAgentAsserter_1UserAgentPropertyImplGecko1_18_2Ljava_lang_String_2(){
+  var ua = navigator.userAgent.toLowerCase();
+  var makeVersion = function(result){
+    return parseInt(result[1]) * 1000 + parseInt(result[2]);
+  }
+  ;
+  if (function(){
+    return ua.indexOf($intern_15) != -1;
+  }
+  ())
+    return $intern_15;
+  if (function(){
+    return ua.indexOf('webkit') != -1 || function(){
+      if (ua.indexOf('chromeframe') != -1) {
+        return true;
+      }
+      if (typeof window['ActiveXObject'] != $intern_13) {
+        try {
+          var obj = new ActiveXObject('ChromeTab.ChromeFrame');
+          if (obj) {
+            obj.registerBhoIfNeeded();
+            return true;
+          }
+        }
+         catch (e) {
+        }
+      }
+      return false;
+    }
+    ();
+  }
+  ())
+    return 'safari';
+  if (function(){
+    return ua.indexOf($intern_16) != -1 && $doc.documentMode >= 9;
+  }
+  ())
+    return 'ie9';
+  if (function(){
+    return ua.indexOf($intern_16) != -1 && $doc.documentMode >= 8;
+  }
+  ())
+    return 'ie8';
+  if (function(){
+    var result = /msie ([0-9]+)\.([0-9]+)/.exec(ua);
+    if (result && result.length == 3)
+      return makeVersion(result) >= 6000;
+  }
+  ())
+    return 'ie6';
+  if (function(){
+    return ua.indexOf('gecko') != -1;
+  }
+  ())
+    return $intern_12;
+  return 'unknown';
+}
+
+function com_google_gwt_user_client_Window_alert__Ljava_lang_String_2V(msg){
+  $wnd.alert(msg);
+}
+
+function java_lang_ArrayStoreException_ArrayStoreException__V(){
+  com_google_gwt_core_client_impl_StackTraceCreator$Collector_$fillInStackTrace__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Ljava_lang_Throwable_2V();
+}
+
+function java_lang_ArrayStoreException(){
+}
+
+_ = java_lang_ArrayStoreException_ArrayStoreException__V.prototype = java_lang_ArrayStoreException.prototype = new java_lang_RuntimeException;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_ArrayStoreException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1ArrayStoreException_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+function java_lang_Class_Class__V(){
+}
+
+function java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2(packageName, className){
+  var clazz;
+  clazz = new java_lang_Class_Class__V;
+  clazz.java_lang_Class_typeName = packageName + className;
+  clazz.java_lang_Class_modifiers = 4;
+  return clazz;
+}
+
+function java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2(packageName, className){
+  var clazz;
+  clazz = new java_lang_Class_Class__V;
+  clazz.java_lang_Class_typeName = packageName + className;
+  return clazz;
+}
+
+function java_lang_Class(){
+}
+
+_ = java_lang_Class_Class__V.prototype = java_lang_Class.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_Class_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Class_12_1classLit;
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_lang_Class_toString__Ljava_lang_String_2(){
+  return ((this.java_lang_Class_modifiers & 2) != 0?'interface ':(this.java_lang_Class_modifiers & 1) != 0?$intern_0:'class ') + this.java_lang_Class_typeName;
+}
+;
+--></script>
+<script><!--
+_.java_lang_Class_modifiers = 0;
+_.java_lang_Class_typeName = null;
+function java_lang_ClassCastException_ClassCastException__V(){
+  com_google_gwt_core_client_impl_StackTraceCreator$Collector_$fillInStackTrace__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Ljava_lang_Throwable_2V();
+}
+
+function java_lang_ClassCastException(){
+}
+
+_ = java_lang_ClassCastException_ClassCastException__V.prototype = java_lang_ClassCastException.prototype = new java_lang_RuntimeException;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_ClassCastException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1ClassCastException_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+function java_lang_Number__1_1parseAndValidateDouble__Ljava_lang_String_2D(s){
+  var toReturn;
+  toReturn = java_lang_Number__1_1parseDouble__Ljava_lang_String_2D(s);
+  if (isNaN(toReturn)) {
+    throw new java_lang_NumberFormatException_NumberFormatException__Ljava_lang_String_2V('For input string: "' + s + '"');
+  }
+  return toReturn;
+}
+
+function java_lang_Number__1_1parseDouble__Ljava_lang_String_2D(str){
+  var floatRegex = java_lang_Number_floatRegex;
+  !floatRegex && (floatRegex = java_lang_Number_floatRegex = /^\s*[+-]?((\d+\.?\d*)|(\.\d+))([eE][+-]?\d+)?[dDfF]?\s*$/i);
+  if (floatRegex.test(str)) {
+    return parseFloat(str);
+  }
+   else {
+    return Number.NaN;
+  }
+}
+
+function java_lang_Number(){
+}
+
+_ = java_lang_Number.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_Number_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Number_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable]);
+var java_lang_Number_floatRegex = null;
+function java_lang_Double_Double__DV(value){
+  this.java_lang_Double_value = value;
+}
+
+function java_lang_Double(){
+}
+
+_ = java_lang_Double_Double__DV.prototype = java_lang_Double.prototype = new java_lang_Number;
+_.equals__Ljava_lang_Object_2Z$ = function java_lang_Double_equals__Ljava_lang_Object_2Z(o){
+  return com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(o, Q$java_lang_Double) && com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(o, Q$java_lang_Double).java_lang_Double_value == this.java_lang_Double_value;
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_Double_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Double_12_1classLit;
+}
+;
+_.hashCode__I$ = function java_lang_Double_hashCode__I(){
+  return com_google_gwt_lang_Cast_round_1int__DI(this.java_lang_Double_value);
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_lang_Double_toString__Ljava_lang_String_2(){
+  return $intern_0 + this.java_lang_Double_value;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_Comparable, Q$java_lang_Double]);
+_.java_lang_Double_value = 0;
+function java_lang_IllegalArgumentException(){
+}
+
+_ = java_lang_IllegalArgumentException.prototype = new java_lang_RuntimeException;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_IllegalArgumentException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1IllegalArgumentException_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+function java_lang_IllegalStateException_IllegalStateException__Ljava_lang_String_2V(){
+  java_lang_RuntimeException_RuntimeException__Ljava_lang_String_2V.call(this, 'Authentication in progress');
+}
+
+function java_lang_IllegalStateException(){
+}
+
+_ = java_lang_IllegalStateException_IllegalStateException__Ljava_lang_String_2V.prototype = java_lang_IllegalStateException.prototype = new java_lang_RuntimeException;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_IllegalStateException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1IllegalStateException_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+function java_lang_IndexOutOfBoundsException_IndexOutOfBoundsException__Ljava_lang_String_2V(message){
+  java_lang_RuntimeException_RuntimeException__Ljava_lang_String_2V.call(this, message);
+}
+
+function java_lang_IndexOutOfBoundsException(){
+}
+
+_ = java_lang_IndexOutOfBoundsException_IndexOutOfBoundsException__Ljava_lang_String_2V.prototype = java_lang_IndexOutOfBoundsException.prototype = new java_lang_RuntimeException;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_IndexOutOfBoundsException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1IndexOutOfBoundsException_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+function java_lang_Integer_toPowerOfTwoString__IILjava_lang_String_2(value){
+  var buf, digits, pos;
+  buf = com_google_gwt_lang_Array_initDim__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2IIILcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13C_1classLit, makeCastMap([Q$java_io_Serializable]), -1, 8, 1);
+  digits = (java_lang_Number$_1_1Digits_$clinit__V() , java_lang_Number$_1_1Digits_digits);
+  pos = 7;
+  if (value >= 0) {
+    while (value > 15) {
+      buf[pos--] = digits[value & 15];
+      value >>= 4;
+    }
+  }
+   else {
+    while (pos > 0) {
+      buf[pos--] = digits[value & 15];
+      value >>= 4;
+    }
+  }
+  buf[pos] = digits[value & 15];
+  return java_lang_String__1_1valueOf___3CIILjava_lang_String_2(buf, pos, 8);
+}
+
+function java_lang_NullPointerException_NullPointerException__V(){
+  com_google_gwt_core_client_impl_StackTraceCreator$Collector_$fillInStackTrace__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Ljava_lang_Throwable_2V();
+}
+
+function java_lang_NullPointerException_NullPointerException__Ljava_lang_String_2V(message){
+  java_lang_RuntimeException_RuntimeException__Ljava_lang_String_2V.call(this, message);
+}
+
+function java_lang_NullPointerException(){
+}
+
+_ = java_lang_NullPointerException_NullPointerException__Ljava_lang_String_2V.prototype = java_lang_NullPointerException_NullPointerException__V.prototype = java_lang_NullPointerException.prototype = new java_lang_RuntimeException;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_NullPointerException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1NullPointerException_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+function java_lang_Number$_1_1Digits_$clinit__V(){
+  java_lang_Number$_1_1Digits_$clinit__V = nullMethod;
+  java_lang_Number$_1_1Digits_digits = com_google_gwt_lang_Array_initValues__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2ILcom_google_gwt_lang_Array_2Lcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13C_1classLit, makeCastMap([Q$java_io_Serializable]), -1, [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122]);
+}
+
+var java_lang_Number$_1_1Digits_digits;
+function java_lang_NumberFormatException_NumberFormatException__Ljava_lang_String_2V(message){
+  java_lang_RuntimeException_RuntimeException__Ljava_lang_String_2V.call(this, message);
+}
+
+function java_lang_NumberFormatException(){
+}
+
+_ = java_lang_NumberFormatException_NumberFormatException__Ljava_lang_String_2V.prototype = java_lang_NumberFormatException.prototype = new java_lang_IllegalArgumentException;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_NumberFormatException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1NumberFormatException_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+function java_lang_StackTraceElement_StackTraceElement__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2IV(methodName){
+  this.java_lang_StackTraceElement_className = 'Unknown';
+  this.java_lang_StackTraceElement_methodName = methodName;
+  this.java_lang_StackTraceElement_lineNumber = -1;
+}
+
+function java_lang_StackTraceElement(){
+}
+
+_ = java_lang_StackTraceElement_StackTraceElement__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2IV.prototype = java_lang_StackTraceElement.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_StackTraceElement_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1StackTraceElement_12_1classLit;
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_lang_StackTraceElement_toString__Ljava_lang_String_2(){
+  return this.java_lang_StackTraceElement_className + '.' + this.java_lang_StackTraceElement_methodName + '(Unknown Source' + (this.java_lang_StackTraceElement_lineNumber >= 0?$intern_17 + this.java_lang_StackTraceElement_lineNumber:$intern_0) + $intern_1;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_StackTraceElement]);
+_.java_lang_StackTraceElement_className = null;
+_.java_lang_StackTraceElement_lineNumber = 0;
+_.java_lang_StackTraceElement_methodName = null;
+function java_lang_String_$charAt__Ljava_lang_String_2IC(this$static, index){
+  return this$static.charCodeAt(index);
+}
+
+function java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z(this$static, other){
+  if (!com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(other, Q$java_lang_String)) {
+    return false;
+  }
+  return String(this$static) == other;
+}
+
+function java_lang_String_$indexOf__Ljava_lang_String_2Ljava_lang_String_2II(this$static, str, startIndex){
+  return this$static.indexOf(str, startIndex);
+}
+
+function java_lang_String_$split__Ljava_lang_String_2Ljava_lang_String_2I_3Ljava_lang_String_2(this$static, regex, maxMatch){
+  var compiled = new RegExp(regex, 'g');
+  var out = [];
+  var count = 0;
+  var trail = this$static;
+  var lastTrail = null;
+  while (true) {
+    var matchObj = compiled.exec(trail);
+    if (matchObj == null || trail == $intern_0 || count == maxMatch - 1 && maxMatch > 0) {
+      out[count] = trail;
+      break;
+    }
+     else {
+      out[count] = trail.substring(0, matchObj.index);
+      trail = trail.substring(matchObj.index + matchObj[0].length, trail.length);
+      compiled.lastIndex = 0;
+      if (lastTrail == trail) {
+        out[count] = trail.substring(0, 1);
+        trail = trail.substring(1);
+      }
+      lastTrail = trail;
+      count++;
+    }
+  }
+  if (maxMatch == 0 && this$static.length > 0) {
+    var lastNonEmpty = out.length;
+    while (lastNonEmpty > 0 && out[lastNonEmpty - 1] == $intern_0) {
+      --lastNonEmpty;
+    }
+    lastNonEmpty < out.length && out.splice(lastNonEmpty, out.length - lastNonEmpty);
+  }
+  var jr = java_lang_String__1_1createArray__I_3Ljava_lang_String_2(out.length);
+  for (var i = 0; i < out.length; ++i) {
+    jr[i] = out[i];
+  }
+  return jr;
+}
+
+function java_lang_String_$trim__Ljava_lang_String_2Ljava_lang_String_2(this$static){
+  if (this$static.length == 0 || this$static[0] > $intern_7 && this$static[this$static.length - 1] > $intern_7) {
+    return this$static;
+  }
+  var r1 = this$static.replace(/^(\s*)/, $intern_0);
+  var r2 = r1.replace(/\s*$/, $intern_0);
+  return r2;
+}
+
+function java_lang_String__1_1createArray__I_3Ljava_lang_String_2(numElements){
+  return com_google_gwt_lang_Array_initDim__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2IIILcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1String_12_1classLit, makeCastMap([Q$java_io_Serializable]), Q$java_lang_String, numElements, 0);
+}
+
+function java_lang_String__1_1valueOf___3CIILjava_lang_String_2(x, start, end){
+  x = x.slice(start, end);
+  return String.fromCharCode.apply(null, x);
+}
+
+function java_lang_String_fromCodePoint__ILjava_lang_String_2(codePoint){
+  var hiSurrogate, loSurrogate;
+  if (codePoint >= 65536) {
+    hiSurrogate = 55296 + (codePoint - 65536 >> 10 & 1023) & 65535;
+    loSurrogate = 56320 + (codePoint - 65536 & 1023) & 65535;
+    return String.fromCharCode(hiSurrogate) + String.fromCharCode(loSurrogate);
+  }
+   else {
+    return String.fromCharCode(codePoint & 65535);
+  }
+}
+
+_ = String.prototype;
+_.equals__Ljava_lang_Object_2Z$ = function java_lang_String_equals__Ljava_lang_Object_2Z(other){
+  return java_lang_String_$equals__Ljava_lang_String_2Ljava_lang_Object_2Z(this, other);
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_String_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1String_12_1classLit;
+}
+;
+_.hashCode__I$ = function java_lang_String_hashCode__I(){
+  return java_lang_String$HashCache_getHashCode__Ljava_lang_String_2I(this);
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_lang_String_toString__Ljava_lang_String_2(){
+  return this;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_lang_String, Q$java_io_Serializable, Q$java_lang_CharSequence, Q$java_lang_Comparable]);
+function java_lang_String$HashCache_$clinit__V(){
+  java_lang_String$HashCache_$clinit__V = nullMethod;
+  java_lang_String$HashCache_back = {};
+  java_lang_String$HashCache_front = {};
+}
+
+function java_lang_String$HashCache_compute__Ljava_lang_String_2I(str){
+  var hashCode, i, n, nBatch;
+  hashCode = 0;
+  n = str.length;
+  nBatch = n - 4;
+  i = 0;
+  while (i < nBatch) {
+    hashCode = str.charCodeAt(i + 3) + 31 * (str.charCodeAt(i + 2) + 31 * (str.charCodeAt(i + 1) + 31 * (str.charCodeAt(i) + 31 * hashCode))) | 0;
+    i += 4;
+  }
+  while (i < n) {
+    hashCode = hashCode * 31 + java_lang_String_$charAt__Ljava_lang_String_2IC(str, i++);
+  }
+  return hashCode | 0;
+}
+
+function java_lang_String$HashCache_getHashCode__Ljava_lang_String_2I(str){
+  java_lang_String$HashCache_$clinit__V();
+  var key = $intern_17 + str;
+  var result = java_lang_String$HashCache_front[key];
+  if (result != null) {
+    return result;
+  }
+  result = java_lang_String$HashCache_back[key];
+  result == null && (result = java_lang_String$HashCache_compute__Ljava_lang_String_2I(str));
+  java_lang_String$HashCache_increment__V();
+  return java_lang_String$HashCache_front[key] = result;
+}
+
+function java_lang_String$HashCache_increment__V(){
+  if (java_lang_String$HashCache_count == 256) {
+    java_lang_String$HashCache_back = java_lang_String$HashCache_front;
+    java_lang_String$HashCache_front = {};
+    java_lang_String$HashCache_count = 0;
+  }
+  ++java_lang_String$HashCache_count;
+}
+
+var java_lang_String$HashCache_back, java_lang_String$HashCache_count = 0, java_lang_String$HashCache_front;
+function java_lang_StringBuffer_StringBuffer__V(){
+  this.java_lang_StringBuffer_impl = new com_google_gwt_core_client_impl_StringBufferImplAppend_StringBufferImplAppend__V;
+}
+
+function java_lang_StringBuffer(){
+}
+
+_ = java_lang_StringBuffer_StringBuffer__V.prototype = java_lang_StringBuffer.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_StringBuffer_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1StringBuffer_12_1classLit;
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_lang_StringBuffer_toString__Ljava_lang_String_2(){
+  return this.java_lang_StringBuffer_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_lang_CharSequence]);
+function java_lang_StringBuilder_$$init__Ljava_lang_StringBuilder_2V(this$static){
+  this$static.java_lang_StringBuilder_impl = new com_google_gwt_core_client_impl_StringBufferImplAppend_StringBufferImplAppend__V;
+}
+
+function java_lang_StringBuilder_$append__Ljava_lang_StringBuilder_2Ljava_lang_String_2Ljava_lang_StringBuilder_2(this$static, x){
+  com_google_gwt_core_client_impl_StringBufferImplAppend_$append__Lcom_google_gwt_core_client_impl_StringBufferImplAppend_2Ljava_lang_Object_2Ljava_lang_String_2V(this$static.java_lang_StringBuilder_impl, x);
+  return this$static;
+}
+
+function java_lang_StringBuilder_StringBuilder__V(){
+  java_lang_StringBuilder_$$init__Ljava_lang_StringBuilder_2V(this);
+}
+
+function java_lang_StringBuilder_StringBuilder__Ljava_lang_String_2V(s){
+  java_lang_StringBuilder_$$init__Ljava_lang_StringBuilder_2V(this);
+  com_google_gwt_core_client_impl_StringBufferImplAppend_$append__Lcom_google_gwt_core_client_impl_StringBufferImplAppend_2Ljava_lang_Object_2Ljava_lang_String_2V(this.java_lang_StringBuilder_impl, s);
+}
+
+function java_lang_StringBuilder(){
+}
+
+_ = java_lang_StringBuilder_StringBuilder__Ljava_lang_String_2V.prototype = java_lang_StringBuilder_StringBuilder__V.prototype = java_lang_StringBuilder.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_StringBuilder_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1StringBuilder_12_1classLit;
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_lang_StringBuilder_toString__Ljava_lang_String_2(){
+  return this.java_lang_StringBuilder_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_lang_CharSequence]);
+function java_lang_UnsupportedOperationException_UnsupportedOperationException__Ljava_lang_String_2V(message){
+  java_lang_RuntimeException_RuntimeException__Ljava_lang_String_2V.call(this, message);
+}
+
+function java_lang_UnsupportedOperationException(){
+}
+
+_ = java_lang_UnsupportedOperationException_UnsupportedOperationException__Ljava_lang_String_2V.prototype = java_lang_UnsupportedOperationException.prototype = new java_lang_RuntimeException;
+_.getClass__Ljava_lang_Class_2$ = function java_lang_UnsupportedOperationException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1UnsupportedOperationException_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+function java_util_AbstractCollection_$advanceToFind__Ljava_util_AbstractCollection_2Ljava_util_Iterator_2Ljava_lang_Object_2Ljava_util_Iterator_2(iter, o){
+  var t;
+  while (iter.hasNext__Z()) {
+    t = iter.next__Ljava_lang_Object_2();
+    if (o == null?t == null:com_google_gwt_core_client_JavaScriptObject_equals_1_1devirtual$__Ljava_lang_Object_2Ljava_lang_Object_2Z(o, t)) {
+      return iter;
+    }
+  }
+  return null;
+}
+
+function java_util_AbstractCollection(){
+}
+
+_ = java_util_AbstractCollection.prototype = new java_lang_Object;
+_.add__Ljava_lang_Object_2Z = function java_util_AbstractCollection_add__Ljava_lang_Object_2Z(o){
+  throw new java_lang_UnsupportedOperationException_UnsupportedOperationException__Ljava_lang_String_2V('Add not supported on this collection');
+}
+;
+_.contains__Ljava_lang_Object_2Z = function java_util_AbstractCollection_contains__Ljava_lang_Object_2Z(o){
+  var iter;
+  iter = java_util_AbstractCollection_$advanceToFind__Ljava_util_AbstractCollection_2Ljava_util_Iterator_2Ljava_lang_Object_2Ljava_util_Iterator_2(this.iterator__Ljava_util_Iterator_2(), o);
+  return !!iter;
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractCollection_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractCollection_12_1classLit;
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_util_AbstractCollection_toString__Ljava_lang_String_2(){
+  var comma, iter, sb, value;
+  sb = new java_lang_StringBuffer_StringBuffer__V;
+  comma = null;
+  sb.java_lang_StringBuffer_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string += '[';
+  iter = this.iterator__Ljava_util_Iterator_2();
+  while (iter.hasNext__Z()) {
+    comma != null?(com_google_gwt_core_client_impl_StringBufferImplAppend_$append__Lcom_google_gwt_core_client_impl_StringBufferImplAppend_2Ljava_lang_Object_2Ljava_lang_String_2V(sb.java_lang_StringBuffer_impl, comma) , sb):(comma = $intern_18);
+    value = iter.next__Ljava_lang_Object_2();
+    com_google_gwt_core_client_impl_StringBufferImplAppend_$append__Lcom_google_gwt_core_client_impl_StringBufferImplAppend_2Ljava_lang_Object_2Ljava_lang_String_2V(sb.java_lang_StringBuffer_impl, value === this?'(this Collection)':$intern_0 + value);
+  }
+  sb.java_lang_StringBuffer_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string += ']';
+  return sb.java_lang_StringBuffer_impl.com_google_gwt_core_client_impl_StringBufferImplAppend_string;
+}
+;
+function java_util_AbstractMap(){
+}
+
+_ = java_util_AbstractMap.prototype = new java_lang_Object;
+_.equals__Ljava_lang_Object_2Z$ = function java_util_AbstractMap_equals__Ljava_lang_Object_2Z(obj){
+  var entry, entry$iterator, otherKey, otherMap, otherValue;
+  if (obj === this) {
+    return true;
+  }
+  if (!com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(obj, Q$java_util_Map)) {
+    return false;
+  }
+  otherMap = com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(obj, Q$java_util_Map);
+  if (this.java_util_AbstractHashMap_size != otherMap.java_util_AbstractHashMap_size) {
+    return false;
+  }
+  for (entry$iterator = new java_util_AbstractHashMap$EntrySetIterator_AbstractHashMap$EntrySetIterator__Ljava_util_AbstractHashMap_2V((new java_util_AbstractHashMap$EntrySet_AbstractHashMap$EntrySet__Ljava_util_AbstractHashMap_2V(otherMap)).java_util_AbstractHashMap$EntrySet_this$0); java_util_AbstractList$IteratorImpl_$hasNext__Ljava_util_AbstractList$IteratorImpl_2Z(entry$iterator.java_util_AbstractHashMap$EntrySetIterator_iter);) {
+    entry = com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2Ljava_lang_Object_2(entry$iterator.java_util_AbstractHashMap$EntrySetIterator_iter), Q$java_util_Map$Entry);
+    otherKey = entry.getKey__Ljava_lang_Object_2();
+    otherValue = entry.getValue__Ljava_lang_Object_2();
+    if (!(otherKey == null?this.java_util_AbstractHashMap_nullSlotLive:com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(otherKey, Q$java_lang_String)?$intern_17 + com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(otherKey, Q$java_lang_String) in this.java_util_AbstractHashMap_stringMap:java_util_AbstractHashMap_$hasHashValue__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2IZ(this, otherKey, ~~com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Ljava_lang_Object_2I(otherKey)))) {
+      return false;
+    }
+    if (!java_util_Utility_equalsWithNullCheck__Ljava_lang_Object_2Ljava_lang_Object_2Z(otherValue, otherKey == null?this.java_util_AbstractHashMap_nullSlot:com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(otherKey, Q$java_lang_String)?java_util_AbstractHashMap_$getStringValue__Ljava_util_AbstractHashMap_2Ljava_lang_String_2Ljava_lang_Object_2(this, com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(otherKey, Q$java_lang_String)):java_util_AbstractHashMap_$getHashValue__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2ILjava_lang_Object_2(this, otherKey, ~~com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Ljava_lang_Object_2I(otherKey)))) {
+      return false;
+    }
+  }
+  return true;
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractMap_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractMap_12_1classLit;
+}
+;
+_.hashCode__I$ = function java_util_AbstractMap_hashCode__I(){
+  var entry, entry$iterator, hashCode;
+  hashCode = 0;
+  for (entry$iterator = new java_util_AbstractHashMap$EntrySetIterator_AbstractHashMap$EntrySetIterator__Ljava_util_AbstractHashMap_2V((new java_util_AbstractHashMap$EntrySet_AbstractHashMap$EntrySet__Ljava_util_AbstractHashMap_2V(this)).java_util_AbstractHashMap$EntrySet_this$0); java_util_AbstractList$IteratorImpl_$hasNext__Ljava_util_AbstractList$IteratorImpl_2Z(entry$iterator.java_util_AbstractHashMap$EntrySetIterator_iter);) {
+    entry = com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2Ljava_lang_Object_2(entry$iterator.java_util_AbstractHashMap$EntrySetIterator_iter), Q$java_util_Map$Entry);
+    hashCode += entry.hashCode__I$();
+    hashCode = ~~hashCode;
+  }
+  return hashCode;
+}
+;
+_.put__Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2 = function java_util_AbstractMap_put__Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2(key, value){
+  throw new java_lang_UnsupportedOperationException_UnsupportedOperationException__Ljava_lang_String_2V('Put not supported on this map');
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_util_AbstractMap_toString__Ljava_lang_String_2(){
+  var comma, entry, iter, s;
+  s = '{';
+  comma = false;
+  for (iter = new java_util_AbstractHashMap$EntrySetIterator_AbstractHashMap$EntrySetIterator__Ljava_util_AbstractHashMap_2V((new java_util_AbstractHashMap$EntrySet_AbstractHashMap$EntrySet__Ljava_util_AbstractHashMap_2V(this)).java_util_AbstractHashMap$EntrySet_this$0); java_util_AbstractList$IteratorImpl_$hasNext__Ljava_util_AbstractList$IteratorImpl_2Z(iter.java_util_AbstractHashMap$EntrySetIterator_iter);) {
+    entry = com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2Ljava_lang_Object_2(iter.java_util_AbstractHashMap$EntrySetIterator_iter), Q$java_util_Map$Entry);
+    comma?(s += $intern_18):(comma = true);
+    s += $intern_0 + entry.getKey__Ljava_lang_Object_2();
+    s += $intern_5;
+    s += $intern_0 + entry.getValue__Ljava_lang_Object_2();
+  }
+  return s + '}';
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_util_Map]);
+function java_util_AbstractHashMap_$addAllHashEntries__Ljava_util_AbstractHashMap_2Ljava_util_Collection_2V(this$static, dest){
+  var hashCodeMap = this$static.java_util_AbstractHashMap_hashCodeMap;
+  for (var hashCode in hashCodeMap) {
+    var hashCodeInt = parseInt(hashCode, 10);
+    if (hashCode == hashCodeInt) {
+      var array = hashCodeMap[hashCodeInt];
+      for (var i = 0, c = array.length; i < c; ++i) {
+        dest.add__Ljava_lang_Object_2Z(array[i]);
+      }
+    }
+  }
+}
+
+function java_util_AbstractHashMap_$addAllStringEntries__Ljava_util_AbstractHashMap_2Ljava_util_Collection_2V(this$static, dest){
+  var stringMap = this$static.java_util_AbstractHashMap_stringMap;
+  for (var key in stringMap) {
+    if (key.charCodeAt(0) == 58) {
+      var entry = new java_util_AbstractHashMap$MapEntryString_AbstractHashMap$MapEntryString__Ljava_util_AbstractHashMap_2Ljava_lang_String_2V(this$static, key.substring(1));
+      dest.add__Ljava_lang_Object_2Z(entry);
+    }
+  }
+}
+
+function java_util_AbstractHashMap_$containsKey__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2Z(this$static, key){
+  return key == null?this$static.java_util_AbstractHashMap_nullSlotLive:com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(key, Q$java_lang_String)?java_util_AbstractHashMap_$hasStringValue__Ljava_util_AbstractHashMap_2Ljava_lang_String_2Z(this$static, com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(key, Q$java_lang_String)):java_util_AbstractHashMap_$hasHashValue__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2IZ(this$static, key, ~~com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Ljava_lang_Object_2I(key));
+}
+
+function java_util_AbstractHashMap_$get__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2Ljava_lang_Object_2(this$static, key){
+  return key == null?this$static.java_util_AbstractHashMap_nullSlot:com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(key, Q$java_lang_String)?java_util_AbstractHashMap_$getStringValue__Ljava_util_AbstractHashMap_2Ljava_lang_String_2Ljava_lang_Object_2(this$static, com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(key, Q$java_lang_String)):java_util_AbstractHashMap_$getHashValue__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2ILjava_lang_Object_2(this$static, key, ~~com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Ljava_lang_Object_2I(key));
+}
+
+function java_util_AbstractHashMap_$getHashValue__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2ILjava_lang_Object_2(this$static, key, hashCode){
+  var array = this$static.java_util_AbstractHashMap_hashCodeMap[hashCode];
+  if (array) {
+    for (var i = 0, c = array.length; i < c; ++i) {
+      var entry = array[i];
+      var entryKey = entry.getKey__Ljava_lang_Object_2();
+      if (this$static.private$java_util_AbstractHashMap$equalsBridge__Ljava_lang_Object_2Ljava_lang_Object_2Z(key, entryKey)) {
+        return entry.getValue__Ljava_lang_Object_2();
+      }
+    }
+  }
+  return null;
+}
+
+function java_util_AbstractHashMap_$getStringValue__Ljava_util_AbstractHashMap_2Ljava_lang_String_2Ljava_lang_Object_2(this$static, key){
+  return this$static.java_util_AbstractHashMap_stringMap[$intern_17 + key];
+}
+
+function java_util_AbstractHashMap_$hasHashValue__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2IZ(this$static, key, hashCode){
+  var array = this$static.java_util_AbstractHashMap_hashCodeMap[hashCode];
+  if (array) {
+    for (var i = 0, c = array.length; i < c; ++i) {
+      var entry = array[i];
+      var entryKey = entry.getKey__Ljava_lang_Object_2();
+      if (this$static.private$java_util_AbstractHashMap$equalsBridge__Ljava_lang_Object_2Ljava_lang_Object_2Z(key, entryKey)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+--></script>
+<script><!--
+function java_util_AbstractHashMap_$hasStringValue__Ljava_util_AbstractHashMap_2Ljava_lang_String_2Z(this$static, key){
+  return $intern_17 + key in this$static.java_util_AbstractHashMap_stringMap;
+}
+
+function java_util_AbstractHashMap_$putHashValue__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2Ljava_lang_Object_2ILjava_lang_Object_2(this$static, key, value, hashCode){
+  var array = this$static.java_util_AbstractHashMap_hashCodeMap[hashCode];
+  if (array) {
+    for (var i = 0, c = array.length; i < c; ++i) {
+      var entry = array[i];
+      var entryKey = entry.getKey__Ljava_lang_Object_2();
+      if (this$static.private$java_util_AbstractHashMap$equalsBridge__Ljava_lang_Object_2Ljava_lang_Object_2Z(key, entryKey)) {
+        var previous = entry.getValue__Ljava_lang_Object_2();
+        entry.setValue__Ljava_lang_Object_2Ljava_lang_Object_2(value);
+        return previous;
+      }
+    }
+  }
+   else {
+    array = this$static.java_util_AbstractHashMap_hashCodeMap[hashCode] = [];
+  }
+  var entry = new java_util_MapEntryImpl_MapEntryImpl__Ljava_lang_Object_2Ljava_lang_Object_2V(key, value);
+  array.push(entry);
+  ++this$static.java_util_AbstractHashMap_size;
+  return null;
+}
+
+function java_util_AbstractHashMap_$putNullSlot__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2Ljava_lang_Object_2(this$static, value){
+  var result;
+  result = this$static.java_util_AbstractHashMap_nullSlot;
+  this$static.java_util_AbstractHashMap_nullSlot = value;
+  if (!this$static.java_util_AbstractHashMap_nullSlotLive) {
+    this$static.java_util_AbstractHashMap_nullSlotLive = true;
+    ++this$static.java_util_AbstractHashMap_size;
+  }
+  return result;
+}
+
+function java_util_AbstractHashMap_$putStringValue__Ljava_util_AbstractHashMap_2Ljava_lang_String_2Ljava_lang_Object_2Ljava_lang_Object_2(this$static, key, value){
+  var result, stringMap = this$static.java_util_AbstractHashMap_stringMap;
+  key = $intern_17 + key;
+  key in stringMap?(result = stringMap[key]):++this$static.java_util_AbstractHashMap_size;
+  stringMap[key] = value;
+  return result;
+}
+
+function java_util_AbstractHashMap(){
+}
+
+_ = java_util_AbstractHashMap.prototype = new java_util_AbstractMap;
+_.private$java_util_AbstractHashMap$equalsBridge__Ljava_lang_Object_2Ljava_lang_Object_2Z = function java_util_AbstractHashMap_equalsBridge__Ljava_lang_Object_2Ljava_lang_Object_2Z(value1, value2){
+  return com_google_gwt_lang_Cast_maskUndefined__Ljava_lang_Object_2Ljava_lang_Object_2(value1) === com_google_gwt_lang_Cast_maskUndefined__Ljava_lang_Object_2Ljava_lang_Object_2(value2) || value1 != null && com_google_gwt_core_client_JavaScriptObject_equals_1_1devirtual$__Ljava_lang_Object_2Ljava_lang_Object_2Z(value1, value2);
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractHashMap_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap_12_1classLit;
+}
+;
+_.put__Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2 = function java_util_AbstractHashMap_put__Ljava_lang_Object_2Ljava_lang_Object_2Ljava_lang_Object_2(key, value){
+  return key == null?java_util_AbstractHashMap_$putNullSlot__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2Ljava_lang_Object_2(this, value):com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(key, Q$java_lang_String)?java_util_AbstractHashMap_$putStringValue__Ljava_util_AbstractHashMap_2Ljava_lang_String_2Ljava_lang_Object_2Ljava_lang_Object_2(this, com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(key, Q$java_lang_String), value):java_util_AbstractHashMap_$putHashValue__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2Ljava_lang_Object_2ILjava_lang_Object_2(this, key, value, ~~com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Ljava_lang_Object_2I(key));
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_util_Map]);
+_.java_util_AbstractHashMap_hashCodeMap = null;
+_.java_util_AbstractHashMap_nullSlot = null;
+_.java_util_AbstractHashMap_nullSlotLive = false;
+_.java_util_AbstractHashMap_size = 0;
+_.java_util_AbstractHashMap_stringMap = null;
+function java_util_AbstractSet(){
+}
+
+_ = java_util_AbstractSet.prototype = new java_util_AbstractCollection;
+_.equals__Ljava_lang_Object_2Z$ = function java_util_AbstractSet_equals__Ljava_lang_Object_2Z(o){
+  var iter, other, otherItem;
+  if (o === this) {
+    return true;
+  }
+  if (!com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(o, Q$java_util_Set)) {
+    return false;
+  }
+  other = com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(o, Q$java_util_Set);
+  if (other.java_util_AbstractHashMap$EntrySet_this$0.java_util_AbstractHashMap_size != this.size__I()) {
+    return false;
+  }
+  for (iter = new java_util_AbstractHashMap$EntrySetIterator_AbstractHashMap$EntrySetIterator__Ljava_util_AbstractHashMap_2V(other.java_util_AbstractHashMap$EntrySet_this$0); java_util_AbstractList$IteratorImpl_$hasNext__Ljava_util_AbstractList$IteratorImpl_2Z(iter.java_util_AbstractHashMap$EntrySetIterator_iter);) {
+    otherItem = com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2Ljava_lang_Object_2(iter.java_util_AbstractHashMap$EntrySetIterator_iter), Q$java_util_Map$Entry);
+    if (!this.contains__Ljava_lang_Object_2Z(otherItem)) {
+      return false;
+    }
+  }
+  return true;
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractSet_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractSet_12_1classLit;
+}
+;
+_.hashCode__I$ = function java_util_AbstractSet_hashCode__I(){
+  var hashCode, iter, next;
+  hashCode = 0;
+  for (iter = this.iterator__Ljava_util_Iterator_2(); iter.hasNext__Z();) {
+    next = iter.next__Ljava_lang_Object_2();
+    if (next != null) {
+      hashCode += com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Ljava_lang_Object_2I(next);
+      hashCode = ~~hashCode;
+    }
+  }
+  return hashCode;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_util_Set]);
+function java_util_AbstractHashMap$EntrySet_AbstractHashMap$EntrySet__Ljava_util_AbstractHashMap_2V(this$0){
+  this.java_util_AbstractHashMap$EntrySet_this$0 = this$0;
+}
+
+function java_util_AbstractHashMap$EntrySet(){
+}
+
+_ = java_util_AbstractHashMap$EntrySet_AbstractHashMap$EntrySet__Ljava_util_AbstractHashMap_2V.prototype = java_util_AbstractHashMap$EntrySet.prototype = new java_util_AbstractSet;
+_.contains__Ljava_lang_Object_2Z = function java_util_AbstractHashMap$EntrySet_contains__Ljava_lang_Object_2Z(o){
+  var entry, key, value;
+  if (com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(o, Q$java_util_Map$Entry)) {
+    entry = com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(o, Q$java_util_Map$Entry);
+    key = entry.getKey__Ljava_lang_Object_2();
+    if (java_util_AbstractHashMap_$containsKey__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2Z(this.java_util_AbstractHashMap$EntrySet_this$0, key)) {
+      value = java_util_AbstractHashMap_$get__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2Ljava_lang_Object_2(this.java_util_AbstractHashMap$EntrySet_this$0, key);
+      return java_util_HashMap_$equals__Ljava_util_HashMap_2Ljava_lang_Object_2Ljava_lang_Object_2Z(entry.getValue__Ljava_lang_Object_2(), value);
+    }
+  }
+  return false;
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractHashMap$EntrySet_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$EntrySet_12_1classLit;
+}
+;
+_.iterator__Ljava_util_Iterator_2 = function java_util_AbstractHashMap$EntrySet_iterator__Ljava_util_Iterator_2(){
+  return new java_util_AbstractHashMap$EntrySetIterator_AbstractHashMap$EntrySetIterator__Ljava_util_AbstractHashMap_2V(this.java_util_AbstractHashMap$EntrySet_this$0);
+}
+;
+_.size__I = function java_util_AbstractHashMap$EntrySet_size__I(){
+  return this.java_util_AbstractHashMap$EntrySet_this$0.java_util_AbstractHashMap_size;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_util_Set]);
+_.java_util_AbstractHashMap$EntrySet_this$0 = null;
+function java_util_AbstractHashMap$EntrySetIterator_AbstractHashMap$EntrySetIterator__Ljava_util_AbstractHashMap_2V(this$0){
+  var list;
+  list = new java_util_ArrayList_ArrayList__V;
+  this$0.java_util_AbstractHashMap_nullSlotLive && java_util_ArrayList_$add__Ljava_util_ArrayList_2Ljava_lang_Object_2Z(list, new java_util_AbstractHashMap$MapEntryNull_AbstractHashMap$MapEntryNull__Ljava_util_AbstractHashMap_2V(this$0));
+  java_util_AbstractHashMap_$addAllStringEntries__Ljava_util_AbstractHashMap_2Ljava_util_Collection_2V(this$0, list);
+  java_util_AbstractHashMap_$addAllHashEntries__Ljava_util_AbstractHashMap_2Ljava_util_Collection_2V(this$0, list);
+  this.java_util_AbstractHashMap$EntrySetIterator_iter = new java_util_AbstractList$IteratorImpl_AbstractList$IteratorImpl__Ljava_util_AbstractList_2V(list);
+}
+
+function java_util_AbstractHashMap$EntrySetIterator(){
+}
+
+_ = java_util_AbstractHashMap$EntrySetIterator_AbstractHashMap$EntrySetIterator__Ljava_util_AbstractHashMap_2V.prototype = java_util_AbstractHashMap$EntrySetIterator.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractHashMap$EntrySetIterator_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$EntrySetIterator_12_1classLit;
+}
+;
+_.hasNext__Z = function java_util_AbstractHashMap$EntrySetIterator_hasNext__Z(){
+  return java_util_AbstractList$IteratorImpl_$hasNext__Ljava_util_AbstractList$IteratorImpl_2Z(this.java_util_AbstractHashMap$EntrySetIterator_iter);
+}
+;
+_.next__Ljava_lang_Object_2 = function java_util_AbstractHashMap$EntrySetIterator_next__Ljava_lang_Object_2(){
+  return com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2Ljava_lang_Object_2(this.java_util_AbstractHashMap$EntrySetIterator_iter), Q$java_util_Map$Entry);
+}
+;
+_.java_util_AbstractHashMap$EntrySetIterator_iter = null;
+function java_util_AbstractMapEntry(){
+}
+
+_ = java_util_AbstractMapEntry.prototype = new java_lang_Object;
+_.equals__Ljava_lang_Object_2Z$ = function java_util_AbstractMapEntry_equals__Ljava_lang_Object_2Z(other){
+  var entry;
+  if (com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(other, Q$java_util_Map$Entry)) {
+    entry = com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(other, Q$java_util_Map$Entry);
+    if (java_util_Utility_equalsWithNullCheck__Ljava_lang_Object_2Ljava_lang_Object_2Z(this.getKey__Ljava_lang_Object_2(), entry.getKey__Ljava_lang_Object_2()) && java_util_Utility_equalsWithNullCheck__Ljava_lang_Object_2Ljava_lang_Object_2Z(this.getValue__Ljava_lang_Object_2(), entry.getValue__Ljava_lang_Object_2())) {
+      return true;
+    }
+  }
+  return false;
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractMapEntry_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractMapEntry_12_1classLit;
+}
+;
+_.hashCode__I$ = function java_util_AbstractMapEntry_hashCode__I(){
+  var keyHash, valueHash;
+  keyHash = 0;
+  valueHash = 0;
+  this.getKey__Ljava_lang_Object_2() != null && (keyHash = com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Ljava_lang_Object_2I(this.getKey__Ljava_lang_Object_2()));
+  this.getValue__Ljava_lang_Object_2() != null && (valueHash = com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Ljava_lang_Object_2I(this.getValue__Ljava_lang_Object_2()));
+  return keyHash ^ valueHash;
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_util_AbstractMapEntry_toString__Ljava_lang_String_2(){
+  return this.getKey__Ljava_lang_Object_2() + $intern_5 + this.getValue__Ljava_lang_Object_2();
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_util_Map$Entry]);
+function java_util_AbstractHashMap$MapEntryNull_AbstractHashMap$MapEntryNull__Ljava_util_AbstractHashMap_2V(this$0){
+  this.java_util_AbstractHashMap$MapEntryNull_this$0 = this$0;
+}
+
+function java_util_AbstractHashMap$MapEntryNull(){
+}
+
+_ = java_util_AbstractHashMap$MapEntryNull_AbstractHashMap$MapEntryNull__Ljava_util_AbstractHashMap_2V.prototype = java_util_AbstractHashMap$MapEntryNull.prototype = new java_util_AbstractMapEntry;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractHashMap$MapEntryNull_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$MapEntryNull_12_1classLit;
+}
+;
+_.getKey__Ljava_lang_Object_2 = function java_util_AbstractHashMap$MapEntryNull_getKey__Ljava_lang_Object_2(){
+  return null;
+}
+;
+_.getValue__Ljava_lang_Object_2 = function java_util_AbstractHashMap$MapEntryNull_getValue__Ljava_lang_Object_2(){
+  return this.java_util_AbstractHashMap$MapEntryNull_this$0.java_util_AbstractHashMap_nullSlot;
+}
+;
+_.setValue__Ljava_lang_Object_2Ljava_lang_Object_2 = function java_util_AbstractHashMap$MapEntryNull_setValue__Ljava_lang_Object_2Ljava_lang_Object_2(object){
+  return java_util_AbstractHashMap_$putNullSlot__Ljava_util_AbstractHashMap_2Ljava_lang_Object_2Ljava_lang_Object_2(this.java_util_AbstractHashMap$MapEntryNull_this$0, object);
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_util_Map$Entry]);
+_.java_util_AbstractHashMap$MapEntryNull_this$0 = null;
+function java_util_AbstractHashMap$MapEntryString_AbstractHashMap$MapEntryString__Ljava_util_AbstractHashMap_2Ljava_lang_String_2V(this$0, key){
+  this.java_util_AbstractHashMap$MapEntryString_this$0 = this$0;
+  this.java_util_AbstractHashMap$MapEntryString_key = key;
+}
+
+function java_util_AbstractHashMap$MapEntryString(){
+}
+
+_ = java_util_AbstractHashMap$MapEntryString_AbstractHashMap$MapEntryString__Ljava_util_AbstractHashMap_2Ljava_lang_String_2V.prototype = java_util_AbstractHashMap$MapEntryString.prototype = new java_util_AbstractMapEntry;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractHashMap$MapEntryString_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$MapEntryString_12_1classLit;
+}
+;
+_.getKey__Ljava_lang_Object_2 = function java_util_AbstractHashMap$MapEntryString_getKey__Ljava_lang_Object_2(){
+  return this.java_util_AbstractHashMap$MapEntryString_key;
+}
+;
+_.getValue__Ljava_lang_Object_2 = function java_util_AbstractHashMap$MapEntryString_getValue__Ljava_lang_Object_2(){
+  return java_util_AbstractHashMap_$getStringValue__Ljava_util_AbstractHashMap_2Ljava_lang_String_2Ljava_lang_Object_2(this.java_util_AbstractHashMap$MapEntryString_this$0, this.java_util_AbstractHashMap$MapEntryString_key);
+}
+;
+_.setValue__Ljava_lang_Object_2Ljava_lang_Object_2 = function java_util_AbstractHashMap$MapEntryString_setValue__Ljava_lang_Object_2Ljava_lang_Object_2(object){
+  return java_util_AbstractHashMap_$putStringValue__Ljava_util_AbstractHashMap_2Ljava_lang_String_2Ljava_lang_Object_2Ljava_lang_Object_2(this.java_util_AbstractHashMap$MapEntryString_this$0, this.java_util_AbstractHashMap$MapEntryString_key, object);
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_util_Map$Entry]);
+_.java_util_AbstractHashMap$MapEntryString_key = null;
+_.java_util_AbstractHashMap$MapEntryString_this$0 = null;
+function java_util_AbstractList_checkIndex__IIV(index, size){
+  (index < 0 || index >= size) && java_util_AbstractList_indexOutOfBounds__IIV(index, size);
+}
+
+function java_util_AbstractList_indexOutOfBounds__IIV(index, size){
+  throw new java_lang_IndexOutOfBoundsException_IndexOutOfBoundsException__Ljava_lang_String_2V('Index: ' + index + ', Size: ' + size);
+}
+
+function java_util_AbstractList(){
+}
+
+_ = java_util_AbstractList.prototype = new java_util_AbstractCollection;
+_.add__Ljava_lang_Object_2Z = function java_util_AbstractList_add__Ljava_lang_Object_2Z(obj){
+  java_util_ArrayList_$add__Ljava_util_ArrayList_2ILjava_lang_Object_2V(this, this.size__I(), obj);
+  return true;
+}
+;
+_.equals__Ljava_lang_Object_2Z$ = function java_util_AbstractList_equals__Ljava_lang_Object_2Z(o){
+  var elem, elemOther, iter, iterOther, other;
+  if (o === this) {
+    return true;
+  }
+  if (!com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(o, Q$java_util_List)) {
+    return false;
+  }
+  other = com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(o, Q$java_util_List);
+  if (this.size__I() != other.java_util_ArrayList_size) {
+    return false;
+  }
+  iter = new java_util_AbstractList$IteratorImpl_AbstractList$IteratorImpl__Ljava_util_AbstractList_2V(this);
+  iterOther = new java_util_AbstractList$IteratorImpl_AbstractList$IteratorImpl__Ljava_util_AbstractList_2V(other);
+  while (iter.java_util_AbstractList$IteratorImpl_i < iter.java_util_AbstractList$IteratorImpl_this$0.java_util_ArrayList_size) {
+    elem = java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2Ljava_lang_Object_2(iter);
+    elemOther = java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2Ljava_lang_Object_2(iterOther);
+    if (!(elem == null?elemOther == null:com_google_gwt_core_client_JavaScriptObject_equals_1_1devirtual$__Ljava_lang_Object_2Ljava_lang_Object_2Z(elem, elemOther))) {
+      return false;
+    }
+  }
+  return true;
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractList_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractList_12_1classLit;
+}
+;
+_.hashCode__I$ = function java_util_AbstractList_hashCode__I(){
+  var iter, k, obj;
+  k = 1;
+  iter = new java_util_AbstractList$IteratorImpl_AbstractList$IteratorImpl__Ljava_util_AbstractList_2V(this);
+  while (iter.java_util_AbstractList$IteratorImpl_i < iter.java_util_AbstractList$IteratorImpl_this$0.java_util_ArrayList_size) {
+    obj = java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2Ljava_lang_Object_2(iter);
+    k = 31 * k + (obj == null?0:com_google_gwt_core_client_JavaScriptObject_hashCode_1_1devirtual$__Ljava_lang_Object_2I(obj));
+    k = ~~k;
+  }
+  return k;
+}
+;
+_.iterator__Ljava_util_Iterator_2 = function java_util_AbstractList_iterator__Ljava_util_Iterator_2(){
+  return new java_util_AbstractList$IteratorImpl_AbstractList$IteratorImpl__Ljava_util_AbstractList_2V(this);
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_util_List]);
+function java_util_AbstractList$IteratorImpl_$hasNext__Ljava_util_AbstractList$IteratorImpl_2Z(this$static){
+  return this$static.java_util_AbstractList$IteratorImpl_i < this$static.java_util_AbstractList$IteratorImpl_this$0.java_util_ArrayList_size;
+}
+
+function java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2Ljava_lang_Object_2(this$static){
+  if (this$static.java_util_AbstractList$IteratorImpl_i >= this$static.java_util_AbstractList$IteratorImpl_this$0.java_util_ArrayList_size) {
+    throw new java_util_NoSuchElementException_NoSuchElementException__V;
+  }
+  return java_util_ArrayList_$get__Ljava_util_ArrayList_2ILjava_lang_Object_2(this$static.java_util_AbstractList$IteratorImpl_this$0, this$static.java_util_AbstractList$IteratorImpl_i++);
+}
+
+function java_util_AbstractList$IteratorImpl_AbstractList$IteratorImpl__Ljava_util_AbstractList_2V(this$0){
+  this.java_util_AbstractList$IteratorImpl_this$0 = this$0;
+}
+
+function java_util_AbstractList$IteratorImpl(){
+}
+
+_ = java_util_AbstractList$IteratorImpl_AbstractList$IteratorImpl__Ljava_util_AbstractList_2V.prototype = java_util_AbstractList$IteratorImpl.prototype = new java_lang_Object;
+_.getClass__Ljava_lang_Class_2$ = function java_util_AbstractList$IteratorImpl_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractList$IteratorImpl_12_1classLit;
+}
+;
+_.hasNext__Z = function java_util_AbstractList$IteratorImpl_hasNext__Z(){
+  return java_util_AbstractList$IteratorImpl_$hasNext__Ljava_util_AbstractList$IteratorImpl_2Z(this);
+}
+;
+_.next__Ljava_lang_Object_2 = function java_util_AbstractList$IteratorImpl_next__Ljava_lang_Object_2(){
+  return java_util_AbstractList$IteratorImpl_$next__Ljava_util_AbstractList$IteratorImpl_2Ljava_lang_Object_2(this);
+}
+;
+_.java_util_AbstractList$IteratorImpl_i = 0;
+_.java_util_AbstractList$IteratorImpl_this$0 = null;
+function java_util_ArrayList_$add__Ljava_util_ArrayList_2Ljava_lang_Object_2Z(this$static, o){
+  com_google_gwt_lang_Array_setCheck__Lcom_google_gwt_lang_Array_2ILjava_lang_Object_2Ljava_lang_Object_2(this$static.java_util_ArrayList_array, this$static.java_util_ArrayList_size++, o);
+  return true;
+}
+
+function java_util_ArrayList_$add__Ljava_util_ArrayList_2ILjava_lang_Object_2V(this$static, index, o){
+  (index < 0 || index > this$static.java_util_ArrayList_size) && java_util_AbstractList_indexOutOfBounds__IIV(index, this$static.java_util_ArrayList_size);
+  java_util_ArrayList_splice___3Ljava_lang_Object_2IILjava_lang_Object_2V(this$static.java_util_ArrayList_array, index, 0, o);
+  ++this$static.java_util_ArrayList_size;
+}
+
+function java_util_ArrayList_$get__Ljava_util_ArrayList_2ILjava_lang_Object_2(this$static, index){
+  java_util_AbstractList_checkIndex__IIV(index, this$static.java_util_ArrayList_size);
+  return this$static.java_util_ArrayList_array[index];
+}
+
+function java_util_ArrayList_$indexOf__Ljava_util_ArrayList_2Ljava_lang_Object_2II(this$static, o, index){
+  for (; index < this$static.java_util_ArrayList_size; ++index) {
+    if (java_util_Utility_equalsWithNullCheck__Ljava_lang_Object_2Ljava_lang_Object_2Z(o, this$static.java_util_ArrayList_array[index])) {
+      return index;
+    }
+  }
+  return -1;
+}
+
+function java_util_ArrayList_ArrayList__V(){
+  this.java_util_ArrayList_array = com_google_gwt_lang_Array_initDim__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2IIILcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1Object_12_1classLit, makeCastMap([Q$java_io_Serializable]), Q$java_lang_Object, 0, 0);
+}
+
+function java_util_ArrayList_splice___3Ljava_lang_Object_2IILjava_lang_Object_2V(array, index, deleteCount, value){
+  array.splice(index, deleteCount, value);
+}
+
+function java_util_ArrayList(){
+}
+
+_ = java_util_ArrayList_ArrayList__V.prototype = java_util_ArrayList.prototype = new java_util_AbstractList;
+_.add__Ljava_lang_Object_2Z = function java_util_ArrayList_add__Ljava_lang_Object_2Z(o){
+  return java_util_ArrayList_$add__Ljava_util_ArrayList_2Ljava_lang_Object_2Z(this, o);
+}
+;
+_.contains__Ljava_lang_Object_2Z = function java_util_ArrayList_contains__Ljava_lang_Object_2Z(o){
+  return java_util_ArrayList_$indexOf__Ljava_util_ArrayList_2Ljava_lang_Object_2II(this, o, 0) != -1;
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_util_ArrayList_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1ArrayList_12_1classLit;
+}
+;
+_.size__I = function java_util_ArrayList_size__I(){
+  return this.java_util_ArrayList_size;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_util_List]);
+_.java_util_ArrayList_size = 0;
+function java_util_Date_$fixDaylightSavings__Ljava_util_Date_2IV(this$static){
+  var badHours, copy, day, newTime, timeDiff, timeDiffHours, timeDiffMinutes;
+  if (this$static.java_util_Date_jsdate.getHours() % 24 != 0) {
+    copy = com_google_gwt_core_client_JsDate_create__DLcom_google_gwt_core_client_JsDate_2(this$static.java_util_Date_jsdate.getTime());
+    com_google_gwt_core_client_JsDate_$setDate__Lcom_google_gwt_core_client_JsDate_2ID(copy, copy.getDate() + 1);
+    timeDiff = this$static.java_util_Date_jsdate.getTimezoneOffset() - copy.getTimezoneOffset();
+    if (timeDiff > 0) {
+      timeDiffHours = ~~(timeDiff / 60);
+      timeDiffMinutes = timeDiff % 60;
+      day = this$static.java_util_Date_jsdate.getDate();
+      badHours = this$static.java_util_Date_jsdate.getHours();
+      badHours + timeDiffHours >= 24 && ++day;
+      newTime = com_google_gwt_core_client_JsDate_create__IIIIIIILcom_google_gwt_core_client_JsDate_2(this$static.java_util_Date_jsdate.getFullYear(), this$static.java_util_Date_jsdate.getMonth(), day, timeDiffHours, this$static.java_util_Date_jsdate.getMinutes() + timeDiffMinutes, this$static.java_util_Date_jsdate.getSeconds(), this$static.java_util_Date_jsdate.getMilliseconds());
+      com_google_gwt_core_client_JsDate_$setTime__Lcom_google_gwt_core_client_JsDate_2DD(this$static.java_util_Date_jsdate, newTime.getTime());
+    }
+  }
+}
+
+function java_util_Date_Date__IIIV(){
+  this.java_util_Date_jsdate = new Date;
+  this.java_util_Date_jsdate.setFullYear(3930, 12, 31);
+  this.java_util_Date_jsdate.setHours(0, 0, 0, 0);
+  java_util_Date_$fixDaylightSavings__Ljava_util_Date_2IV(this);
+}
+
+function java_util_Date_padTwo__ILjava_lang_String_2(number){
+  return number < 10?$intern_19 + number:$intern_0 + number;
+}
+
+function java_util_Date(){
+}
+
+_ = java_util_Date_Date__IIIV.prototype = java_util_Date.prototype = new java_lang_Object;
+_.equals__Ljava_lang_Object_2Z$ = function java_util_Date_equals__Ljava_lang_Object_2Z(obj){
+  return com_google_gwt_lang_Cast_instanceOf__Ljava_lang_Object_2IZ(obj, Q$java_util_Date) && com_google_gwt_lang_LongLib_eq__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2Z(com_google_gwt_lang_LongLib_fromDouble__DLcom_google_gwt_lang_LongLibBase$LongEmul_2(this.java_util_Date_jsdate.getTime()), com_google_gwt_lang_LongLib_fromDouble__DLcom_google_gwt_lang_LongLibBase$LongEmul_2(com_google_gwt_lang_Cast_dynamicCast__Ljava_lang_Object_2ILjava_lang_Object_2(obj, Q$java_util_Date).java_util_Date_jsdate.getTime()));
+}
+;
+_.getClass__Ljava_lang_Class_2$ = function java_util_Date_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1Date_12_1classLit;
+}
+;
+_.hashCode__I$ = function java_util_Date_hashCode__I(){
+  var time;
+  time = com_google_gwt_lang_LongLib_fromDouble__DLcom_google_gwt_lang_LongLibBase$LongEmul_2(this.java_util_Date_jsdate.getTime());
+  return com_google_gwt_lang_LongLib_toInt__Lcom_google_gwt_lang_LongLibBase$LongEmul_2I(com_google_gwt_lang_LongLib_xor__Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2Lcom_google_gwt_lang_LongLibBase$LongEmul_2(time, com_google_gwt_lang_LongLib_shru__Lcom_google_gwt_lang_LongLibBase$LongEmul_2ILcom_google_gwt_lang_LongLibBase$LongEmul_2(time, 32)));
+}
+;
+_.toString__Ljava_lang_String_2$ = function java_util_Date_toString__Ljava_lang_String_2(){
+  var hourOffset, minuteOffset, offset;
+  offset = -this.java_util_Date_jsdate.getTimezoneOffset();
+  hourOffset = (offset >= 0?'+':$intern_0) + ~~(offset / 60);
+  minuteOffset = (offset < 0?-offset:offset) % 60 < 10?$intern_19 + (offset < 0?-offset:offset) % 60:$intern_0 + (offset < 0?-offset:offset) % 60;
+  return (java_util_Date$StringData_$clinit__V() , java_util_Date$StringData_DAYS)[this.java_util_Date_jsdate.getDay()] + $intern_7 + java_util_Date$StringData_MONTHS[this.java_util_Date_jsdate.getMonth()] + $intern_7 + java_util_Date_padTwo__ILjava_lang_String_2(this.java_util_Date_jsdate.getDate()) + $intern_7 + java_util_Date_padTwo__ILjava_lang_String_2(this.java_util_Date_jsdate.getHours()) + $intern_17 + java_util_Date_padTwo__ILjava_lang_String_2(this.java_util_Date_jsdate.getMinutes()) + $intern_17 + java_util_Date_padTwo__ILjava_lang_String_2(this.java_util_Date_jsdate.getSeconds()) + ' GMT' + hourOffset + minuteOffset + $intern_7 + this.java_util_Date_jsdate.getFullYear();
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_Comparable, Q$java_util_Date]);
+_.java_util_Date_jsdate = null;
+function java_util_Date$StringData_$clinit__V(){
+  java_util_Date$StringData_$clinit__V = nullMethod;
+  java_util_Date$StringData_DAYS = com_google_gwt_lang_Array_initValues__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2ILcom_google_gwt_lang_Array_2Lcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1String_12_1classLit, makeCastMap([Q$java_io_Serializable]), Q$java_lang_String, ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
+  java_util_Date$StringData_MONTHS = com_google_gwt_lang_Array_initValues__Ljava_lang_Class_2Lcom_google_gwt_core_client_JavaScriptObject_2ILcom_google_gwt_lang_Array_2Lcom_google_gwt_lang_Array_2(com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1String_12_1classLit, makeCastMap([Q$java_io_Serializable]), Q$java_lang_String, ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']);
+}
+
+var java_util_Date$StringData_DAYS, java_util_Date$StringData_MONTHS;
+function java_util_HashMap_$equals__Ljava_util_HashMap_2Ljava_lang_Object_2Ljava_lang_Object_2Z(value1, value2){
+  return com_google_gwt_lang_Cast_maskUndefined__Ljava_lang_Object_2Ljava_lang_Object_2(value1) === com_google_gwt_lang_Cast_maskUndefined__Ljava_lang_Object_2Ljava_lang_Object_2(value2) || value1 != null && com_google_gwt_core_client_JavaScriptObject_equals_1_1devirtual$__Ljava_lang_Object_2Ljava_lang_Object_2Z(value1, value2);
+}
+
+function java_util_HashMap_HashMap__V(){
+  this.java_util_AbstractHashMap_hashCodeMap = [];
+  this.java_util_AbstractHashMap_stringMap = {};
+  this.java_util_AbstractHashMap_nullSlotLive = false;
+  this.java_util_AbstractHashMap_nullSlot = null;
+  this.java_util_AbstractHashMap_size = 0;
+}
+
+function java_util_HashMap(){
+}
+
+_ = java_util_HashMap_HashMap__V.prototype = java_util_HashMap.prototype = new java_util_AbstractHashMap;
+_.getClass__Ljava_lang_Class_2$ = function java_util_HashMap_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1HashMap_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_util_Map]);
+--></script>
+<script><!--
+function java_util_MapEntryImpl_MapEntryImpl__Ljava_lang_Object_2Ljava_lang_Object_2V(key, value){
+  this.java_util_MapEntryImpl_key = key;
+  this.java_util_MapEntryImpl_value = value;
+}
+
+function java_util_MapEntryImpl(){
+}
+
+_ = java_util_MapEntryImpl_MapEntryImpl__Ljava_lang_Object_2Ljava_lang_Object_2V.prototype = java_util_MapEntryImpl.prototype = new java_util_AbstractMapEntry;
+_.getClass__Ljava_lang_Class_2$ = function java_util_MapEntryImpl_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1MapEntryImpl_12_1classLit;
+}
+;
+_.getKey__Ljava_lang_Object_2 = function java_util_MapEntryImpl_getKey__Ljava_lang_Object_2(){
+  return this.java_util_MapEntryImpl_key;
+}
+;
+_.getValue__Ljava_lang_Object_2 = function java_util_MapEntryImpl_getValue__Ljava_lang_Object_2(){
+  return this.java_util_MapEntryImpl_value;
+}
+;
+_.setValue__Ljava_lang_Object_2Ljava_lang_Object_2 = function java_util_MapEntryImpl_setValue__Ljava_lang_Object_2Ljava_lang_Object_2(value){
+  var old;
+  old = this.java_util_MapEntryImpl_value;
+  this.java_util_MapEntryImpl_value = value;
+  return old;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_util_Map$Entry]);
+_.java_util_MapEntryImpl_key = null;
+_.java_util_MapEntryImpl_value = null;
+function java_util_NoSuchElementException_NoSuchElementException__V(){
+  com_google_gwt_core_client_impl_StackTraceCreator$Collector_$fillInStackTrace__Lcom_google_gwt_core_client_impl_StackTraceCreator$Collector_2Ljava_lang_Throwable_2V();
+}
+
+function java_util_NoSuchElementException(){
+}
+
+_ = java_util_NoSuchElementException_NoSuchElementException__V.prototype = java_util_NoSuchElementException.prototype = new java_lang_RuntimeException;
+_.getClass__Ljava_lang_Class_2$ = function java_util_NoSuchElementException_getClass__Ljava_lang_Class_2(){
+  return com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1NoSuchElementException_12_1classLit;
+}
+;
+_.java_lang_Object_castableTypeMap$ = makeCastMap([Q$java_io_Serializable, Q$java_lang_RuntimeException, Q$java_lang_Throwable]);
+function java_util_Utility_equalsWithNullCheck__Ljava_lang_Object_2Ljava_lang_Object_2Z(a, b){
+  return com_google_gwt_lang_Cast_maskUndefined__Ljava_lang_Object_2Ljava_lang_Object_2(a) === com_google_gwt_lang_Cast_maskUndefined__Ljava_lang_Object_2Ljava_lang_Object_2(b) || a != null && com_google_gwt_core_client_JavaScriptObject_equals_1_1devirtual$__Ljava_lang_Object_2Ljava_lang_Object_2Z(a, b);
+}
+
+var $entry = com_google_gwt_core_client_impl_Impl_entry__Lcom_google_gwt_core_client_JavaScriptObject_2Lcom_google_gwt_core_client_JavaScriptObject_2;
+function gwtOnLoad(errFn, modName, modBase, softPermutationId){
+  $moduleName = modName;
+  $moduleBase = modBase;
+  if (errFn)
+    try {
+      $entry(com_google_gwt_lang_EntryMethodHolder_init__V)();
+    }
+     catch (e) {
+      errFn(modName);
+    }
+   else {
+    $entry(com_google_gwt_lang_EntryMethodHolder_init__V)();
+  }
+}
+
+var com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Object_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'Object'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1Auth_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_21, 'Auth'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1Auth$1_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_21, 'Auth$1'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1Auth$TokenInfo_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_21, 'Auth$TokenInfo'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1AuthImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_21, 'AuthImpl'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1AuthRequest_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_21, 'AuthRequest'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1String_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, $intern_10), com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1String_12_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_22, 'String;'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1TokenStoreImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_21, 'TokenStoreImpl'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1api_1gwt_1oauth2_1client_1CookieStoreImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_21, 'CookieStoreImpl'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Throwable_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'Throwable'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Exception_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'Exception'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1RuntimeException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'RuntimeException'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1JavaScriptException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_23, 'JavaScriptException'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1JavaScriptObject_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_23, 'JavaScriptObject$'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1Scheduler_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_23, 'Scheduler'), com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1Object_12_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_22, 'Object;'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1SchedulerImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_24, 'SchedulerImpl'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1SchedulerImpl$Flusher_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_24, 'SchedulerImpl$Flusher'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1SchedulerImpl$Rescuer_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_24, 'SchedulerImpl$Rescuer'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1StackTraceElement_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'StackTraceElement'), com_google_gwt_lang_ClassLiteralHolder__13Ljava_1lang_1StackTraceElement_12_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_22, 'StackTraceElement;'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1StringBufferImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_24, 'StringBufferImpl'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1core_1client_1impl_1StringBufferImplAppend_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_24, 'StringBufferImplAppend'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1lang_1LongLibBase$LongEmul_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2('com.google.gwt.lang.', 'LongLibBase$LongEmul'), com_google_gwt_lang_ClassLiteralHolder__13Lcom_1google_1gwt_1lang_1LongLibBase$LongEmul_12_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2('[Lcom.google.gwt.lang.', 'LongLibBase$LongEmul;'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1storage_1client_1Storage_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_25, 'Storage'), com_google_gwt_lang_ClassLiteralHolder_Lcom_1google_1gwt_1storage_1client_1Storage$StorageSupportDetector_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_25, 'Storage$StorageSupportDetector'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1IndexOutOfBoundsException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'IndexOutOfBoundsException'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1ArrayStoreException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'ArrayStoreException'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Number_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'Number'), com_google_gwt_lang_ClassLiteralHolder__13C_1classLit = java_lang_Class_createForArray__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_0, '[C'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Class_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'Class'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1ClassCastException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'ClassCastException'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1Double_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'Double'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1IllegalArgumentException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'IllegalArgumentException'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1IllegalStateException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'IllegalStateException'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1NullPointerException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'NullPointerException'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1NumberFormatException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'NumberFormatException'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1StringBuffer_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'StringBuffer'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1StringBuilder_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'StringBuilder'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1lang_1UnsupportedOperationException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_20, 'UnsupportedOperationException'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractCollection_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractCollection'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractMap_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractMap'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractHashMap'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractSet_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractSet'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$EntrySet_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractHashMap$EntrySet'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$EntrySetIterator_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractHashMap$EntrySetIterator'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractMapEntry_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractMapEntry'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$MapEntryNull_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractHashMap$MapEntryNull'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractHashMap$MapEntryString_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractHashMap$MapEntryString'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractList_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractList'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1AbstractList$IteratorImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'AbstractList$IteratorImpl'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1ArrayList_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'ArrayList'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1Date_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'Date'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1HashMap_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'HashMap'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1MapEntryImpl_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'MapEntryImpl'), com_google_gwt_lang_ClassLiteralHolder_Ljava_1util_1NoSuchElementException_12_1classLit = java_lang_Class_createForClass__Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_String_2Ljava_lang_Class_2Ljava_lang_Class_2($intern_26, 'NoSuchElementException');
+$stats && $stats({moduleName:'it.polimi.oauth2.OAuth2Module',sessionId:$sessionId,subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalEnd'});
+if ($wnd.it_polimi_oauth2_OAuth2Module) $wnd.it_polimi_oauth2_OAuth2Module.onScriptLoad();
+--></script></body></html>
