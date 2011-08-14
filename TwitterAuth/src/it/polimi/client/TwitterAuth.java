@@ -1,8 +1,6 @@
 package it.polimi.client;
 
 
-
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
@@ -16,7 +14,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 public class TwitterAuth implements EntryPoint {
 	
 	private final TwitterServiceAsync twitterService = GWT.create(TwitterService.class);
-
+	
 	public void onModuleLoad() {
 		// add widgets to layout panel
 		RootLayoutPanel rootLayoutPanel = RootLayoutPanel.get();

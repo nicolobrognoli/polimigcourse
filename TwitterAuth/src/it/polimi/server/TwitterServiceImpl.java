@@ -1,5 +1,7 @@
 package it.polimi.server;
 
+import javax.servlet.http.HttpSession;
+
 import it.polimi.client.TwitterService;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -25,7 +27,11 @@ public class TwitterServiceImpl extends RemoteServiceServlet implements
 			String token = twitterRequestToken.getToken();
 			String tokenSecret = twitterRequestToken.getTokenSecret();
 			String authorizationUrl = twitterRequestToken.getAuthorizationURL();
-
+			
+			HttpSession session = getThreadLocalRequest().getSession();
+			session.setAttribute("twitter", twitter);
+			session.setAttribute("token", twitterRequestToken);
+			session.setAttribute("tokenSecret", tokenSecret);
 
 			return token + "  " + tokenSecret + "\n" + authorizationUrl;
 

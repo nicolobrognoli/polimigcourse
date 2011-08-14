@@ -6,12 +6,9 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
@@ -21,11 +18,6 @@ public class TwitterCallback extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
-		
-		HttpSession session = req.getSession();
-		
-		//Twitter twitter = new TwitterFactory().getInstance();
-		//twitter.setOAuthConsumer("GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
 
 		AccessToken accessToken;
 		try {
