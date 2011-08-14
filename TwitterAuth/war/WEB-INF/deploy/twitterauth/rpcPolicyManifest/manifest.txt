@@ -1,0 +1,3 @@
+# Module twitterauth
+# RPC service class, partial path of RPC policy file
+it.polimi.client.TwitterService, CC7433DBC4A056FA95BBF0CC5394DFE7.gwt.rpc
