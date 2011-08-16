@@ -37,7 +37,9 @@ public class TwitterCallback extends HttpServlet {
 			int id = (int) accessToken.getUserId();
 			User user = twitter.showUser(id+"");
 			String screenName = user.getScreenName();*/
-
+			
+			String screen = twitter.getScreenName();
+			twitter.updateStatus("Prova tweet.");
 			
 			out.println("<html>");
 			out.println("<head>");
@@ -46,7 +48,7 @@ public class TwitterCallback extends HttpServlet {
 			out.println("<body>");
 			out.println("AccessToken: " + aToken);
 			out.println("<br>AccessSecretToken: " + aSecretToken);
-			out.println("<br>Oauth verifier: " + verifier);	
+			out.println("<br>ScreenName: " + screen);	
 			//out.println("<br>ScreenName: " + screenName);	
 			out.println("</body>");
 			out.println("</html>");
