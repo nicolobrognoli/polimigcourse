@@ -1,2 +1,0 @@
-# Module it.polimi.oauth2.OAuth2Module
-# RPC service class, partial path of RPC policy file
