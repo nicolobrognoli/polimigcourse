@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<servlet>
+    <servlet-name>AuthServlet</servlet-name>
+    <servlet-class>it.polimi.server.Authorization</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AuthServlet</servlet-name>
+    <url-pattern>/getauthorization</url-pattern>
+  </servlet-mapping>	
+
+<servlet>
+    <servlet-name>GoogleCallback</servlet-name>
+    <servlet-class>it.polimi.server.GoogleCallbackServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GoogleCallback</servlet-name>
+    <url-pattern>/googlecallback</url-pattern>
+  </servlet-mapping>	
+</web-app>
