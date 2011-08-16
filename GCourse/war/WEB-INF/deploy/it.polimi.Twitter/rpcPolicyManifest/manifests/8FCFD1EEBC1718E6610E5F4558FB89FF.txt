@@ -1,0 +1,2 @@
+serviceClass: it.polimi.client.TwitterService
+path: CC7433DBC4A056FA95BBF0CC5394DFE7.gwt.rpc

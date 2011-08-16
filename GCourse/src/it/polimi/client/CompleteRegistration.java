@@ -53,27 +53,15 @@ public class CompleteRegistration implements EntryPoint {
 		layoutPanel.setWidgetLeftWidth(rdbtnDocente, 64.0, Unit.PX, 129.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(rdbtnDocente, 82.0, Unit.PX, 19.0, Unit.PX);
 		
-		final CheckBox chckbxCollegareAccountTwitter = new CheckBox("Collegare account Twitter");
-		chckbxCollegareAccountTwitter.setVisible(false);
-		layoutPanel.add(chckbxCollegareAccountTwitter);
-		layoutPanel.setWidgetLeftWidth(chckbxCollegareAccountTwitter, 14.0, Unit.PX, 256.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(chckbxCollegareAccountTwitter, 107.0, Unit.PX, 19.0, Unit.PX);
-		
 		final TextBox name = new TextBox();
 		layoutPanel.add(name);
 		layoutPanel.setWidgetLeftWidth(name, 84.0, Unit.PX, 129.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(name, 7.0, Unit.PX, 23.0, Unit.PX);
 		
-		final TextBox accountTwitter = new TextBox();
-		accountTwitter.setVisible(false);
-		layoutPanel.add(accountTwitter);
-		layoutPanel.setWidgetLeftWidth(accountTwitter, 78.0, Unit.PX, 192.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(accountTwitter, 132.0, Unit.PX, 23.0, Unit.PX);
-		
 		Button btnProsegui = new Button("Prosegui");
 		layoutPanel.add(btnProsegui);
-		layoutPanel.setWidgetLeftWidth(btnProsegui, 64.0, Unit.PX, 82.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(btnProsegui, 161.0, Unit.PX, 22.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(btnProsegui, 111.0, Unit.PX, 82.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(btnProsegui, 117.0, Unit.PX, 22.0, Unit.PX);
 		
 		final Label lblSessione = new Label("Account: ");
 		rootLayoutPanel.add(lblSessione);
@@ -84,15 +72,6 @@ public class CompleteRegistration implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event){
-				if(rdbtnDocente.getValue())
-				{
-					chckbxCollegareAccountTwitter.setVisible(true);
-				}
-				else
-				{
-					chckbxCollegareAccountTwitter.setVisible(false);
-					accountTwitter.setVisible(false);
-				}
 			}
 		});
 		
@@ -100,30 +79,6 @@ public class CompleteRegistration implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event){
-				if(!rdbtnStudente.getValue())
-				{
-					chckbxCollegareAccountTwitter.setVisible(true);
-				}
-				else
-				{
-					chckbxCollegareAccountTwitter.setVisible(false);
-					accountTwitter.setVisible(false);
-				}
-			}
-		});
-		
-		chckbxCollegareAccountTwitter.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event){
-				if(chckbxCollegareAccountTwitter.getValue())
-				{
-					accountTwitter.setVisible(true);
-				}
-				else
-				{
-					accountTwitter.setVisible(false);
-				}
 			}
 		});
 		
@@ -166,7 +121,10 @@ public class CompleteRegistration implements EntryPoint {
 
 					@Override
 					public void onSuccess(String result) {
-						Window.open("home.html",  "_self", "");
+						if(rdbtnDocente.getValue())	
+							Window.open("twitter.html",  "_self", "");
+						else
+							Window.open("home.html",  "_self", "");
 					}
 				});
 				

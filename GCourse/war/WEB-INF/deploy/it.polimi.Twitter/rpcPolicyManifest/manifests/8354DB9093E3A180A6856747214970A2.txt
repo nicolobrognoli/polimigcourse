@@ -1,0 +1,2 @@
+serviceClass: it.polimi.client.SessionHandler
+path: 7CB38D2F359C184A45803810ECBADD64.gwt.rpc
