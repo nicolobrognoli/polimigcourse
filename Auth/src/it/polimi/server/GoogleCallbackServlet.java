@@ -41,48 +41,12 @@ public class GoogleCallbackServlet extends HttpServlet{
 	    AccessTokenResponse authResponse = authRequest.execute();
 	    String accessToken = authResponse.accessToken;
 	   
-	   /*
-	    GoogleAccessProtectedResource access = new GoogleAccessProtectedResource(accessToken,
-	        TRANSPORT, JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, authResponse.refreshToken);
-	    HttpRequestFactory rf = TRANSPORT.createRequestFactory(access);
-	    GenericUrl sitesEndpoint = new GenericUrl("https://sites.google.com/feeds/content/site/projectgcourse");
-	    String requestBody = "<entry xmlns=\"http://www.w3.org/2005/Atom\">" +
-	    "<category scheme=\"http://schemas.google.com/g/2005#kind\"" +
-	       " term=\"http://schemas.google.com/sites/2008#webpage\" label=\"webpage\"/>" +
-	    "<title>cacca</title>" +
-	    "<content type=\"xhtml\">" +
-	     "<div xmlns=\"http://www.w3.org/1999/xhtml\">ciao</div>" +
-	    "</content>" +
-	  "</entry>";
-	    
-	    HttpRequest request = rf.buildPostRequest(sitesEndpoint, new ByteArrayContent(requestBody));
-	    request.headers.contentType = "application/atom+xml";
-	     HttpResponse createPage = request.execute();
-	    
-	    SitesService client = new SitesService("projectgcourse");
-
-	    WebPageEntry pageEntry = new WebPageEntry();
-	    pageEntry.setTitle(new PlainTextConstruct("yeah"));
-
-	    XmlBlob blob = new XmlBlob();
-	    blob.setBlob("HTML content of the page");
-
-	    pageEntry.setContent(new XhtmlTextConstruct(blob));
-
-	    URL url = new URL("http://sites.google.com/feeds/site/projectgcourse");
-	    
-	    try {
-			client.insert(url, pageEntry);
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
 	    SitesHelper sitesHelper;
 	    sitesHelper = new SitesHelper("polimigcourse", "site", "projectgcourse", true);
 	    sitesHelper.login(authResponse.accessToken);
 	   	    
 	    try {
-			page = sitesHelper.createPage("webpage", "provayeah");
+			page = sitesHelper.createPage("webpage", "provacmon");
 		
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
