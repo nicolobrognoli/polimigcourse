@@ -25,7 +25,8 @@ public class TwitterCallback extends HttpServlet {
 			Twitter twitter = (Twitter) req.getSession().getAttribute("twitter");
 		    RequestToken requestToken = (RequestToken) req.getSession().getAttribute("token");
 		    String verifier = req.getParameter("oauth_verifier");
-			
+			String email = (String) req.getSession().getAttribute("email");
+		    
 			accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
 			twitter.setOAuthAccessToken(accessToken);
 			
@@ -46,7 +47,8 @@ public class TwitterCallback extends HttpServlet {
 			out.println("<title> servlet 2</title>");
 			out.println("</head>");
 			out.println("<body>");
-			out.println("AccessToken: " + aToken);
+			out.println("Account: " + email);
+			out.println("<br>AccessToken: " + aToken);
 			out.println("<br>AccessSecretToken: " + aSecretToken);
 			out.println("<br>ScreenName: " + screen);	
 			out.println("</body>");
