@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.ConsoleHandler;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,6 +63,7 @@ import com.google.gdata.data.spreadsheet.Field;
 import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
 import com.google.gdata.util.XmlBlob;
+import com.google.gwt.logging.client.ConsoleLogHandler;
 
 /**
 * Wrapper class for lower level Sites API calls.
@@ -163,7 +164,7 @@ public class SitesHelper {
     */
    private void turnOnLogging(boolean logXML) {
      // Create a log handler which prints all log events to the console
-     ConsoleHandler logHandler = new ConsoleHandler();
+     ConsoleLogHandler logHandler = new ConsoleLogHandler();
      logHandler.setLevel(Level.ALL);
 
      // Configure the logging mechanisms
