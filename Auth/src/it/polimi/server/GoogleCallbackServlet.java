@@ -21,7 +21,7 @@ import com.google.gdata.util.ServiceException;
 @SuppressWarnings("serial")
 public class GoogleCallbackServlet extends HttpServlet{
 	private static final String SCOPE = "https://sites.google.com/feeds/";
-	private static final String CALLBACK_URL = "http://polimigcourse.appspot.com/googlecallback";
+	private static final String CALLBACK_URL = "http://localhost:8888/googlecallback";
 	private static final String CLIENT_ID = "267706380696.apps.googleusercontent.com";
 	private static final String CLIENT_SECRET = "zBWLvQsYnEF4-AAg1PZYu7eA";
 	private static final HttpTransport TRANSPORT = new NetHttpTransport();
@@ -47,8 +47,7 @@ public class GoogleCallbackServlet extends HttpServlet{
 	    sitesHelper.login(authResponse.accessToken);
 	   	    
 	    try {
-			page = sitesHelper.createPage("webpage", "cacca");
-		
+			page = sitesHelper.createPage("webpage", "cacca3");				
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
