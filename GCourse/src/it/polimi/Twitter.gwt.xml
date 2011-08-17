@@ -5,4 +5,5 @@
 	<source path="client" />
 	<entry-point class="it.polimi.client.RegisterTwitter" />
 	<servlet path="/sessionhandler" class="it.polimi.server.SessionHandlerImpl" />
+	<servlet path="/loadstoreservice" class="it.polimi.server.LoadStoreServiceImpl" />
 </module>

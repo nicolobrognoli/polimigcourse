@@ -2,6 +2,8 @@ package it.polimi.client;
 
 
 
+
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -14,7 +16,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Button;
 
 
@@ -127,6 +128,7 @@ public class CompleteRegistration implements EntryPoint {
 							Window.open("home.html",  "_self", "");
 					}
 				});
+	
 				
 			}
 		});

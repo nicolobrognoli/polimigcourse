@@ -29,6 +29,14 @@ public class UserPO {
     private boolean professor;
     @Persistent
     private String type;
+    @Persistent
+    private String googleAccessToken;
+    @Persistent
+    private String googleRefreshToken;
+    @Persistent
+    private String twitterAccessToken;
+    @Persistent
+    private String twitterSecretToken;
 
     
 
@@ -83,6 +91,39 @@ public class UserPO {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public String getGoogleAccessToken() {
+		return googleAccessToken;
+	}
+
+	public void setGoogleAccessToken(String googleAccessToken) {
+		this.googleAccessToken = googleAccessToken;
+	}
+
+	public String getGoogleRefreshToken() {
+		return googleRefreshToken;
+	}
+
+	public void setGoogleRefreshToken(String googleRefreshToken) {
+		this.googleRefreshToken = googleRefreshToken;
+	}
+
+	public String getTwitterAccessToken() {
+		return twitterAccessToken;
+	}
+
+	public void setTwitterAccessToken(String twitterAccessToken) {
+		this.twitterAccessToken = twitterAccessToken;
+	}
+
+	public String getTwitterSecretToken() {
+		return twitterSecretToken;
+	}
+
+	public void setTwitterSecretToken(String twitterSecretToken) {
+		this.twitterSecretToken = twitterSecretToken;
+	}
+	
 	
     
    

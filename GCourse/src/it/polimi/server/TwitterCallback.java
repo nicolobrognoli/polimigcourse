@@ -1,5 +1,7 @@
 package it.polimi.server;
 
+import it.polimi.server.utils.LoadStore;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -14,7 +16,7 @@ import twitter4j.auth.RequestToken;
 
 @SuppressWarnings("serial")
 public class TwitterCallback extends HttpServlet {
-
+	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
@@ -34,7 +36,9 @@ public class TwitterCallback extends HttpServlet {
 			
 			String aToken = accessToken.getToken();
 			String aSecretToken = accessToken.getTokenSecret();
+			String result = LoadStore.storeAccessToken(email, "twitter", accessToken.getToken(), accessToken.getTokenSecret());
 /*
+
 			int id = (int) accessToken.getUserId();
 			User user = twitter.showUser(id+"");
 			String screenName = user.getScreenName();*/
@@ -51,6 +55,7 @@ public class TwitterCallback extends HttpServlet {
 			out.println("<br>AccessToken: " + aToken);
 			out.println("<br>AccessSecretToken: " + aSecretToken);
 			out.println("<br>ScreenName: " + screen);	
+			out.println("Result: " + result);
 			out.println("</body>");
 			out.println("</html>");
 		} catch (TwitterException e) {

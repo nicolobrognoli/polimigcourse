@@ -1,4 +1,7 @@
-package it.polimi.server;
+package it.polimi.server.utils;
+
+import it.polimi.server.data.PMF;
+import it.polimi.server.data.UserPO;
 
 import java.util.Iterator;
 import java.util.List;
@@ -6,23 +9,15 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+public class LoadStore {
 
-import it.polimi.client.LoadStoreService;
-import it.polimi.server.data.PMF;
-import it.polimi.server.data.UserPO;
+	public static String storeAccessToken(String email, String kind, String accessToken, String refreshToken){
 
-@SuppressWarnings("serial")
-public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadStoreService {
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public String updateUser(String email, String name, boolean professor) throws IllegalArgumentException {
-		// get persistence manager
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			// get POs from DataStore
 			Query query = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
 			List<UserPO> results = (List<UserPO>)query.execute();
 			Iterator<UserPO> iter = results.iterator();
 			UserPO userTemp;
@@ -35,8 +30,19 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 					userTemp = (UserPO) iter.next();
 					if(userTemp.getUser().getEmail().equals(email))					
 					{
-						userTemp.setNickname(name);
-						userTemp.setProfessor(professor);
+						if(kind.equals("google"))
+						{
+							userTemp.setGoogleAccessToken(accessToken);
+							userTemp.setGoogleRefreshToken(refreshToken);
+						}
+						else if(kind.equals("twitter"))
+						{
+							userTemp.setTwitterAccessToken(accessToken);
+							userTemp.setTwitterSecretToken(refreshToken);
+						}
+						else
+							return "Parameter kind error";
+						
 					}
 				}while(iter.hasNext());									
 			}
