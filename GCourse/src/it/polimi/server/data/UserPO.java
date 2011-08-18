@@ -37,6 +37,10 @@ public class UserPO {
     private String twitterAccessToken;
     @Persistent
     private String twitterSecretToken;
+    @Persistent
+    private String siteName;
+    @Persistent
+    private String password;
 
     
 
@@ -122,6 +126,22 @@ public class UserPO {
 
 	public void setTwitterSecretToken(String twitterSecretToken) {
 		this.twitterSecretToken = twitterSecretToken;
+	}
+
+	public String getSiteName() {
+		return siteName;
+	}
+
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	
