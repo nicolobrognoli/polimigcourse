@@ -9,6 +9,8 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import com.google.appengine.api.datastore.Query.FilterOperator;
+
 public class LoadStore {
 
 	public static String storeAccessToken(String email, String kind, String accessToken, String refreshToken){
@@ -52,5 +54,38 @@ public class LoadStore {
 			pm.close();
 		}
 		return "updated";
+	}
+	
+	public static String verifyUser(String sender){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(UserPO.class,"this.user=="+sender);
+			List<UserPO> results = (List<UserPO>)query.execute();
+			Iterator<UserPO> iter = results.iterator();
+			UserPO userTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "errore: Email non presente";
+			else 
+			{
+					userTemp = (UserPO) iter.next();
+					if(userTemp.getGoogleAccessToken()!=null&&userTemp.getSiteName()!=null)					
+					{ 
+						return userTemp.getGoogleAccessToken();
+					}	
+					else{
+						return "errore: \"Access token\" o \"Nome del Sito\" non specificato";
+					}
+			}
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
+	}
+	
+	public static boolean verifyEmail(String email){
+		return false;
 	}
 }
