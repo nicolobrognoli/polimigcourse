@@ -17,7 +17,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public String updateUser(String email, String name, boolean professor) throws IllegalArgumentException {
+	public String updateUser(String email, String name, String  pwd, boolean professor) throws IllegalArgumentException {
 		// get persistence manager
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
@@ -36,6 +36,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 					if(userTemp.getUser().getEmail().equals(email))					
 					{
 						userTemp.setNickname(name);
+						userTemp.setPassword(pwd);
 						userTemp.setProfessor(professor);
 					}
 				}while(iter.hasNext());									

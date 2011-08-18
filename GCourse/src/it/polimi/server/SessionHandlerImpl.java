@@ -18,7 +18,7 @@ public class SessionHandlerImpl extends RemoteServiceServlet implements SessionH
 	public void setSession(String email) {
 		httpSession = getThreadLocalRequest().getSession();
 		httpSession = this.getThreadLocalRequest().getSession();
-	    httpSession.setAttribute("id", email);
+	    httpSession.setAttribute("email", email);
 	}
 
 	@Override

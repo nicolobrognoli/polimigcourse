@@ -12,24 +12,28 @@ import java.util.Properties;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-import javax.mail.Session;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAuthorizationRequestUrl;
+
 @SuppressWarnings("serial")
 public class ConfirmRegistrationServlet extends HttpServlet {
+	
+	private static final String SCOPE = "https://sites.google.com/feeds/";
+	private static final String CALLBACK_URL = "http://polimigcourse.appspot.com/googlecallback";
+	private static final String CLIENT_ID = "267706380696.apps.googleusercontent.com";
 	
 	@SuppressWarnings("unchecked")
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
-		Properties props = new Properties();
 		HttpSession session = req.getSession();
 	
 		String email = req.getParameter("email");
-		
+		session.setAttribute("email", email);
 		out.println("<html>");
 		out.println("<head>");
 		out.println("<title> Confirm registration </title>");
@@ -62,20 +66,20 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 					{
 						userTemp.setConfirmed(true);	
 						ok = true;
-						session.setAttribute("email", email);
 					}
 						
 				}while(iter.hasNext());		
 				//write the results in the web page
 				if(ok)
 				{
+					String authorizeUrl = new GoogleAuthorizationRequestUrl(CLIENT_ID, CALLBACK_URL, SCOPE).build();
 					out.println("<head>");
 					out.println("<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">");
 					out.println("<title>Registrazione</title>");
 					out.println("</head>");
 					out.println("<body>");
-					out.println("<a href=\"confirm.html\"> Continua...</a>");
-				
+					out.println("Conferma registrazione account: " + email);
+					out.println("<a href=\"" + authorizeUrl + "\">Aggiungi permessi Google al nostro servizio</a>");				
 				}
 				else
 				{
@@ -83,8 +87,7 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 					out.println("<body>");
 					out.println("Confirm registration of: " + email);
 					out.println("<br>ERROR: Account gia confermato oppure nessuna corrispondenza trovata.");
-				}
-					
+				}		
 					
 			}
 			

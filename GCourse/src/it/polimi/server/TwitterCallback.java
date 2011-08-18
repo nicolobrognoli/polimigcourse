@@ -32,30 +32,22 @@ public class TwitterCallback extends HttpServlet {
 			accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
 			twitter.setOAuthAccessToken(accessToken);
 			
-			//User user = twitter.verifyCredentials();
-			
-			String aToken = accessToken.getToken();
-			String aSecretToken = accessToken.getTokenSecret();
+			//store the tokens on the datastore
 			String result = LoadStore.storeAccessToken(email, "twitter", accessToken.getToken(), accessToken.getTokenSecret());
-/*
-
-			int id = (int) accessToken.getUserId();
-			User user = twitter.showUser(id+"");
-			String screenName = user.getScreenName();*/
 			
-			String screen = twitter.getScreenName();
-			//twitter.updateStatus("Prova tweet.");
+			String screen = twitter.getScreenName();	
 			
 			out.println("<html>");
 			out.println("<head>");
-			out.println("<title> servlet 2</title>");
+			out.println("<title>Twitter callback</title>");
 			out.println("</head>");
 			out.println("<body>");
 			out.println("Account: " + email);
-			out.println("<br>AccessToken: " + aToken);
-			out.println("<br>AccessSecretToken: " + aSecretToken);
-			out.println("<br>ScreenName: " + screen);	
-			out.println("Result: " + result);
+			if(result.equals("updated"))
+				out.println("<br><br>Account twitter " + screen + " registrato correttamente.");	
+			else
+				out.println("Errore registrazione account twitter.");
+			out.println("<br><a href=home.html> Prosegui alla home page </a>");
 			out.println("</body>");
 			out.println("</html>");
 		} catch (TwitterException e) {

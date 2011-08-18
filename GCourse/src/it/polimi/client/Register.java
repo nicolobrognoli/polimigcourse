@@ -12,6 +12,8 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 
 public class Register implements EntryPoint {
 
@@ -24,37 +26,67 @@ public class Register implements EntryPoint {
 		// add widgets to layout panel
 		RootLayoutPanel rootLayoutPanel = RootLayoutPanel.get();
 		
-		LayoutPanel layoutPanel = new LayoutPanel();
-		rootLayoutPanel.add(layoutPanel);
-		rootLayoutPanel.setWidgetLeftRight(layoutPanel, 59.0, Unit.PX, 59.0, Unit.PX);
-		rootLayoutPanel.setWidgetTopHeight(layoutPanel, 81.0, Unit.PX, 140.0, Unit.PX);
+		LayoutPanel layoutPanel_1 = new LayoutPanel();
+		rootLayoutPanel.add(layoutPanel_1);
 		
-		Label lblIndirizzoMail = new Label("Indirizzo mail:");
+		final CheckBox chckbxRegistraAlServizio = new CheckBox("Registra al servizio GCourse");
+		layoutPanel_1.add(chckbxRegistraAlServizio);
+		layoutPanel_1.setWidgetLeftWidth(chckbxRegistraAlServizio, 117.0, Unit.PX, 235.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(chckbxRegistraAlServizio, 108.0, Unit.PX, 19.0, Unit.PX);
+		chckbxRegistraAlServizio.setValue(false);
+		
+		Button btnLogin = new Button("Login");
+		layoutPanel_1.add(btnLogin);
+		layoutPanel_1.setWidgetLeftWidth(btnLogin, 358.0, Unit.PX, 82.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(btnLogin, 74.0, Unit.PX, 22.0, Unit.PX);
+		
+		TextBox textNickname = new TextBox();
+		layoutPanel_1.add(textNickname);
+		layoutPanel_1.setWidgetLeftWidth(textNickname, 188.0, Unit.PX, 153.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(textNickname, 43.0, Unit.PX, 23.0, Unit.PX);
+		
+		PasswordTextBox passwordTextBox = new PasswordTextBox();
+		layoutPanel_1.add(passwordTextBox);
+		layoutPanel_1.setWidgetLeftWidth(passwordTextBox, 188.0, Unit.PX, 153.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(passwordTextBox, 73.0, Unit.PX, 23.0, Unit.PX);
+		
+		Label lblNickname = new Label("Nickname:");
+		layoutPanel_1.add(lblNickname);
+		layoutPanel_1.setWidgetLeftWidth(lblNickname, 116.0, Unit.PX, 76.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(lblNickname, 43.0, Unit.PX, 18.0, Unit.PX);
+		
+		Label lblPassword = new Label("Password:");
+		layoutPanel_1.add(lblPassword);
+		layoutPanel_1.setWidgetLeftWidth(lblPassword, 116.0, Unit.PX, 65.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(lblPassword, 74.0, Unit.PX, 18.0, Unit.PX);
+		
+		final Label lblIndirizzoMail = new Label("Indirizzo mail:");
+		layoutPanel_1.add(lblIndirizzoMail);
+		layoutPanel_1.setWidgetLeftWidth(lblIndirizzoMail, 134.0, Unit.PX, 98.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(lblIndirizzoMail, 151.0, Unit.PX, 19.0, Unit.PX);
 		lblIndirizzoMail.addStyleName("style");
-		layoutPanel.add(lblIndirizzoMail);
-		layoutPanel.setWidgetLeftWidth(lblIndirizzoMail, 28.0, Unit.PX, 98.0, Unit.PX);
-		layoutPanel.setWidgetTopBottom(lblIndirizzoMail, 30.0, Unit.PX, 92.0, Unit.PX);
 		
 		final TextBox textBox = new TextBox();
-		layoutPanel.add(textBox);
-		layoutPanel.setWidgetLeftWidth(textBox, 121.0, Unit.PX, 191.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(textBox, 25.0, Unit.PX, 23.0, Unit.PX);
+		layoutPanel_1.add(textBox);
+		textBox.setHeight("23");
+		layoutPanel_1.setWidgetLeftWidth(textBox, 233.0, Unit.PX, 163.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(textBox, 151.0, Unit.PX, 19.0, Unit.PX);
 		
-		Button btnRegistra = new Button("Registra");
+		final Label lblVerrInviataUnemail = new Label("Verra' inviata un'email per la conferma all'indirizzo indicato");
+		layoutPanel_1.add(lblVerrInviataUnemail);
+		layoutPanel_1.setWidgetLeftWidth(lblVerrInviataUnemail, 64.0, Unit.PX, 386.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(lblVerrInviataUnemail, 176.0, Unit.PX, 19.0, Unit.PX);
+		
+		final Button btnRegistra = new Button("Registra");
+		layoutPanel_1.add(btnRegistra);
+		layoutPanel_1.setWidgetLeftWidth(btnRegistra, 233.0, Unit.PX, 76.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(btnRegistra, 201.0, Unit.PX, 23.0, Unit.PX);
 		btnRegistra.setText("Registra");
-		layoutPanel.add(btnRegistra);
-		layoutPanel.setWidgetLeftWidth(btnRegistra, 121.0, Unit.PX, 98.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(btnRegistra, 76.0, Unit.PX, 22.0, Unit.PX);
 		
-		Label lblVerrInviataUnemail = new Label("Verra' inviata un'email per la conferma all'indirizzo indicato");
-		layoutPanel.add(lblVerrInviataUnemail);
-		layoutPanel.setWidgetLeftWidth(lblVerrInviataUnemail, 38.0, Unit.PX, 281.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(lblVerrInviataUnemail, 54.0, Unit.PX, 18.0, Unit.PX);
-		
-		Label lblGcourse = new Label("GCourse: registrazione");
-		rootLayoutPanel.add(lblGcourse);
-		rootLayoutPanel.setWidgetLeftWidth(lblGcourse, 94.0, Unit.PX, 158.0, Unit.PX);
-		rootLayoutPanel.setWidgetTopHeight(lblGcourse, 29.0, Unit.PX, 18.0, Unit.PX);
+		btnRegistra.setVisible(chckbxRegistraAlServizio.getValue());
+		lblVerrInviataUnemail.setVisible(chckbxRegistraAlServizio.getValue());
+		textBox.setVisible(chckbxRegistraAlServizio.getValue());
+		lblIndirizzoMail.setVisible(chckbxRegistraAlServizio.getValue());
 		
 		// button event
 		btnRegistra.addClickHandler(new ClickHandler() {
@@ -79,6 +111,27 @@ public class Register implements EntryPoint {
 					}
 				});
 			}
+		});
+		
+		btnLogin.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+			//TODO
+			}
+			
+		});
+		
+		chckbxRegistraAlServizio.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				lblVerrInviataUnemail.setVisible(chckbxRegistraAlServizio.getValue());
+				btnRegistra.setVisible(chckbxRegistraAlServizio.getValue());
+				textBox.setVisible(chckbxRegistraAlServizio.getValue());	
+				lblIndirizzoMail.setVisible(chckbxRegistraAlServizio.getValue());
+			}
+			
 		});
 
 	}
