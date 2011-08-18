@@ -60,7 +60,7 @@ public class LoadStore {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			// get POs from DataStore
-			Query query = pm.newQuery(UserPO.class,"this.user=="+sender);
+			Query query = pm.newQuery(UserPO.class);
 			List<UserPO> results = (List<UserPO>)query.execute();
 			Iterator<UserPO> iter = results.iterator();
 			UserPO userTemp;
@@ -69,14 +69,14 @@ public class LoadStore {
 				return "errore: Email non presente";
 			else 
 			{
+				do{
 					userTemp = (UserPO) iter.next();
-					if(userTemp.getGoogleAccessToken()!=null&&userTemp.getSiteName()!=null)					
-					{ 
-						return userTemp.getGoogleAccessToken();
-					}	
-					else{
-						return "errore: \"Access token\" o \"Nome del Sito\" non specificato";
+					if(userTemp.getUser().getEmail().equals(sender))					
+					{
+						return "presente";
 					}
+				}while(iter.hasNext());			
+				return "errore";
 			}
 		} finally {
 			

@@ -48,7 +48,7 @@ public class MailHandlerServlet extends HttpServlet {
 			if(sender.charAt(i)=='<'){
 				start=i;
 			}
-			else if(sender.charAt(i)=='@'){
+			else if(sender.charAt(i)=='>'){
 				end=i;
 				i=sender.length();
 			}
