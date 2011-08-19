@@ -39,3 +39,35 @@ a:active{color:#ff0000}
 	font-style: italic;
 	color: blue;
 }
+
+.gwt-TabPanel {
+  margin-top: 4px;
+}
+
+.gwt-TabPanelBottom {
+  background-color: #E8EEF7;
+}
+
+.gwt-TabBar {
+  padding-top: 2px;
+  border-bottom: 4px solid #87B3FF;
+  background-color: #fff;
+}
+
+.gwt-TabBarItem {
+  padding: 4px;
+  cursor: pointer;
+  background-color: #e8eef7;
+  border-bottom: 2px solid white;
+  margin-right: 2px;
+}
+
+.gwt-TabBarItem-selected {
+  padding: 4px;
+  font-weight: bold;
+  cursor: default;
+
+  background-color: #87b3ff;
+  border-bottom: 2px solid #87b3ff;
+  margin-right: 2px;
+}
