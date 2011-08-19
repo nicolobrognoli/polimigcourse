@@ -76,7 +76,6 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 				}while(iter.hasNext());									
 			}
 		} finally {
-			
 			// close persistence manager
 			pm.close();
 		}
