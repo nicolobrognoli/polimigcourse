@@ -12,9 +12,7 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
-import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.RadioButton;
 
 public class Register implements EntryPoint {
@@ -90,10 +88,8 @@ public class Register implements EntryPoint {
 		layoutPanel_1.setWidgetTopHeight(rdbtnRegistrazione, 108.0, Unit.PX, 19.0, Unit.PX);
 		
 		rdbtnLogin.setValue(true);
-		btnRegistra.setVisible(!rdbtnLogin.getValue());
-		lblVerrInviataUnemail.setVisible(!rdbtnLogin.getValue());
-		textBox.setVisible(!rdbtnLogin.getValue());
-		lblIndirizzoMail.setVisible(!rdbtnLogin.getValue());
+		btnRegistra.setEnabled(!rdbtnLogin.getValue());
+		textBox.setEnabled(!rdbtnLogin.getValue());
 		
 		// button event
 		btnRegistra.addClickHandler(new ClickHandler() {
@@ -158,16 +154,12 @@ public class Register implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				lblVerrInviataUnemail.setVisible(rdbtnRegistrazione.getValue());
-				btnRegistra.setVisible(rdbtnRegistrazione.getValue());
-				textBox.setVisible(rdbtnRegistrazione.getValue());	
-				lblIndirizzoMail.setVisible(rdbtnRegistrazione.getValue());
+				btnRegistra.setEnabled(rdbtnRegistrazione.getValue());
+				textBox.setEnabled(rdbtnRegistrazione.getValue());	
 				
-				textNickname.setVisible(!rdbtnRegistrazione.getValue());
-				btnLogin.setVisible(!rdbtnRegistrazione.getValue());
-				passwordTextBox.setVisible(!rdbtnRegistrazione.getValue());
-				lblNickname.setVisible(!rdbtnRegistrazione.getValue());
-				lblPassword.setVisible(!rdbtnRegistrazione.getValue());
+				textNickname.setEnabled(!rdbtnRegistrazione.getValue());
+				btnLogin.setEnabled(!rdbtnRegistrazione.getValue());
+				passwordTextBox.setEnabled(!rdbtnRegistrazione.getValue());
 			}
 			
 		});
@@ -176,16 +168,12 @@ public class Register implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				lblVerrInviataUnemail.setVisible(!rdbtnLogin.getValue());
-				btnRegistra.setVisible(!rdbtnLogin.getValue());
-				textBox.setVisible(!rdbtnLogin.getValue());	
-				lblIndirizzoMail.setVisible(!rdbtnLogin.getValue());
+				btnRegistra.setEnabled(!rdbtnLogin.getValue());
+				textBox.setEnabled(!rdbtnLogin.getValue());	
 				
-				textNickname.setVisible(rdbtnLogin.getValue());
-				btnLogin.setVisible(rdbtnLogin.getValue());
-				passwordTextBox.setVisible(rdbtnLogin.getValue());
-				lblNickname.setVisible(rdbtnLogin.getValue());
-				lblPassword.setVisible(rdbtnLogin.getValue());
+				textNickname.setEnabled(rdbtnLogin.getValue());
+				btnLogin.setEnabled(rdbtnLogin.getValue());
+				passwordTextBox.setEnabled(rdbtnLogin.getValue());
 			}
 			
 		});
