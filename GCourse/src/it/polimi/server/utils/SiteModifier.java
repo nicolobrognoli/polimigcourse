@@ -24,7 +24,7 @@ import com.google.gdata.util.XmlBlob;
 
 public class SiteModifier {
 	
-	private String accessToken,siteName;
+	private String accessToken, siteName;
 
 	
 	public SiteModifier(String accessToken,String siteName){
@@ -60,8 +60,8 @@ public class SiteModifier {
 			page.setContent(new XhtmlTextConstruct(xml));
 			page.update();
 			//sitesHelper.service.update(new URL(sitesHelper.getContentFeedUrl()), page);
-			//return "https://sites.google.com/site/"+this.siteName+namePage;
-			return this.accessToken+" "+this.siteName;
+			return "https://sites.google.com/site/"+this.siteName + "/" + namePage;
+			//return this.accessToken+" "+this.siteName;
 
 		
 		} catch (ServiceException e) {

@@ -9,6 +9,8 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import twitter4j.auth.AccessToken;
+
 import com.google.appengine.api.datastore.Query.FilterOperator;
 
 public class LoadStore {
@@ -41,6 +43,7 @@ public class LoadStore {
 		}
 		return "updated";
 	}
+	
 	public static String storeAccessToken(String email, String kind, String accessToken, String refreshToken){
 
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -115,5 +118,33 @@ public class LoadStore {
 	
 	public static boolean verifyEmail(String email){
 		return false;
+	}
+	
+	public static String getTwitterAccessToken(String email){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
+			List<UserPO> results = (List<UserPO>)query.execute();
+			Iterator<UserPO> iter = results.iterator();
+			UserPO userTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "not found";
+			else 
+			{
+				do{
+					userTemp = (UserPO) iter.next();
+					if(userTemp.getUser().getEmail().equals(email))				
+						return userTemp.getTwitterAccessToken();
+				}while(iter.hasNext());									
+			}
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
+		return "not found";
 	}
 }

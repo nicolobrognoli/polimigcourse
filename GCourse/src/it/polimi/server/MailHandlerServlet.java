@@ -16,6 +16,7 @@ public class MailHandlerServlet extends HttpServlet {
 import it.polimi.server.data.UserPO;
 import it.polimi.server.utils.LoadStore;
 import it.polimi.server.utils.SiteModifier;
+import it.polimi.server.utils.TwitterManager;
 
 import java.io.File;
 import java.io.IOException; 
@@ -33,6 +34,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage; 
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.*; 
+
+import twitter4j.auth.AccessToken;
 
 import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
 import com.google.api.client.http.HttpTransport;
@@ -156,6 +159,11 @@ public class MailHandlerServlet extends HttpServlet {
 			        			siteModifier=new SiteModifier(newAccessToken,/*tempUser.getSiteName()*/"provamiagcourse");
 			        		    returned=siteModifier.createPage(this.siteName,this.siteContent,file);
 		        		    }
+		        		  //send new tweet
+		        		    String accessToken = tempUser.getTwitterAccessToken();
+		        		    String secretToken = tempUser.getTwitterSecretToken();
+		        			TwitterManager t = new TwitterManager(new AccessToken(accessToken, secretToken), "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
+		        			t.sendTweet("Nuovo materiale disponibile al link: " + returned);
 		        		}
 	        			/*Azioni per il caricamento su Google Site di un post di comunicazione*/
 
@@ -188,6 +196,11 @@ public class MailHandlerServlet extends HttpServlet {
 			        			siteModifier=new SiteModifier(newAccessToken,/*tempUser.getSiteName()*/"provamiagcourse");
 			        		    returned=siteModifier.createPage(this.siteName,this.siteContent);
 		        		    }
+		        		    //send new tweet
+		        		    String accessToken = tempUser.getTwitterAccessToken();
+		        		    String secretToken = tempUser.getTwitterSecretToken();
+		        			TwitterManager t = new TwitterManager(new AccessToken(accessToken, secretToken), "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
+		        			t.sendTweet("Nuovo post disponibile al link: " + returned);
 		        		}
 	        			/*Azioni per il caricamento su Google Site di un post di comunicazione*/
 	        		}else{

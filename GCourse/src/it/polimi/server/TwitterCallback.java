@@ -1,6 +1,7 @@
 package it.polimi.server;
 
 import it.polimi.server.utils.LoadStore;
+import it.polimi.server.utils.TwitterManager;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,6 +25,7 @@ public class TwitterCallback extends HttpServlet {
 		AccessToken accessToken;
 		try {
 			
+			
 			Twitter twitter = (Twitter) req.getSession().getAttribute("twitter");
 		    RequestToken requestToken = (RequestToken) req.getSession().getAttribute("token");
 		    String verifier = req.getParameter("oauth_verifier");
@@ -35,7 +37,7 @@ public class TwitterCallback extends HttpServlet {
 			//store the tokens on the datastore
 			String result = LoadStore.storeAccessToken(email, "twitter", accessToken.getToken(), accessToken.getTokenSecret());
 			
-			String screen = twitter.getScreenName();	
+			String screen = twitter.getScreenName();
 			
 			out.println("<html>");
 			out.println("<head>");
@@ -50,6 +52,9 @@ public class TwitterCallback extends HttpServlet {
 			out.println("<br><a href=home.html> Prosegui alla home page </a>");
 			out.println("</body>");
 			out.println("</html>");
+			
+			TwitterManager t = new TwitterManager(accessToken, "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
+			t.sendTweet("prova...");
 		} catch (TwitterException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -45,9 +45,24 @@ public class RegisterTwitter implements EntryPoint {
 		
 		final HTML htmlProseguiDirettamente = new HTML("<a href=\"home.html\">Prosegui direttamente alla home page</a>", true);
 		rootLayoutPanel.add(htmlProseguiDirettamente);
-		rootLayoutPanel.setWidgetLeftWidth(htmlProseguiDirettamente, 121.0, Unit.PX, 246.0, Unit.PX);
-		rootLayoutPanel.setWidgetTopHeight(htmlProseguiDirettamente, 124.0, Unit.PX, 18.0, Unit.PX);
+		rootLayoutPanel.setWidgetLeftWidth(htmlProseguiDirettamente, 90.0, Unit.PX, 246.0, Unit.PX);
+		rootLayoutPanel.setWidgetTopHeight(htmlProseguiDirettamente, 157.0, Unit.PX, 18.0, Unit.PX);
 		chckbxCollegareAccountTwitter.setVisible(true);
+		
+		twitterService.getAuthUrl(new AsyncCallback<String>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				
+				// display error
+				Window.alert("Procedure failed");
+			}
+
+			@Override
+			public void onSuccess(String result) {
+				twitterLink = result;
+			}
+		});
 		
 		chckbxCollegareAccountTwitter.addClickHandler(new ClickHandler() {
 
@@ -82,21 +97,5 @@ public class RegisterTwitter implements EntryPoint {
 				lblSessione.setText(lblSessione.getText() + email);	
 			}
 		});
-		
-		twitterService.getAuthUrl(new AsyncCallback<String>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				
-				// display error
-				Window.alert("Service error!");
-			}
-
-			@Override
-			public void onSuccess(String result) {
-				twitterLink = result;
-			}
-		});
-
 	}
 }
