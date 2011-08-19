@@ -14,11 +14,12 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
+import com.google.gwt.user.client.ui.ToggleButton;
 
 public class Register implements EntryPoint {
 
-	// send registration mail service
 	private final SendRegistrationMailAsync sendRegistrationService = GWT.create(SendRegistrationMail .class);
+	private final LoginServiceAsync loginService = GWT.create(LoginService.class);
 	
 	@Override
 	public void onModuleLoad() {
@@ -35,17 +36,17 @@ public class Register implements EntryPoint {
 		layoutPanel_1.setWidgetTopHeight(chckbxRegistraAlServizio, 108.0, Unit.PX, 19.0, Unit.PX);
 		chckbxRegistraAlServizio.setValue(false);
 		
-		Button btnLogin = new Button("Login");
+		final Button btnLogin = new Button("Login");
 		layoutPanel_1.add(btnLogin);
 		layoutPanel_1.setWidgetLeftWidth(btnLogin, 358.0, Unit.PX, 82.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(btnLogin, 74.0, Unit.PX, 22.0, Unit.PX);
 		
-		TextBox textNickname = new TextBox();
+		final TextBox textNickname = new TextBox();
 		layoutPanel_1.add(textNickname);
 		layoutPanel_1.setWidgetLeftWidth(textNickname, 188.0, Unit.PX, 153.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(textNickname, 43.0, Unit.PX, 23.0, Unit.PX);
 		
-		PasswordTextBox passwordTextBox = new PasswordTextBox();
+		final PasswordTextBox passwordTextBox = new PasswordTextBox();
 		layoutPanel_1.add(passwordTextBox);
 		layoutPanel_1.setWidgetLeftWidth(passwordTextBox, 188.0, Unit.PX, 153.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(passwordTextBox, 73.0, Unit.PX, 23.0, Unit.PX);
@@ -55,7 +56,7 @@ public class Register implements EntryPoint {
 		layoutPanel_1.setWidgetLeftWidth(lblNickname, 116.0, Unit.PX, 76.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(lblNickname, 43.0, Unit.PX, 18.0, Unit.PX);
 		
-		Label lblPassword = new Label("Password:");
+		final Label lblPassword = new Label("Password:");
 		layoutPanel_1.add(lblPassword);
 		layoutPanel_1.setWidgetLeftWidth(lblPassword, 116.0, Unit.PX, 65.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(lblPassword, 74.0, Unit.PX, 18.0, Unit.PX);
@@ -107,7 +108,7 @@ public class Register implements EntryPoint {
 					public void onSuccess(String result) {
 						
 						// display success
-						Window.alert(result);
+						Window.confirm(result);
 					}
 				});
 			}
@@ -117,7 +118,32 @@ public class Register implements EntryPoint {
 
 			@Override
 			public void onClick(ClickEvent event) {
-			//TODO
+				loginService.checkUser(textNickname.getText(), passwordTextBox.getText(), new AsyncCallback<Boolean>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						// display error
+						Window.alert("Invio dati fallito.");
+					}
+
+					@Override
+					public void onSuccess(Boolean result) {
+						if(result)
+						{
+							// display success
+							//Window.confirm("Login avvenuto con successo.");
+							
+							Window.open("home.html",  "_self", "");
+						}
+						else
+						{
+							// display error
+							Window.alert("Nickname o password non corrette.");
+							textNickname.setText("");
+							passwordTextBox.setText("");
+						}						
+					}
+				});
 			}
 			
 		});
@@ -130,6 +156,10 @@ public class Register implements EntryPoint {
 				btnRegistra.setVisible(chckbxRegistraAlServizio.getValue());
 				textBox.setVisible(chckbxRegistraAlServizio.getValue());	
 				lblIndirizzoMail.setVisible(chckbxRegistraAlServizio.getValue());
+				
+				textNickname.setEnabled(!chckbxRegistraAlServizio.getValue());
+				btnLogin.setEnabled(!chckbxRegistraAlServizio.getValue());
+				passwordTextBox.setEnabled(!chckbxRegistraAlServizio.getValue());
 			}
 			
 		});

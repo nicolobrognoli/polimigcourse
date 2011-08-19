@@ -6,6 +6,15 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
   <servlet>
+    <servlet-name>LoginServiceImpl</servlet-name>
+    <servlet-class>it.polimi.server.LoginServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServiceImpl</servlet-name>
+    <url-pattern>/it.polimi.Register/loginservice</url-pattern>
+  </servlet-mapping>	
+	
+  <servlet>
     <servlet-name>SendRegistrationMailImpl</servlet-name>
     <servlet-class>it.polimi.server.SendRegistrationMailImpl</servlet-class>
   </servlet>

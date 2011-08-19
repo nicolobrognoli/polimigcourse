@@ -1,7 +1,5 @@
 package it.polimi.client;
 
-import javax.servlet.http.HttpSession;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface SessionHandlerAsync {
