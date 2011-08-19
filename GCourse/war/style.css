@@ -5,7 +5,11 @@ a:link,.w,.w a:link{color:#0000cc}
 a:visited{color:#551a8b}
 a:active{color:#ff0000}
 
-
+.header{
+	background: lightGray;
+	height: 20%;
+}
+	
 
 .loginPrompt {
   background: #dddddd;
@@ -42,6 +46,7 @@ a:active{color:#ff0000}
 
 .gwt-TabPanel {
   margin-top: 4px;
+  
 }
 
 .gwt-TabPanelBottom {

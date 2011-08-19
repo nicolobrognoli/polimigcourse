@@ -46,17 +46,17 @@ public class Register implements EntryPoint {
 		
 		final Label lblNickname = new Label("Nickname:");
 		layoutPanel_1.add(lblNickname);
-		layoutPanel_1.setWidgetLeftWidth(lblNickname, 116.0, Unit.PX, 76.0, Unit.PX);
-		layoutPanel_1.setWidgetTopHeight(lblNickname, 43.0, Unit.PX, 18.0, Unit.PX);
+		layoutPanel_1.setWidgetLeftWidth(lblNickname, 103.0, Unit.PX, 76.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(lblNickname, 48.0, Unit.PX, 18.0, Unit.PX);
 		
 		final Label lblPassword = new Label("Password:");
 		layoutPanel_1.add(lblPassword);
-		layoutPanel_1.setWidgetLeftWidth(lblPassword, 116.0, Unit.PX, 65.0, Unit.PX);
+		layoutPanel_1.setWidgetLeftWidth(lblPassword, 103.0, Unit.PX, 79.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(lblPassword, 74.0, Unit.PX, 18.0, Unit.PX);
 		
 		final Label lblIndirizzoMail = new Label("Indirizzo mail:");
 		layoutPanel_1.add(lblIndirizzoMail);
-		layoutPanel_1.setWidgetLeftWidth(lblIndirizzoMail, 134.0, Unit.PX, 98.0, Unit.PX);
+		layoutPanel_1.setWidgetLeftWidth(lblIndirizzoMail, 121.0, Unit.PX, 106.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(lblIndirizzoMail, 151.0, Unit.PX, 19.0, Unit.PX);
 		lblIndirizzoMail.addStyleName("style");
 		

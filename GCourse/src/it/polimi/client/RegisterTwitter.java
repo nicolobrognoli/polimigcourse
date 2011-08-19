@@ -45,8 +45,8 @@ public class RegisterTwitter implements EntryPoint {
 		
 		final HTML htmlProseguiDirettamente = new HTML("<a href=\"home.html\">Prosegui direttamente alla home page</a>", true);
 		rootLayoutPanel.add(htmlProseguiDirettamente);
-		rootLayoutPanel.setWidgetLeftWidth(htmlProseguiDirettamente, 90.0, Unit.PX, 246.0, Unit.PX);
-		rootLayoutPanel.setWidgetTopHeight(htmlProseguiDirettamente, 140.0, Unit.PX, 18.0, Unit.PX);
+		rootLayoutPanel.setWidgetLeftWidth(htmlProseguiDirettamente, 121.0, Unit.PX, 246.0, Unit.PX);
+		rootLayoutPanel.setWidgetTopHeight(htmlProseguiDirettamente, 124.0, Unit.PX, 18.0, Unit.PX);
 		chckbxCollegareAccountTwitter.setVisible(true);
 		
 		chckbxCollegareAccountTwitter.addClickHandler(new ClickHandler() {
