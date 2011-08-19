@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.ToggleButton;
+import com.google.gwt.user.client.ui.RadioButton;
 
 public class Register implements EntryPoint {
 
@@ -29,12 +30,6 @@ public class Register implements EntryPoint {
 		
 		LayoutPanel layoutPanel_1 = new LayoutPanel();
 		rootLayoutPanel.add(layoutPanel_1);
-		
-		final CheckBox chckbxRegistraAlServizio = new CheckBox("Registra al servizio GCourse");
-		layoutPanel_1.add(chckbxRegistraAlServizio);
-		layoutPanel_1.setWidgetLeftWidth(chckbxRegistraAlServizio, 117.0, Unit.PX, 235.0, Unit.PX);
-		layoutPanel_1.setWidgetTopHeight(chckbxRegistraAlServizio, 108.0, Unit.PX, 19.0, Unit.PX);
-		chckbxRegistraAlServizio.setValue(false);
 		
 		final Button btnLogin = new Button("Login");
 		layoutPanel_1.add(btnLogin);
@@ -51,7 +46,7 @@ public class Register implements EntryPoint {
 		layoutPanel_1.setWidgetLeftWidth(passwordTextBox, 188.0, Unit.PX, 153.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(passwordTextBox, 73.0, Unit.PX, 23.0, Unit.PX);
 		
-		Label lblNickname = new Label("Nickname:");
+		final Label lblNickname = new Label("Nickname:");
 		layoutPanel_1.add(lblNickname);
 		layoutPanel_1.setWidgetLeftWidth(lblNickname, 116.0, Unit.PX, 76.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(lblNickname, 43.0, Unit.PX, 18.0, Unit.PX);
@@ -84,10 +79,21 @@ public class Register implements EntryPoint {
 		layoutPanel_1.setWidgetTopHeight(btnRegistra, 201.0, Unit.PX, 23.0, Unit.PX);
 		btnRegistra.setText("Registra");
 		
-		btnRegistra.setVisible(chckbxRegistraAlServizio.getValue());
-		lblVerrInviataUnemail.setVisible(chckbxRegistraAlServizio.getValue());
-		textBox.setVisible(chckbxRegistraAlServizio.getValue());
-		lblIndirizzoMail.setVisible(chckbxRegistraAlServizio.getValue());
+		final RadioButton rdbtnLogin = new RadioButton("group", "Login");
+		layoutPanel_1.add(rdbtnLogin);
+		layoutPanel_1.setWidgetLeftWidth(rdbtnLogin, 52.0, Unit.PX, 127.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(rdbtnLogin, 16.0, Unit.PX, 19.0, Unit.PX);
+		
+		final RadioButton rdbtnRegistrazione = new RadioButton("group", "Registrazione");
+		layoutPanel_1.add(rdbtnRegistrazione);
+		layoutPanel_1.setWidgetLeftWidth(rdbtnRegistrazione, 52.0, Unit.PX, 127.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(rdbtnRegistrazione, 108.0, Unit.PX, 19.0, Unit.PX);
+		
+		rdbtnLogin.setValue(true);
+		btnRegistra.setVisible(!rdbtnLogin.getValue());
+		lblVerrInviataUnemail.setVisible(!rdbtnLogin.getValue());
+		textBox.setVisible(!rdbtnLogin.getValue());
+		lblIndirizzoMail.setVisible(!rdbtnLogin.getValue());
 		
 		// button event
 		btnRegistra.addClickHandler(new ClickHandler() {
@@ -133,7 +139,7 @@ public class Register implements EntryPoint {
 							// display success
 							//Window.confirm("Login avvenuto con successo.");
 							
-							Window.open("home.html",  "_self", "");
+							Window.open("/home.html",  "_self", "");
 						}
 						else
 						{
@@ -148,18 +154,38 @@ public class Register implements EntryPoint {
 			
 		});
 		
-		chckbxRegistraAlServizio.addClickHandler(new ClickHandler() {
+		rdbtnRegistrazione.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				lblVerrInviataUnemail.setVisible(chckbxRegistraAlServizio.getValue());
-				btnRegistra.setVisible(chckbxRegistraAlServizio.getValue());
-				textBox.setVisible(chckbxRegistraAlServizio.getValue());	
-				lblIndirizzoMail.setVisible(chckbxRegistraAlServizio.getValue());
+				lblVerrInviataUnemail.setVisible(rdbtnRegistrazione.getValue());
+				btnRegistra.setVisible(rdbtnRegistrazione.getValue());
+				textBox.setVisible(rdbtnRegistrazione.getValue());	
+				lblIndirizzoMail.setVisible(rdbtnRegistrazione.getValue());
 				
-				textNickname.setEnabled(!chckbxRegistraAlServizio.getValue());
-				btnLogin.setEnabled(!chckbxRegistraAlServizio.getValue());
-				passwordTextBox.setEnabled(!chckbxRegistraAlServizio.getValue());
+				textNickname.setVisible(!rdbtnRegistrazione.getValue());
+				btnLogin.setVisible(!rdbtnRegistrazione.getValue());
+				passwordTextBox.setVisible(!rdbtnRegistrazione.getValue());
+				lblNickname.setVisible(!rdbtnRegistrazione.getValue());
+				lblPassword.setVisible(!rdbtnRegistrazione.getValue());
+			}
+			
+		});
+		
+		rdbtnLogin.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				lblVerrInviataUnemail.setVisible(!rdbtnLogin.getValue());
+				btnRegistra.setVisible(!rdbtnLogin.getValue());
+				textBox.setVisible(!rdbtnLogin.getValue());	
+				lblIndirizzoMail.setVisible(!rdbtnLogin.getValue());
+				
+				textNickname.setVisible(rdbtnLogin.getValue());
+				btnLogin.setVisible(rdbtnLogin.getValue());
+				passwordTextBox.setVisible(rdbtnLogin.getValue());
+				lblNickname.setVisible(rdbtnLogin.getValue());
+				lblPassword.setVisible(rdbtnLogin.getValue());
 			}
 			
 		});

@@ -7,6 +7,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface LoadStoreService extends RemoteService{
 	
 	//search the user and modify the parameters
+	String updateUser(String email, String name, String pwd, String site, boolean professor);
+
 	String updateUser(String email, String name, String pwd, boolean professor);
 	
 }
