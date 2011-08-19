@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <application>polimigcourse</application>
-  <version>1</version>
+  <version>2</version>
 
   <!-- Configure serving/caching of GWT files -->
   <static-files>
@@ -14,7 +14,9 @@
     <include path="**.cache.*" expiration="365d" />
     <exclude path="**.gwt.rpc" />
   </static-files>
-
+<inbound-services>
+  <service>mail</service>
+</inbound-services>
   <!-- Configure java.util.logging -->
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>

@@ -12,7 +12,35 @@ import javax.jdo.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 
 public class LoadStore {
-
+	public static String updateAccessToken(String email,String accessToken){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
+			List<UserPO> results = (List<UserPO>)query.execute();
+			Iterator<UserPO> iter = results.iterator();
+			UserPO userTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "email not found";
+			else 
+			{
+				do{
+					userTemp = (UserPO) iter.next();
+					if(userTemp.getUser().getEmail().equals(email))					
+					{
+						userTemp.setGoogleAccessToken(accessToken);
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
+		return "updated";
+	}
 	public static String storeAccessToken(String email, String kind, String accessToken, String refreshToken){
 
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -56,7 +84,7 @@ public class LoadStore {
 		return "updated";
 	}
 	
-	public static String verifyUser(String sender){
+	public static UserPO verifyUser(String sender){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			// get POs from DataStore
@@ -66,17 +94,17 @@ public class LoadStore {
 			UserPO userTemp;
 			// check empty results
 			if (results.isEmpty())
-				return "errore: Email non presente";
+				return null;
 			else 
 			{
 				do{
 					userTemp = (UserPO) iter.next();
 					if(userTemp.getUser().getEmail().equals(sender))					
 					{
-						return "presente";
+						return userTemp;
 					}
 				}while(iter.hasNext());			
-				return "errore";
+				return null;
 			}
 		} finally {
 			
