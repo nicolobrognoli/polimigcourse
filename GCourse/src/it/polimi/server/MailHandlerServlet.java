@@ -19,8 +19,15 @@ import it.polimi.server.utils.SiteModifier;
 import it.polimi.server.utils.TwitterManager;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException; 
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Properties; 
 
 import javax.mail.Message;
@@ -101,6 +108,8 @@ public class MailHandlerServlet extends HttpServlet {
         	Object o=message.getContent(),file=null;
         	subject=message.getSubject();
             Message msg = new MimeMessage(session);
+            InputStream input=null;
+            int size=0;
             realSender=this.getRealUser(sender);
             msg.setFrom(new InternetAddress("reply@polimigcourse.appspotmail.com", "PolimiGCourse"));
             System.out.println(realSender);
@@ -114,14 +123,26 @@ public class MailHandlerServlet extends HttpServlet {
 	            	  msgBody=msgBody+"Parte "+i+": "+part.getFileName()+"Tipo: "+part.getContentType();
 	            	  if(part.getFileName()!=null){
             			  file=part.getContent();
+            			  //Inizio http post
             			  
-            			  msgBody+="nome del file: "+part.getFileName()+" "+((File)file).getName();
-	            		  InputStream input=part.getInputStream();
-	            		  int j,size;
+            			  URL endpoint=new URL("https://sites.google.com/feeds/content/site/provamiagcourse");
+            			  HttpURLConnection  urlc = (HttpURLConnection) endpoint.openConnection();
+            			  urlc.setRequestMethod("POST");
+            			  OutputStream out = urlc.getOutputStream();
+            			  Writer writer = new OutputStreamWriter(out, "UTF-8");
+            			  Reader data;
+            			  //pipe(data, writer);
+            			  //writer.close();
+            			  
+            			  //fine http post
+            		//	  msgBody+="nome del file: "+part.getFileName()+" "+((File)file).getName();
+	            		  input=part.getInputStream();
+	            		  int j;
 	            		  size=part.getSize();
-	            		  for(j=0;j<size;j++){
+	            		/*  for(j=0;j<size;j++){
 	            			 input.read();
-	            		  }
+	            		  }*/
+	            		  msgBody+="Size: "+size;
 	            	  }else{
 	            		  if(part.isMimeType("text/plain")||part.isMimeType("text/html")){
 	            			  content=(String)part.getContent();
@@ -149,21 +170,23 @@ public class MailHandlerServlet extends HttpServlet {
 		        		else{
 		        			parseBody(content);
 		        			msgBody+=this.siteContent+this.siteName;
-		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),/*tempUser.getSiteName()*/"provamiagcourse");
-		        		    String returned=siteModifier.createPage(this.siteName,this.siteContent,file);
+		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
+		        		    String returned=siteModifier.createPage(this.siteName,this.siteContent,input,size);
 		        		    if(returned.contains("expired")){
 		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 		        				access.refreshToken();
 		        				String newAccessToken=access.getAccessToken();
 		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
-			        			siteModifier=new SiteModifier(newAccessToken,/*tempUser.getSiteName()*/"provamiagcourse");
-			        		    returned=siteModifier.createPage(this.siteName,this.siteContent,file);
+			        			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
+			        		    returned=siteModifier.createPage(this.siteName,this.siteContent,input,size);
+			        		    msgBody+="Ritornato: "+returned;
 		        		    }
 		        		  //send new tweet
 		        		    String accessToken = tempUser.getTwitterAccessToken();
 		        		    String secretToken = tempUser.getTwitterSecretToken();
 		        			TwitterManager t = new TwitterManager(new AccessToken(accessToken, secretToken), "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
 		        			t.sendTweet("Nuovo materiale disponibile al link: " + returned);
+		        			msgBody+="Ritornato: "+returned;
 		        		}
 	        			/*Azioni per il caricamento su Google Site di un post di comunicazione*/
 
@@ -186,14 +209,14 @@ public class MailHandlerServlet extends HttpServlet {
 		        		else{
 		        			parseBody(content);
 		        			msgBody+=this.siteContent+this.siteName;
-		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),/*tempUser.getSiteName()*/"provamiagcourse");
+		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
 		        		    String returned=siteModifier.createPage(this.siteName,this.siteContent);
 		        		    if(returned.contains("expired")){
 		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 		        				access.refreshToken();
 		        				String newAccessToken=access.getAccessToken();
 		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
-			        			siteModifier=new SiteModifier(newAccessToken,/*tempUser.getSiteName()*/"provamiagcourse");
+			        			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
 			        		    returned=siteModifier.createPage(this.siteName,this.siteContent);
 		        		    }
 		        		    //send new tweet
