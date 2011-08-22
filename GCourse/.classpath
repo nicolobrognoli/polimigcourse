@@ -55,5 +55,11 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlParserAPIs-2.6.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xpp3-1.1.4c-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xpp3-1.1.4c.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/appengine-java-io-0.1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/appengine-java-io-metaclass-0.1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gaevfs-0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs-2.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

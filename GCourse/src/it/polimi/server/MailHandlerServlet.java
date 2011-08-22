@@ -18,6 +18,7 @@ import it.polimi.server.utils.LoadStore;
 import it.polimi.server.utils.SiteModifier;
 import it.polimi.server.utils.TwitterManager;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException; 
@@ -42,6 +43,12 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.*; 
 
+import org.apache.commons.vfs.FileContent;
+import org.apache.commons.vfs.FileObject;
+import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs.FileSystemManager;
+import org.apache.commons.vfs.Selectors;
+
 import twitter4j.auth.AccessToken;
 
 import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
@@ -51,6 +58,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
 import com.google.gdata.data.sites.BaseContentEntry;
 import com.google.gdata.util.ServiceException;
+import com.newatlanta.commons.vfs.provider.gae.GaeVFS;
 
 
 
@@ -64,6 +72,26 @@ public class MailHandlerServlet extends HttpServlet {
 	private static final HttpTransport TRANSPORT = new NetHttpTransport();
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	private String siteName,siteContent;
+	private FileSystemManager fsManager;
+	
+	public void init(){
+		GaeVFS.setRootPath( getServletContext().getRealPath( "/" ) );
+		try {
+			fsManager = GaeVFS.getManager();
+			FileObject tmpFolder = fsManager.resolveFile( "gae://WEB-INF/tmp" );
+		    if ( !tmpFolder.exists() ) {
+		        tmpFolder.createFolder();
+		    }
+		} catch (FileSystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	}
+	
+	public void destroy() {
+	    GaeVFS.close(); 
+	}
 	
 	private String parseBody(String body){
 		int title,content;
@@ -116,33 +144,41 @@ public class MailHandlerServlet extends HttpServlet {
             msg.addRecipient(Message.RecipientType.TO,message.getFrom()[0]);
             msg.setSubject("Your Example.com account has been activated");
             MimeMultipart multipart=(MimeMultipart)o;
+            FileObject fileObject = null;
+            File f = null;
 	        try {
 	        	for (int i = 0; i < multipart.getCount(); i++) {
 	            	  Part part =  multipart.getBodyPart(i);
 	            	  System.out.println(part.getFileName());
 	            	  msgBody=msgBody+"Parte "+i+": "+part.getFileName()+"Tipo: "+part.getContentType();
 	            	  if(part.getFileName()!=null){
-            			  file=part.getContent();
-            			  //Inizio http post
-            			  
-            			  URL endpoint=new URL("https://sites.google.com/feeds/content/site/provamiagcourse");
-            			  HttpURLConnection  urlc = (HttpURLConnection) endpoint.openConnection();
-            			  urlc.setRequestMethod("POST");
-            			  OutputStream out = urlc.getOutputStream();
-            			  Writer writer = new OutputStreamWriter(out, "UTF-8");
-            			  Reader data;
-            			  //pipe(data, writer);
-            			  //writer.close();
-            			  
-            			  //fine http post
-            		//	  msgBody+="nome del file: "+part.getFileName()+" "+((File)file).getName();
+            			  file=part.getContent();            			 
 	            		  input=part.getInputStream();
-	            		  int j;
-	            		  size=part.getSize();
-	            		/*  for(j=0;j<size;j++){
-	            			 input.read();
-	            		  }*/
-	            		  msgBody+="Size: "+size;
+	            
+	         
+	                   
+	            		  
+	            		  //TODO
+	                      
+	            		  try {
+	            		        
+	            		        // an example of using Commons VFS (the FileObject class is similar to java.io.File)
+	            		        fileObject = fsManager.resolveFile( "gae://prova.jpg" );
+	            		        fileObject.createFile();
+	            		     
+	            		        OutputStream output = fileObject.getContent().getOutputStream();
+	            		        byte buf[]=new byte[1024];
+	            		        int len;
+	            		        while((len=input.read(buf))>0)
+	            		        	  output.write(buf,0,len);
+	            		        output.close();
+	            		        
+	            		    } finally {
+	            		        GaeVFS.clearFilesCache(); 	            		     
+	            		    }
+	            		    
+	            		    f = fileObject.getFileSystem().replicateFile(fileObject, Selectors.SELECT_FILES);
+	            		  msgBody+=" Size: "+size + " file content:" + fileObject.getContent().getFile().getName();
 	            	  }else{
 	            		  if(part.isMimeType("text/plain")||part.isMimeType("text/html")){
 	            			  content=(String)part.getContent();
@@ -171,14 +207,14 @@ public class MailHandlerServlet extends HttpServlet {
 		        			parseBody(content);
 		        			msgBody+=this.siteContent+this.siteName;
 		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-		        		    String returned=siteModifier.createPage(this.siteName,this.siteContent,input,size);
+		        		    String returned=siteModifier.createPage(this.siteName,this.siteContent, f);
 		        		    if(returned.contains("expired")){
 		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 		        				access.refreshToken();
 		        				String newAccessToken=access.getAccessToken();
 		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
 			        			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
-			        		    returned=siteModifier.createPage(this.siteName,this.siteContent,input,size);
+			        		    returned=siteModifier.createPage(this.siteName,this.siteContent,f);
 			        		    msgBody+="Ritornato: "+returned;
 		        		    }
 		        		  //send new tweet

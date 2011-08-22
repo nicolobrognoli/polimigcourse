@@ -15,6 +15,9 @@ import java.nio.channels.Channels;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.vfs.FileContent;
+import org.apache.commons.vfs.FileObject;
+
 import it.polimi.server.SitesException;
 import it.polimi.server.SitesHelper;
 
@@ -97,7 +100,7 @@ public class SiteModifier {
 		}
 	}
 
-	public String createPage(String namePage, String content, InputStream input,int size) throws MalformedURLException, IOException {
+	public String createPage(String namePage, String content, File file) throws MalformedURLException, IOException {
 		BaseContentEntry<?> page;
 	    SitesHelper sitesHelper;
 	    sitesHelper = new SitesHelper("polimigcourse","site",this.siteName);
@@ -153,12 +156,9 @@ public class SiteModifier {
 			result=resp.getFinalUrl().getPath();
 			resp=nome.fetch(resp.getFinalUrl());
 			result=resp.getFinalUrl().getPath();*/
-			//sitesHelper.uploadAttachment(new File(path), (BasePageEntry<?>)page);
-			/*XmlBlob xml = new XmlBlob();
-			xml.setBlob("<p>"+content+"</p>");
-			page.setContent(new XhtmlTextConstruct(xml));
-			page.update();*/
-			//sitesHelper.service.update(new URL(sitesHelper.getContentFeedUrl()), page);
+			
+			sitesHelper.uploadAttachment(file, (BasePageEntry<?>)page);
+			 
 			return "https://sites.google.com/site/"+this.siteName+"/"+namePage;
 
 
