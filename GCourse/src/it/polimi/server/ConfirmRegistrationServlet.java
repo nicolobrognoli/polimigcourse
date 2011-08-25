@@ -79,7 +79,8 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 					out.println("</head>");
 					out.println("<body>");
 					out.println("Conferma registrazione account: " + email);
-					out.println("<a href=\"" + authorizeUrl + "\">Aggiungi permessi Google al nostro servizio</a>");				
+					out.println("<br><br><a href=\"" + authorizeUrl + "\">Aggiungi permessi Google al nostro servizio</a>");
+					out.println("<br>Verrai reinderizzato alla pagina di login di Google.");
 				}
 				else
 				{

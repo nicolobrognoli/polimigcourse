@@ -147,4 +147,37 @@ public class LoadStore {
 		}
 		return "not found";
 	}
+	
+	public static String deleteUser(String email){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
+			List<UserPO> results = (List<UserPO>)query.execute();
+			Iterator<UserPO> iter = results.iterator();
+			UserPO userTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "not found";
+			else 
+			{
+				do{
+					userTemp = (UserPO) iter.next();
+					if(userTemp.getUser().getEmail().equals(email))				
+					{
+						pm.deletePersistent(userTemp);
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
+		
+		return "deleted";
+	}
 }
+
+	

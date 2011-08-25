@@ -1,9 +1,5 @@
 package it.polimi.server.data;
 
-import java.util.Iterator;
-import java.util.List;
-
-import javax.jdo.Query;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;

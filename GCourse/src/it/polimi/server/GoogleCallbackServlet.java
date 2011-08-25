@@ -39,25 +39,23 @@ public class GoogleCallbackServlet extends HttpServlet{
 		String email = (String) req.getSession().getAttribute("email");
 		
 		String authorizationCode = req.getParameter("code");
+		String error = req.getParameter("error");
+		
+		if(error == null)
+		{
+			 // Exchange for an access and refresh token
+		    GoogleAuthorizationCodeGrant authRequest = new GoogleAuthorizationCodeGrant(TRANSPORT, JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, authorizationCode, CALLBACK_URL);
+		    authRequest.useBasicAuthorization = false;
+		    AccessTokenResponse authResponse = authRequest.execute();
+		    String result = LoadStore.storeAccessToken(email, "google", authResponse.accessToken, authResponse.refreshToken);
+		    resp.sendRedirect("confirm.html");
+		}
+		else
+		{
+			LoadStore.deleteUser(email);
+			resp.sendRedirect("google_error.html");
+		}
 
-	    // Exchange for an access and refresh token
-	    GoogleAuthorizationCodeGrant authRequest = new GoogleAuthorizationCodeGrant(TRANSPORT, JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, authorizationCode, CALLBACK_URL);
-	    authRequest.useBasicAuthorization = false;
-	    AccessTokenResponse authResponse = authRequest.execute();
-	    String result = LoadStore.storeAccessToken(email, "google", authResponse.accessToken, authResponse.refreshToken);
-
-	    resp.sendRedirect("confirm.html");
-		/*out.println("<html>");
-		out.println("<head>");
-		out.println("<title>Google callback</title>");
-		out.println("</head>");
-		out.println("<body>");
-		out.println("<br>Result: " + result);
-		out.println("<br>Email: " + email);
-		out.println("<br>Access token: " + authResponse.accessToken);
-		out.println("<br>Refresh token: " + authResponse.refreshToken);
-		out.println("</body>");
-		out.println("</html>");*/
 	}
 
 }

@@ -111,6 +111,7 @@ public class Register implements EntryPoint {
 						
 						// display success
 						Window.confirm(result);
+						Window.open("/redirect.html",  "_self", "");
 					}
 				});
 			}
