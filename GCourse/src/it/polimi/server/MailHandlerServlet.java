@@ -62,7 +62,7 @@ public class MailHandlerServlet extends HttpServlet {
 	private static final String CLIENT_SECRET = "zBWLvQsYnEF4-AAg1PZYu7eA";
 	private static final HttpTransport TRANSPORT = new NetHttpTransport();
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-	private String siteName,siteContent;
+	private String siteName,siteContent,course;
 	
 	private String parseBody(String body){
 		int title,content;
@@ -169,13 +169,14 @@ public class MailHandlerServlet extends HttpServlet {
 	            	  msgBody=msgBody+"Parte "+i+": "+part.getFileName()+"Tipo: "+part.getContentType();
 	            	  if(part.getFileName()!=null){
 	            		  returned=uploadFile(part,tempUser);
+	            		  msgBody+=returned;
 	            		  if(returned.contains("Token invalid")){
 	            			  	msgBody+="Aggiornato token e fatto upload";
 		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 		        				access.refreshToken();
 		        				String newAccessToken=access.getAccessToken();
 		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
-		        				uploadFile(part,tempUser);
+		        				returned=uploadFile(part,tempUser);
 		        				if(returned.contains("Token invalid")){
 		            			  	msgBody+="Aggiornato token e fatto upload";
 		        				}
@@ -208,14 +209,14 @@ public class MailHandlerServlet extends HttpServlet {
 		        			parseBody(content);
 		        			msgBody+=this.siteContent+this.siteName;
 		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-		        		    returned=siteModifier.createPage(this.siteName,this.siteContent,input,size);
+		        		    returned=siteModifier.createPage(this.siteName,this.siteContent,this.course);
 		        		    if(returned.contains("expired")){
 		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 		        				access.refreshToken();
 		        				String newAccessToken=access.getAccessToken();
 		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
 			        			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
-			        		    returned=siteModifier.createPage(this.siteName,this.siteContent,input,size);
+			        		    returned=siteModifier.createPage(this.siteName,this.siteContent,this.course);
 			        		    msgBody+="Ritornato: "+returned;
 		        		    }
 		        		  //send new tweet
@@ -246,14 +247,14 @@ public class MailHandlerServlet extends HttpServlet {
 		        			parseBody(content);
 		        			msgBody+=this.siteContent+this.siteName;
 		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-		        		    returned=siteModifier.createPage(this.siteName,this.siteContent);
+		        		    returned=siteModifier.createPage(this.siteName,this.siteContent,this.course);
 		        		    if(returned.contains("expired")){
 		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 		        				access.refreshToken();
 		        				String newAccessToken=access.getAccessToken();
 		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
 			        			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
-			        		    returned=siteModifier.createPage(this.siteName,this.siteContent);
+			        		    returned=siteModifier.createPage(this.siteName,this.siteContent,this.course);
 		        		    }
 		        		    //send new tweet
 		        		    String accessToken = tempUser.getTwitterAccessToken();
@@ -262,8 +263,8 @@ public class MailHandlerServlet extends HttpServlet {
 		        			t.sendTweet("Nuovo post disponibile al link: " + returned);
 		        		}
 	        			/*Azioni per il caricamento su Google Site di un post di comunicazione*/
-	        		}else{
-	        			msgBody=msgBody+"Errore";
+	        		}else if(subject.contains("Course")){
+	        			LoadStore.storeNewCourse(tempUser,this.siteName, this.siteContent);
 	        			/*Errore oppure un'altra azione*/
 	        		}
 	        	}
