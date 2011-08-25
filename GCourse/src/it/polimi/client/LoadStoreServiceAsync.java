@@ -10,4 +10,5 @@ public interface LoadStoreServiceAsync {
 	void updateUser(String email, String name, String pwd, String site,
 			boolean professor, AsyncCallback<String> callback);
 
+	void isProfessor(String email, AsyncCallback<Boolean> callback);
 }

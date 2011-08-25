@@ -11,4 +11,5 @@ public interface LoadStoreService extends RemoteService{
 
 	String updateUser(String email, String name, String pwd, boolean professor);
 	
+	boolean isProfessor(String email);
 }

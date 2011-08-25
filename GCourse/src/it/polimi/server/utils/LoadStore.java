@@ -10,10 +10,6 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import twitter4j.auth.AccessToken;
-
-import com.google.appengine.api.datastore.Query.FilterOperator;
-
 public class LoadStore {
 	public static String updateAccessToken(String email,String accessToken){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -248,7 +244,7 @@ public class LoadStore {
 		else
 			return "course not exists";
 	}
-
+	
 }
 
 	

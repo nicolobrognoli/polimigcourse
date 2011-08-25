@@ -11,6 +11,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import it.polimi.client.LoadStoreService;
 import it.polimi.server.data.PMF;
 import it.polimi.server.data.UserPO;
+import it.polimi.server.utils.LoadStore;
 
 @SuppressWarnings("serial")
 public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadStoreService {
@@ -81,4 +82,10 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 		}
 		return "updated";
 	}
+
+	@Override
+	public boolean isProfessor(String email) {		
+		return LoadStore.loadUser(email).isProfessor();
+	}
+	
 }
