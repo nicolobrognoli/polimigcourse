@@ -1,6 +1,6 @@
 package it.polimi.server.utils;
 
-import it.polimi.server.data.Course;
+import it.polimi.server.data.CoursePO;
 import it.polimi.server.data.PMF;
 import it.polimi.server.data.UserPO;
 
@@ -184,18 +184,18 @@ public class LoadStore {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			// get POs from DataStore
-			Query query = pm.newQuery(Course.class);
+			Query query = pm.newQuery(CoursePO.class);
 			@SuppressWarnings("unchecked")
-			List<Course> results = (List<Course>)query.execute();
-			Iterator<Course> iter = results.iterator();
-			Course courseTemp;
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
 			// check empty results
 			
 			do{
-				courseTemp = (Course) iter.next();
+				courseTemp = (CoursePO) iter.next();
 				if(courseTemp.getName().equals(name))
 					return "course already exists";
-				Course course = new Course();
+				CoursePO course = new CoursePO();
 				course.setName(name);
 				course.setProfessor(professor);
 				course.setDescription(description);
@@ -216,14 +216,14 @@ public class LoadStore {
 		try {
 			
 			// get POs from DataStore
-			Query query = pm.newQuery(Course.class);
+			Query query = pm.newQuery(CoursePO.class);
 			@SuppressWarnings("unchecked")
-			List<Course> results = (List<Course>)query.execute();
-			Iterator<Course> iter = results.iterator();
-			Course courseTemp;
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
 			
 			do{
-				courseTemp = (Course) iter.next();
+				courseTemp = (CoursePO) iter.next();
 				if(courseTemp.getName().equals(course))
 				{
 					if(courseTemp.getStudents().contains(student))
