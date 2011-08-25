@@ -20,7 +20,6 @@ public class Register implements EntryPoint {
 	private final SendRegistrationMailAsync sendRegistrationService = GWT.create(SendRegistrationMail .class);
 	private final LoginServiceAsync loginService = GWT.create(LoginService.class);
 	
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onModuleLoad() {
 		
@@ -67,7 +66,7 @@ public class Register implements EntryPoint {
 		layoutPanel_1.setWidgetLeftWidth(textBox, 233.0, Unit.PX, 163.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(textBox, 151.0, Unit.PX, 19.0, Unit.PX);
 		
-		final Label lblVerrInviataUnemail = new Label("Verrà inviata un'email per la conferma all'indirizzo indicato");
+		final Label lblVerrInviataUnemail = new Label("Verra' inviata un'email per la conferma all'indirizzo indicato");
 		layoutPanel_1.add(lblVerrInviataUnemail);
 		layoutPanel_1.setWidgetLeftWidth(lblVerrInviataUnemail, 64.0, Unit.PX, 386.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(lblVerrInviataUnemail, 176.0, Unit.PX, 19.0, Unit.PX);
@@ -79,7 +78,6 @@ public class Register implements EntryPoint {
 		btnRegistra.setText("Registra");
 		
 		final RadioButton rdbtnLogin = new RadioButton("group", "Login");
-		rdbtnLogin.setChecked(true);
 		layoutPanel_1.add(rdbtnLogin);
 		layoutPanel_1.setWidgetLeftWidth(rdbtnLogin, 52.0, Unit.PX, 127.0, Unit.PX);
 		layoutPanel_1.setWidgetTopHeight(rdbtnLogin, 16.0, Unit.PX, 19.0, Unit.PX);

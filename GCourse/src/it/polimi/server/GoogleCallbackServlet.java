@@ -44,7 +44,6 @@ public class GoogleCallbackServlet extends HttpServlet{
 	    GoogleAuthorizationCodeGrant authRequest = new GoogleAuthorizationCodeGrant(TRANSPORT, JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, authorizationCode, CALLBACK_URL);
 	    authRequest.useBasicAuthorization = false;
 	    AccessTokenResponse authResponse = authRequest.execute();
-
 	    String result = LoadStore.storeAccessToken(email, "google", authResponse.accessToken, authResponse.refreshToken);
 
 	    resp.sendRedirect("confirm.html");
