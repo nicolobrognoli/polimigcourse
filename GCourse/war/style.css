@@ -92,7 +92,8 @@ a:active{color:#ff0000}
 }  
 	
 .gwt-StackPanel .gwt-StackPanelItem-selected {   
-	color: black;   
+	color: black;
+	font-weight: bold;
 	cursor: default; 
 }
 
