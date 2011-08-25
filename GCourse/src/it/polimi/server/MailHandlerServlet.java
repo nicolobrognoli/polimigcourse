@@ -20,18 +20,13 @@ import it.polimi.server.utils.TwitterManager;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException; 
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
-import java.io.Writer;
 import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties; 
 
@@ -47,10 +42,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.*; 
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import twitter4j.auth.AccessToken;
 
@@ -59,13 +50,6 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
-import com.google.gdata.client.authn.oauth.OAuthException;
-import com.google.gdata.client.authn.oauth.OAuthHelper;
-import com.google.gdata.client.authn.oauth.OAuthParameters;
-import com.google.gdata.client.authn.oauth.OAuthRsaSha1Signer;
-import com.google.gdata.client.authn.oauth.OAuthSigner;
-import com.google.gdata.data.sites.BaseContentEntry;
-import com.google.gdata.util.ServiceException;
 
 
 
@@ -93,6 +77,51 @@ public class MailHandlerServlet extends HttpServlet {
 		}
 		return "cis";
 	}
+	
+	private String uploadFile(Part part,UserPO tempUser) throws IOException, MessagingException{
+		  InputStream input=part.getInputStream();
+		  int size=part.getSize();
+		  String siteName,fileName;
+		  URL endpoint=new URL("https://sites.google.com/feeds/content/site/"+tempUser.getSiteName());
+		  HttpURLConnection  urlc =(HttpURLConnection) endpoint.openConnection();
+		  urlc.setDoOutput(true);
+		  urlc.setDoInput(true);
+		  urlc.setRequestProperty("Host","sites.google.com");
+		  urlc.setRequestProperty("GData-Version","1.4");
+		  urlc.setRequestProperty("Authorization","AuthSub token=\""+tempUser.getGoogleAccessToken()+"\"");
+		  urlc.setRequestProperty("Content-Type","multipart/related;boundary=END_OF_PART");
+		  OutputStream out = urlc.getOutputStream();
+		  DataOutputStream writer = new DataOutputStream(out);
+		  siteName=tempUser.getSiteName();
+		  fileName=part.getFileName();
+			  writer.writeBytes("\r\n--END_OF_PART\r\nContent-Type: application/atom+xml\r\n\r\n");
+			  writer.writeBytes("<entry xmlns=\"http://www.w3.org/2005/Atom\">"+
+" <category scheme=\"http://schemas.google.com/g/2005#kind\" "+
+"term=\"http://schemas.google.com/sites/2008#attachment\" label=\"attachment\" />"+
+"<link rel=\"http://schemas.google.com/sites/2008#parent\" type=\"image/jpeg\" "+
+"href=\"https://sites.google.com/feeds/content/site/"+siteName+"\" />"+
+"<title>"+fileName+"</title>"+
+"<summary>HR packet</summary>"+
+"</entry>"+
+"\r\n\r\n--END_OF_PART\r\n");
+		  writer.writeBytes("Content-Type: image/jpeg\r\n\r\n") ;int j;
+		  for(j=0;j<size;j++){
+			 writer.write(input.read());
+		  }
+		  writer.writeBytes("\r\n--END_OF_PART--\r\n");
+		  input.close();
+		  writer.flush();
+		  writer.close();
+          StringBuffer answer = new StringBuffer();
+          BufferedReader reader = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
+          String line;
+          while ((line = reader.readLine()) != null) {
+              answer.append(line);
+          }
+          reader.close();
+		  urlc.disconnect();
+		return answer.toString();
+	}
 	private String getRealUser(String sender){
 		String realUser;
 		int i,start,end;
@@ -118,9 +147,10 @@ public class MailHandlerServlet extends HttpServlet {
         Session session = Session.getDefaultInstance(props, null); 
 
         try {
+        	String returned;
 			MimeMessage message = new MimeMessage(session, req.getInputStream());
 			String content="",subject,sender=message.getFrom()[0].toString(),msgBody = "Messaggio ricevuto.",realSender;
-        	Object o=message.getContent(),file=null;
+        	Object o=message.getContent();
         	subject=message.getSubject();
             Message msg = new MimeMessage(session);
             InputStream input=null;
@@ -131,104 +161,25 @@ public class MailHandlerServlet extends HttpServlet {
             msg.addRecipient(Message.RecipientType.TO,message.getFrom()[0]);
             msg.setSubject("Your Example.com account has been activated");
             MimeMultipart multipart=(MimeMultipart)o;
+    		UserPO tempUser=LoadStore.verifyUser(realSender);
 	        try {
 	        	for (int i = 0; i < multipart.getCount(); i++) {
 	            	  Part part =  multipart.getBodyPart(i);
 	            	  System.out.println(part.getFileName());
 	            	  msgBody=msgBody+"Parte "+i+": "+part.getFileName()+"Tipo: "+part.getContentType();
 	            	  if(part.getFileName()!=null){
-            			  file=part.getContent();
-            			  //Inizio http post
-            			  
-            			  URL endpoint=new URL("https://sites.google.com/feeds/content/site/provamiagcourse");
-            			  HttpURLConnection  urlc =(HttpURLConnection) endpoint.openConnection();
-						  urlc.setDoOutput(true);
-						  urlc.setDoInput(true);
-						  urlc.setRequestProperty("Host","sites.google.com");
-						  urlc.setRequestProperty("GData-Version","1.4");
-  		        		  UserPO tempUser=LoadStore.verifyUser(realSender);
-						  urlc.setRequestProperty("Authorization","AuthSub token=\""+tempUser.getGoogleAccessToken()+"\"");
-						  input=part.getInputStream();
-						  //urlc.setRequestProperty("Content-Length",""+497+26+19+input.available());
-						  urlc.setRequestProperty("Content-Type","multipart/related;boundary=END_OF_PART");
-            			  OutputStream out = urlc.getOutputStream();
-            			  DataOutputStream writer = new DataOutputStream(out);
-
-            			  Reader data=null;
-            			  String header=null;
-/*
-            			  //try {
-            				  OAuthSigner signer=new OAuthRsaSha1Signer();
-                			  OAuthHelper oauthHelper = new OAuthHelper("https://www.google.com/accounts/OAuthGetRequestToken","https://www.google.com/accounts/OAuthAuthorizeToken","https://www.google.com/accounts/OAuthGetAccessToken","https://www.google.com/accounts/AuthSubRevokeToken",signer);
-                			  OAuthParameters oauthParameters=new OAuthParameters();
-                			  oauthParameters.setOAuthConsumerKey("polimigcourse.appspot.com");
-                			  oauthParameters.setOAuthToken(tempUser.getGoogleAccessToken());
-                			  oauthParameters.setOAuthTokenSecret("11I4VoNlYAdAQJ1yBu8zrN0g");
-                			  msgBody+="qui arrivo";
-							 // header=oauthHelper.getAuthorizationHeader("https://sites.google.com/feeds/content/site/provamiagcourse","POST", oauthParameters);
-							  msgBody+="Header: "+header;*/
-            			/*  } catch (OAuthException e) {
-							// TODO Auto-generated catch block
-            				  msgBody+="Errore merda ";
-							e.printStackTrace();
-						}*/	  
-
-							  /* String contentPost="POST /feeds/content/site/provamiagcourse HTTP/1.1"+
-"Host: sites.google.com"+
-"GData-Version: 1.4"+
-"Authorization: AuthSub token=\""+tempUser.getGoogleAccessToken()+"\""+
-"Content-Length: 7221984"+
-"Content-Type: multipart/related; boundary=END_OF_PART"+
-"--END_OF_PART"+*/
-							  writer.writeBytes("\r\n--END_OF_PART\r\nContent-Type: application/atom+xml\r\n\r\n");
-							  writer.writeBytes("<entry xmlns=\"http://www.w3.org/2005/Atom\">"+
- " <category scheme=\"http://schemas.google.com/g/2005#kind\" "+
-          "term=\"http://schemas.google.com/sites/2008#attachment\" label=\"attachment\" />"+
- "<category scheme=\"http://schemas.google.com/sites/2008#folder\" term=\"titolo\" />"+
-  "<link rel=\"http://schemas.google.com/sites/2008#parent\" type=\"image/jpeg\" "+
-        "href=\"https://sites.google.com/feeds/content/site/provamiagcourse\" />"+
-  "<title>PDF File</title>"+
-  "<summary>HR packet</summary>"+
-"</entry>"+
-  "\r\n\r\n--END_OF_PART\r\n");
-						  writer.writeBytes("Content-Type: image/jpeg\r\n\r\n") ;
-						 // input=part.getInputStream();
-	            		  int j;
-	            		  size=part.getSize();
-	            		  for(j=0;j<size;j++){
-	            			 writer.write(input.read());
+	            		  returned=uploadFile(part,tempUser);
+	            		  if(returned.contains("Token invalid")){
+	            			  	msgBody+="Aggiornato token e fatto upload";
+		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
+		        				access.refreshToken();
+		        				String newAccessToken=access.getAccessToken();
+		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
+		        				uploadFile(part,tempUser);
+		        				if(returned.contains("Token invalid")){
+		            			  	msgBody+="Aggiornato token e fatto upload";
+		        				}
 	            		  }
-	            		  writer.writeBytes("\r\n--END_OF_PART--\r\n");/*
-            			  msgBody+="***CONTENTPOST****"+contentPost+"*****CONTENTPOST*****";
-        				  char[] buf = new char[1024];
-        				  int read = 0;
-        				  for(int cont=0;cont<contentPost.length();cont++)
-        				  {
-        				  writer.write(buf, 0, contentPost.charAt(cont));
-        				  }*/
-	            		  input.close();
-        				  writer.flush();
-            			  writer.close();
-            	            StringBuffer answer = new StringBuffer();
-            	            BufferedReader reader = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
-            	            String line;
-            	            while ((line = reader.readLine()) != null) {
-            	                answer.append(line);
-            	            }
-            	            reader.close();
-            	            msgBody+="Risposta post: "+answer.toString()+": Fine risposta post";
-							urlc.disconnect();
-            			  //fine http post
- 
-
-            			  
-            			  
-            		//	  msgBody+="nome del file: "+part.getFileName()+" "+((File)file).getName();
-	            		/*input=part.getInputStream();
-	            		  size=part.getSize();
-	            		/*  for(j=0;j<size;j++){
-	            			 input.read();
-	            		  }*/
 	            		  msgBody+="Size: "+size;
 	            	  }else{
 	            		  if(part.isMimeType("text/plain")||part.isMimeType("text/html")){
@@ -250,7 +201,6 @@ public class MailHandlerServlet extends HttpServlet {
 	            }
 	        	if(subject.contains("Upload")){
 	        		msgBody=msgBody+"upload yes";
-		        		UserPO tempUser=LoadStore.verifyUser(realSender);
 		        		if(tempUser==null){
 		        			msgBody+="errore";
 		        		}
@@ -258,7 +208,7 @@ public class MailHandlerServlet extends HttpServlet {
 		        			parseBody(content);
 		        			msgBody+=this.siteContent+this.siteName;
 		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-		        		    String returned=siteModifier.createPage(this.siteName,this.siteContent,input,size);
+		        		    returned=siteModifier.createPage(this.siteName,this.siteContent,input,size);
 		        		    if(returned.contains("expired")){
 		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 		        				access.refreshToken();
@@ -289,7 +239,6 @@ public class MailHandlerServlet extends HttpServlet {
 	        		msgBody=msgBody+"upload no";
 	        		if(subject.contains("Post")){
 	        			msgBody=msgBody+"Post yes";
-		        		UserPO tempUser=LoadStore.verifyUser(realSender);
 		        		if(tempUser==null){
 		        			msgBody+="errore";
 		        		}
@@ -297,7 +246,7 @@ public class MailHandlerServlet extends HttpServlet {
 		        			parseBody(content);
 		        			msgBody+=this.siteContent+this.siteName;
 		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-		        		    String returned=siteModifier.createPage(this.siteName,this.siteContent);
+		        		    returned=siteModifier.createPage(this.siteName,this.siteContent);
 		        		    if(returned.contains("expired")){
 		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 		        				access.refreshToken();
