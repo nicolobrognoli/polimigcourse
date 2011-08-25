@@ -209,6 +209,43 @@ public class LoadStore {
 		}
 		return "stored";
 	}
+
+	public static String updateStudent(UserPO student, String course){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		boolean ok = false;
+		try {
+			
+			// get POs from DataStore
+			Query query = pm.newQuery(Course.class);
+			@SuppressWarnings("unchecked")
+			List<Course> results = (List<Course>)query.execute();
+			Iterator<Course> iter = results.iterator();
+			Course courseTemp;
+			
+			do{
+				courseTemp = (Course) iter.next();
+				if(courseTemp.getName().equals(course))
+				{
+					if(courseTemp.getStudents().contains(student))
+						return "already registered";
+					else
+					{
+						courseTemp.addStudent(student);
+						ok = true;
+					}					
+				}					
+			}while(iter.hasNext());		
+			
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
+		if(ok)
+			return "updated";	
+		else
+			return "course not exists";
+	}
 }
 
 	
