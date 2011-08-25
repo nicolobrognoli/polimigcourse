@@ -105,57 +105,9 @@ public class SiteModifier {
 	    String path="";
 	    try {
 			page = sitesHelper.createPage("webpage",namePage);
-			//Inizio BLob
-			/*
-			
-			// Get a file service
-			  FileService fileService = FileServiceFactory.getFileService();
-			  // Create a new Blob file with mime-type "text/plain"
-			  AppEngineFile file = fileService.createNewBlobFile("image/jpeg");
-			  // Open a channel to write to it
-			  boolean lock = true;
-			  FileWriteChannel writeChannel = fileService.openWriteChannel(file, lock);
 
-			  // Close without finalizing and save the file path for writing later
-			  path = file.getFullPath();
-			  // Write more to the file in a separate request:
-			  // This time we write to the channel using standard Java
-			  ByteBuffer buffer;
-			  byte[] b=new byte[1024];
-			  //input.read(b);
-			  //input.read(b,0, size);
-			  int len;
-			  while((len=input.read(b))>0){
-				  writeChannel.write(ByteBuffer.wrap(b, 0, len));
-			  }
-
-			  // Now finalize
-			  writeChannel.closeFinally();
-
-			*/
-			//Fine blob
-			/*BlobKey key=fileService.getBlobKey(file);
-			String urlStr="https://appengine.google.com/blobstore/download?app_id=s~polimigcourse&key="+key.getKeyString();
-			URL url = new URL(urlStr);
-			URLConnection conn = url.openConnection ();
-			// Get the response
-			BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			StringBuffer sb = new StringBuffer();
-			String line;
-			while ((line = rd.readLine()) != null)
-			{
-			sb.append(line);
-			}
-			rd.close();
-			String result = sb.toString();
-		    URLFetchService nome=new URLFetchServiceFactory().getURLFetchService();
-			HTTPResponse resp=nome.fetch(url);
-			result=resp.getFinalUrl().getPath();
-			resp=nome.fetch(resp.getFinalUrl());
-			result=resp.getFinalUrl().getPath();*/
-			//sitesHelper.uploadAttachment(new File(path), (BasePageEntry<?>)page);
 			XmlBlob xml = new XmlBlob();
-			xml.setBlob("<p>"+content+"</p>"+"<link href=\"https://sites.google.com/site/provamiagcourse/PDFFile\"/>");
+			xml.setBlob("<p>"+content+"</p>"+"<a href=\"https://sites.google.com/site/provamiagcourse/nadine2010.jpg\">Zozza</a>");
 			page.setContent(new XhtmlTextConstruct(xml));
 			page.update();
 			return "https://sites.google.com/site/"+this.siteName+"/"+namePage;
