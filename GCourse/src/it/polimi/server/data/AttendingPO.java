@@ -16,6 +16,9 @@ public class AttendingPO {
 	
 	@Persistent
     private CoursePO course;
+	@Persistent
+    private UserPO student;	
+	
     public CoursePO getCourse() {
 		return course;
 	}
@@ -28,7 +31,5 @@ public class AttendingPO {
 	public void setStudent(UserPO student) {
 		this.student = student;
 	}
-	@Persistent
-    private UserPO student;	
 	
 }
