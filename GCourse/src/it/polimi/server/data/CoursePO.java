@@ -25,8 +25,8 @@ public class CoursePO {
     private String name;
     @Persistent
     private String description;
-    @Persistent
-    private ArrayList<String> students;
+    @Persistent(mappedBy = "student")
+    private ArrayList<UserPO> students;
 	
     public UserPO getProfessor() {
 		return professor;
@@ -46,10 +46,10 @@ public class CoursePO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public ArrayList<String> getStudents() {
+	public ArrayList<UserPO> getStudents() {
 		return students;
 	}
-	public void setStudents(ArrayList<String> students) {
+	public void setStudents(ArrayList<UserPO> students) {
 		this.students = students;
 	}
 	public boolean addStudent(String student){
@@ -57,8 +57,8 @@ public class CoursePO {
 		if(!user.isProfessor())
 		{
 			if(this.students == null)
-				this.students = new ArrayList<String>();
-			this.students.add(student);
+				this.students = new ArrayList<UserPO>();
+			this.students.add(user);
 			return true;
 		}			
 		else
