@@ -88,7 +88,7 @@ public class LoadStore {
 		return "updated";
 	}
 	
-	public static UserPO verifyUser(String sender){
+	public static UserPO loadUser(String sender){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			// get POs from DataStore
@@ -192,9 +192,12 @@ public class LoadStore {
 			// check empty results
 			
 			do{
-				courseTemp = (CoursePO) iter.next();
-				if(courseTemp.getName().equals(name))
-					return "course already exists";
+				if (!results.isEmpty())
+				{
+					courseTemp = (CoursePO) iter.next();
+					if(courseTemp.getName().equals(name))
+						return "course already exists";
+				}				
 				CoursePO course = new CoursePO();
 				course.setName(name);
 				course.setProfessor(professor);
@@ -210,7 +213,7 @@ public class LoadStore {
 		return "stored";
 	}
 
-	public static String updateStudent(UserPO student, String course){
+	public static String updateStudent(String student, String course){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		boolean ok = false;
 		try {
@@ -245,6 +248,7 @@ public class LoadStore {
 		else
 			return "course not exists";
 	}
+
 }
 
 	
