@@ -162,7 +162,7 @@ public class MailHandlerServlet extends HttpServlet {
             msg.addRecipient(Message.RecipientType.TO,message.getFrom()[0]);
             msg.setSubject("Your Example.com account has been activated");
             MimeMultipart multipart=(MimeMultipart)o;
-    		UserPO tempUser=LoadStore.verifyUser(realSender);
+    		UserPO tempUser=LoadStore.loadUser(realSender);
 	        try {
 	        	for (int i = 0; i < multipart.getCount(); i++) {
 	            	  Part part =  multipart.getBodyPart(i);
