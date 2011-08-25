@@ -70,50 +70,24 @@ public class SiteModifier {
 		this.siteName = siteName;
 	}
 	
-	public String createPage(String namePage,String content) throws IOException{
-		BaseContentEntry<?> page;
-	    SitesHelper sitesHelper;
-	    sitesHelper = new SitesHelper("polimigcourse","site",this.siteName);
-	    sitesHelper.login(this.accessToken);
-	    try {
-			page = sitesHelper.createPage("webpage",namePage);
-			XmlBlob xml = new XmlBlob();
-			xml.setBlob("<p>"+content+"</p>");
-			page.setContent(new XhtmlTextConstruct(xml));
-			page.update();
-			//sitesHelper.service.update(new URL(sitesHelper.getContentFeedUrl()), page);
-			return "https://sites.google.com/site/"+this.siteName + "/" + namePage;
-			//return this.accessToken+" "+this.siteName;
-
-		
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "errore: Exception ServiceException expired";
-		} catch (SitesException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "errore: Exception SitesException";
-		}
-	}
-
-	public String createPage(String namePage, String content, InputStream input,int size) throws MalformedURLException, IOException {
+	public String createPage(String namePage, String content,String course) throws MalformedURLException, IOException {
 		BaseContentEntry<?> page;
 	    SitesHelper sitesHelper;
 	    sitesHelper = new SitesHelper("polimigcourse","site",this.siteName);
 	    sitesHelper.login(this.accessToken);
 	    String path="";
 	    try {
-			page = sitesHelper.createPage("webpage",namePage);
-
+	    	if(course==null){
+	    		page = sitesHelper.createPage("webpage",namePage);
+	    	}else{
+	    		page = sitesHelper.createPage("webpage",namePage,course);
+	    	}
 			XmlBlob xml = new XmlBlob();
 			xml.setBlob("<p>"+content+"</p>"+"<a href=\"https://sites.google.com/site/provamiagcourse/nadine2010.jpg\">Zozza</a>");
 			page.setContent(new XhtmlTextConstruct(xml));
 			page.update();
 			return "https://sites.google.com/site/"+this.siteName+"/"+namePage;
-
-
-		
+	
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
