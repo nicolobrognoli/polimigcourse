@@ -236,8 +236,7 @@ public class LoadStore {
 				}					
 			}while(iter.hasNext());		
 			
-		} finally {
-			
+		} finally {			
 			// close persistence manager
 			pm.close();
 		}

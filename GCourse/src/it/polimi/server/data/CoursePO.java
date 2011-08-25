@@ -23,7 +23,7 @@ public class CoursePO {
     private String name;
     @Persistent
     private String description;
-    @Persistent
+    @Persistent(mappedBy = "user")
     private ArrayList<UserPO> students;
 	
     public UserPO getProfessor() {
