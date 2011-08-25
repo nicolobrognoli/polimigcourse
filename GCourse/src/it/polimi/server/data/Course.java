@@ -22,6 +22,8 @@ public class Course {
     @Persistent
     private String name;
     @Persistent
+    private String description;
+    @Persistent
     private ArrayList<UserPO> students;
 	
     public UserPO getProfessor() {
@@ -58,5 +60,13 @@ public class Course {
 		}			
 		else
 			return false;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}    
+	
+	
 }

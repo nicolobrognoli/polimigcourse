@@ -1,5 +1,6 @@
 package it.polimi.server.utils;
 
+import it.polimi.server.data.Course;
 import it.polimi.server.data.PMF;
 import it.polimi.server.data.UserPO;
 
@@ -177,6 +178,36 @@ public class LoadStore {
 		}
 		
 		return "deleted";
+	}
+
+	public static String storeNewCourse(UserPO professor, String name, String description){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(Course.class);
+			@SuppressWarnings("unchecked")
+			List<Course> results = (List<Course>)query.execute();
+			Iterator<Course> iter = results.iterator();
+			Course courseTemp;
+			// check empty results
+			
+			do{
+				courseTemp = (Course) iter.next();
+				if(courseTemp.getName().equals(name))
+					return "course already exists";
+				Course course = new Course();
+				course.setName(name);
+				course.setProfessor(professor);
+				course.setDescription(description);
+				pm.makePersistent(course);
+			}while(iter.hasNext());									
+			
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
+		return "stored";
 	}
 }
 
