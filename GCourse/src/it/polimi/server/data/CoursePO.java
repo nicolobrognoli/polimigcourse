@@ -1,5 +1,7 @@
 package it.polimi.server.data;
 
+import it.polimi.server.utils.LoadStore;
+
 import java.util.ArrayList;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -23,8 +25,8 @@ public class CoursePO {
     private String name;
     @Persistent
     private String description;
-    @Persistent(mappedBy = "user")
-    private ArrayList<UserPO> students;
+    @Persistent
+    private ArrayList<String> students;
 	
     public UserPO getProfessor() {
 		return professor;
@@ -44,17 +46,18 @@ public class CoursePO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public ArrayList<UserPO> getStudents() {
+	public ArrayList<String> getStudents() {
 		return students;
 	}
-	public void setStudents(ArrayList<UserPO> students) {
+	public void setStudents(ArrayList<String> students) {
 		this.students = students;
 	}
-	public boolean addStudent(UserPO student){
-		if(!student.isProfessor())
+	public boolean addStudent(String student){
+		UserPO user = LoadStore.loadUser(student);
+		if(!user.isProfessor())
 		{
 			if(this.students == null)
-				this.students = new ArrayList<UserPO>();
+				this.students = new ArrayList<String>();
 			this.students.add(student);
 			return true;
 		}			
