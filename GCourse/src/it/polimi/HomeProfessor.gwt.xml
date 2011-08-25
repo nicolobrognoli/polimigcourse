@@ -3,6 +3,5 @@
 <module>
 	<inherits name="com.google.gwt.user.User" />	
 	<source path="client" />
-	<stylesheet src="/style.css"/>
 	<entry-point class="it.polimi.client.HomeProfessor"></entry-point>
 </module>
