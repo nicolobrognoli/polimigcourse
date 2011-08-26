@@ -65,18 +65,32 @@ public class MailHandlerServlet extends HttpServlet {
 	private String pageName,pageContent,course=null;
 	
 	private String parseBody(String body){
-		int title,content;
-		title=body.indexOf("Titolo: ");
-		content=body.indexOf("Contenuto: ");
-		if(title<content){
-			this.pageName=body.substring(title+8, content);
-			this.pageContent=body.substring(content+11,body.length());
+		int titleStart,titleEnd,contentStart,contentEnd,courseStart,courseEnd;
+		titleStart=body.indexOf("Titolo");
+		titleEnd=body.indexOf("/Titolo");
+		contentStart=body.indexOf("Contenuto");
+		contentEnd=body.indexOf("/Contenuto");
+		courseStart=body.indexOf("Corso");
+		courseEnd=body.indexOf("/Corso");
+		if((titleStart>-1)&&(titleEnd>-1)){
+			this.pageName=body.substring(titleStart+6, titleEnd);
+			if((contentStart>-1)&&(contentEnd>-1)){
+				this.pageContent=body.substring(contentStart+9, contentEnd);
+				if((courseStart>-1)&&(courseEnd>-1)){
+					this.course=body.substring(courseStart+5, courseEnd);
+				}
+			}
+			else{
+				return "Errore: elemnto \"Contenuto\" non presente";
+			}
 		}else{
-			this.pageContent=body.substring(content+11, title);
-			this.pageName=body.substring(title+8,body.length());
+			return "Errore: elemnto \"Titolo\" non presente";
 		}
-		return "cis";
+		return "ok";
 	}
+	
+	
+	
 	
 	private String uploadFile(Part part,UserPO tempUser) throws IOException, MessagingException{
 		  InputStream input=part.getInputStream();
@@ -123,6 +137,10 @@ public class MailHandlerServlet extends HttpServlet {
 		  urlc.disconnect();
 		return answer.toString();
 	}
+	
+	
+	
+	
 	private String getRealUser(String sender){
 		String realUser;
 		int i,start,end;
@@ -139,6 +157,43 @@ public class MailHandlerServlet extends HttpServlet {
 		realUser=sender.substring(start+1,end);
 		return realUser;
 	}
+	
+	
+	
+	
+	private String uploadRequest(String content,UserPO tempUser, String fileName) throws MalformedURLException, IOException{
+		String msgBody="",returned;
+		
+		returned=parseBody(content);
+		if(!returned.contains("Errore")){
+		msgBody+=this.pageContent+this.pageName;
+		SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
+	    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,fileName);
+	    if(returned.contains("expired")){
+			GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
+			access.refreshToken();
+			String newAccessToken=access.getAccessToken();
+			LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
+			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
+		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,fileName);
+		    msgBody+="Ritornato: "+returned;
+	    }
+	  //send new tweet
+	    String accessToken = tempUser.getTwitterAccessToken();
+	    if(accessToken!=null){
+		    String secretToken = tempUser.getTwitterSecretToken();
+			TwitterManager t = new TwitterManager(new AccessToken(accessToken, secretToken), "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
+			t.sendTweet("Nuovo materiale disponibile al link: " + returned);
+	    }
+		return msgBody+="Ritornato: "+returned;
+		}else{
+			return returned;
+		}
+	}
+	
+	
+	
+	
 	private static final long serialVersionUID = 1L;
 
 	public void doPost(HttpServletRequest req, 
@@ -149,6 +204,8 @@ public class MailHandlerServlet extends HttpServlet {
 
         try {
         	String returned;
+        	Part filePart=null;
+        	SiteModifier siteModifier;
 			MimeMessage message = new MimeMessage(session, req.getInputStream());
 			String content="",subject,sender=message.getFrom()[0].toString(),msgBody = "Messaggio ricevuto.",realSender;
         	Object o=message.getContent();
@@ -169,20 +226,7 @@ public class MailHandlerServlet extends HttpServlet {
 	            	  System.out.println(part.getFileName());
 	            	  msgBody=msgBody+"Parte "+i+": "+part.getFileName()+"Tipo: "+part.getContentType();
 	            	  if(part.getFileName()!=null){
-	            		  returned=uploadFile(part,tempUser);
-	            		  msgBody+=returned;
-	            		  if(returned.contains("Token invalid")){
-	            			  	msgBody+="Aggiornato token e fatto upload";
-		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
-		        				access.refreshToken();
-		        				String newAccessToken=access.getAccessToken();
-		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
-		        				returned=uploadFile(part,tempUser);
-		        				if(returned.contains("Token invalid")){
-		            			  	msgBody+="Aggiornato token e fatto upload";
-		        				}
-	            		  }
-	            		  msgBody+="Size: "+size;
+	            		  filePart=part;
 	            	  }else{
 	            		  if(part.isMimeType("text/plain")||part.isMimeType("text/html")){
 	            			  content=(String)part.getContent();
@@ -207,35 +251,21 @@ public class MailHandlerServlet extends HttpServlet {
 		        			msgBody+="errore";
 		        		}
 		        		else{
-		        			parseBody(content);
-		        			msgBody+=this.pageContent+this.pageName;
-		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-		        		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course);
-		        		    if(returned.contains("expired")){
-		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
-		        				access.refreshToken();
-		        				String newAccessToken=access.getAccessToken();
-		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
-			        			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
-			        		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course);
-			        		    msgBody+="Ritornato: "+returned;
-		        		    }
-		        		  //send new tweet
-		        		    String accessToken = tempUser.getTwitterAccessToken();
-		        		    String secretToken = tempUser.getTwitterSecretToken();
-		        			TwitterManager t = new TwitterManager(new AccessToken(accessToken, secretToken), "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
-		        			t.sendTweet("Nuovo materiale disponibile al link: " + returned);
-		        			msgBody+="Ritornato: "+returned;
+		        			if(filePart!=null){
+		        				  returned=uploadRequest(content,tempUser,filePart.getFileName());
+		        				  if(!returned.contains("Errore")){
+		        					  msgBody+=returned;
+		        					  returned=uploadFile(filePart,tempUser);
+		        				  }
+
+	        					  msgBody+=returned;
+		        			  }
+		        			  else{
+		        				  msgBody+="Errore: richiesta di \"Upload\" senza file.";
+		        			  }
 		        		}
 	        			/*Azioni per il caricamento su Google Site di un post di comunicazione*/
-
-	        		
-	        		
-	        		
-	        		
-	        		
-	        		
-
+		        		
 	        	}
 	        	else{
 	        		msgBody=msgBody+"upload no";
@@ -247,15 +277,15 @@ public class MailHandlerServlet extends HttpServlet {
 		        		else{
 		        			parseBody(content);
 		        			msgBody+=this.pageContent+this.pageName;
-		        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-		        		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course);
+		        			siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
+		        		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,null);
 		        		    if(returned.contains("expired")){
 		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 		        				access.refreshToken();
 		        				String newAccessToken=access.getAccessToken();
 		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
 			        			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
-			        		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course);
+			        		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,null);
 		        		    }
 		        		    //send new tweet
 		        		    String accessToken = tempUser.getTwitterAccessToken();
@@ -267,15 +297,15 @@ public class MailHandlerServlet extends HttpServlet {
 	        		}else if(subject.contains("Course")){
 	        			parseBody(content);
 	        			msgBody+=this.pageContent+this.pageName;
-	        			SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-	        		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course);
+	        			siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
+	        		    returned=siteModifier.createPage(this.pageName,this.pageContent,null,null);
 	        		    if(returned.contains("expired")){
 	        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 	        				access.refreshToken();
 	        				String newAccessToken=access.getAccessToken();
 	        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
 		        			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
-		        		    returned=siteModifier.createPage(this.pageName,this.pageContent,null);
+		        		    returned=siteModifier.createPage(this.pageName,this.pageContent,null,null);
 	        		    }
 	        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
 	        			/*Errore oppure un'altra azione*/

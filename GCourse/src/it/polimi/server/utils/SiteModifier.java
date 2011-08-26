@@ -69,8 +69,12 @@ public class SiteModifier {
 	public void setSiteName(String siteName) {
 		this.siteName = siteName;
 	}
-	
-	public String createPage(String namePage, String content,String course) throws MalformedURLException, IOException {
+	public void login(){
+	    SitesHelper sitesHelper;
+	    sitesHelper = new SitesHelper("polimigcourse","site",this.siteName);
+	    sitesHelper.login(this.accessToken);
+	}
+	public String createPage(String namePage, String content,String course, String fileName) throws MalformedURLException, IOException {
 		BaseContentEntry<?> page;
 	    SitesHelper sitesHelper;
 	    sitesHelper = new SitesHelper("polimigcourse","site",this.siteName);
@@ -82,10 +86,12 @@ public class SiteModifier {
 	    	}else{
 	    		page = sitesHelper.createPage("webpage",namePage,course);
 	    	}
-			XmlBlob xml = new XmlBlob();
-			xml.setBlob("<p>"+content+"</p>"+"<a href=\"https://sites.google.com/site/provamiagcourse/nadine2010.jpg\">Zozza</a>");
-			page.setContent(new XhtmlTextConstruct(xml));
-			page.update();
+	    	if(fileName!=null){
+				XmlBlob xml = new XmlBlob();
+				xml.setBlob("<p>"+content+"</p>"+"<a href=\"https://sites.google.com/site/provamiagcourse/"+fileName+"\">"+fileName+"</a>");
+				page.setContent(new XhtmlTextConstruct(xml));
+				page.update();
+	    	}
 			return "https://sites.google.com/site/"+this.siteName+"/"+namePage;
 	
 		} catch (ServiceException e) {
