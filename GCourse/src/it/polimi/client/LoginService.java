@@ -7,4 +7,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface LoginService extends RemoteService {
 	
 	boolean checkUser(String nickname, String pwd);
+	
 }

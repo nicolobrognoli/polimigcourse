@@ -27,6 +27,7 @@ public class Home implements EntryPoint {
 
 	private final SessionHandlerAsync sessionHandlerService = GWT.create(SessionHandler.class);
 	private final LoadStoreServiceAsync loadStoreService = GWT.create(LoadStoreService.class);
+	private final TwitterServiceAsync twitterService = GWT.create(TwitterService.class);
 	
 	boolean isProfessor;
 	@SuppressWarnings("deprecation")
@@ -42,6 +43,7 @@ public class Home implements EntryPoint {
 
 			@Override
 			public void onSuccess(final String email) {
+		
 				loadStoreService.isProfessor(email, new AsyncCallback<Boolean>() {
 
 					@Override
@@ -94,7 +96,7 @@ public class Home implements EntryPoint {
 									if(courses.size()>0){
 										RadioButton first = new RadioButton("listaCorsi", courses.get(0));
 										gestisciCorsi.add(first);
-										first.setChecked(true);
+										first.setValue(true);
 										if(courses.size()>1){
 											for(int i = 1; i<courses.size(); i++)
 												gestisciCorsi.add(new RadioButton("listaCorsi", courses.get(i)));											
@@ -114,7 +116,7 @@ public class Home implements EntryPoint {
 									if(courses.size()>0){
 										RadioButton first = new RadioButton("listaCorsi", courses.get(0));
 										gestisciCorsi.add(first);
-										first.setChecked(true);
+										first.setValue(true);
 										if(courses.size()>1){
 											for(int i = 1; i<courses.size(); i++)
 												gestisciCorsi.add(new RadioButton("listaCorsi", courses.get(i)));											
@@ -144,7 +146,7 @@ public class Home implements EntryPoint {
 							HorizontalPanel nomeCorsoPanel = new HorizontalPanel();
 							aggiungiCorso.add(nomeCorsoPanel);
 							Label lblNome = new Label("Nome del corso: ");
-							TextBox tbNome = new TextBox();
+							final TextBox tbNome = new TextBox();
 							nomeCorsoPanel.add(lblNome);
 							nomeCorsoPanel.add(tbNome);
 							tbNome.setWidth("314px");
@@ -152,7 +154,7 @@ public class Home implements EntryPoint {
 							HorizontalPanel descrizioneCorsoPanel = new HorizontalPanel();
 							aggiungiCorso.add(descrizioneCorsoPanel);
 							Label lblDescrizione = new Label("Descrizione: ");
-							TextArea taDescrizione = new TextArea();
+							final TextArea taDescrizione = new TextArea();
 							taDescrizione.setCharacterWidth(40);
 							taDescrizione.setVisibleLines(3);
 							taDescrizione.setAlignment(TextAlignment.JUSTIFY);
@@ -164,7 +166,17 @@ public class Home implements EntryPoint {
 							Button btnCreaCorso = new Button("Crea");
 							btnCreaCorso.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent event) {
-									//TODO: Crea corso
+									loadStoreService.storeNewCourse(email, tbNome.getText(), taDescrizione.getText(), new AsyncCallback<String>(){
+										@Override
+										public void onFailure(Throwable caught) {
+											Window.alert("Errore nel salvataggio del corso");
+										}
+
+										@Override
+										public void onSuccess(String result) {
+											Window.alert(result);
+										}
+									});
 								}
 							});
 							btnCorsoPanel.add(btnCreaCorso);
@@ -172,7 +184,8 @@ public class Home implements EntryPoint {
 						else{
 							final ListBox listCorsi = new ListBox(true);
 							aggiungiCorso.add(listCorsi);
-							loadStoreService.getAttendedCourses(email, new AsyncCallback<List<String>>(){
+							//TODO: sistemare...
+							loadStoreService.getAllCourses(new AsyncCallback<List<String>>(){
 								@Override
 								public void onFailure(Throwable caught) {
 									Window.alert("Errore nel recupero della lista dei corsi");
@@ -191,7 +204,19 @@ public class Home implements EntryPoint {
 							Button btnIscriviti = new Button("Iscriviti");
 							btnIscriviti.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent event) {
-									//TODO: Iscriviti ad un corso
+									int index = listCorsi.getSelectedIndex();
+									final String course = listCorsi.getItemText(index);
+									loadStoreService.addStudentToCourse(email, course, new AsyncCallback<String>(){
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("Errore nell' iscrizione ai corsi");
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									Window.alert("Iscrizione al corso: " + course + " avvenuta con successo.");
+								}
+							});
 								}
 							});
 							aggiungiCorso.add(btnIscriviti);
@@ -210,7 +235,17 @@ public class Home implements EntryPoint {
 						Button btnTwitGrant = new Button("Vai");
 						btnTwitGrant.addClickHandler(new ClickHandler() {
 							public void onClick(ClickEvent event) {
-								//TODO: Autorizza Twitter
+								twitterService.getAuthUrl(new AsyncCallback<String>(){
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("Errore nell'elaborazione dell'URL");
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									Window.open(result, "_self", "");
+								}
+							});
 							}
 						});
 						horizontalPanel.add(btnTwitGrant);
@@ -224,7 +259,17 @@ public class Home implements EntryPoint {
 						Button btnTwitDeny = new Button("Vai");
 						btnTwitDeny.addClickHandler(new ClickHandler() {
 							public void onClick(ClickEvent event) {
-								//TODO: Scollega Twitter
+								loadStoreService.deleteTwitterTokens(email, new AsyncCallback<String>(){
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("Errore nella cancellazione dei permessi");
+								}
+
+								@Override
+								public void onSuccess(String result) {
+									Window.alert(result);
+								}
+							});
 							}
 						});
 						horizontalPanel_1.add(btnTwitDeny);

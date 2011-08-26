@@ -1,8 +1,9 @@
 package it.polimi.server;
 
+import it.polimi.client.TwitterService;
+
 import javax.servlet.http.HttpSession;
 
-import it.polimi.client.TwitterService;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;

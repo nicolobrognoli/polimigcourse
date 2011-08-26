@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
-
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;

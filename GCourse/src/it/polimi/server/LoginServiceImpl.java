@@ -1,14 +1,15 @@
 package it.polimi.server;
 
+import it.polimi.client.LoginService;
+import it.polimi.server.data.PMF;
+import it.polimi.server.data.UserPO;
+
 import java.util.Iterator;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
-
-import it.polimi.client.LoginService;
-import it.polimi.server.data.PMF;
-import it.polimi.server.data.UserPO;
+import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -34,8 +35,15 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 			{
 				do{
 					userTemp = (UserPO) iter.next();
-					if(userTemp.getNickname().equals(nickname) && userTemp.getPassword().equals(pwd))				
+					if(userTemp.getNickname().equals(nickname) && userTemp.getPassword().equals(pwd))
+					{
+						//set the session of the authenticated user
+						HttpSession httpSession;
+						httpSession = getThreadLocalRequest().getSession();
+						httpSession = this.getThreadLocalRequest().getSession();
+					    httpSession.setAttribute("email", userTemp.getUser().getEmail());
 						return true;
+					}						
 					else
 						check = false;
 				}while(iter.hasNext());									
@@ -47,4 +55,5 @@ public class LoginServiceImpl extends RemoteServiceServlet implements LoginServi
 		}
 		return check;
 	}
+
 }

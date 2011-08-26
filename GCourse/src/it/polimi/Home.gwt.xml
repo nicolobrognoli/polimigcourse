@@ -5,4 +5,7 @@
 	<source path="client"/>
 	<stylesheet src="/style.css" />
 	<entry-point class="it.polimi.client.Home"></entry-point>
+	<servlet path="/sessionhandler" class="it.polimi.server.SessionHandlerImpl" />
+	<servlet path="/loadstoreservice" class="it.polimi.server.LoadStoreServiceImpl" />
+	<servlet path="/twitter" class="it.polimi.server.TwitterServiceImpl" />
 </module>

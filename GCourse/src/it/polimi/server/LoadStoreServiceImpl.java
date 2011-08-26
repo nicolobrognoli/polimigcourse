@@ -1,5 +1,10 @@
 package it.polimi.server;
 
+import it.polimi.client.LoadStoreService;
+import it.polimi.server.data.PMF;
+import it.polimi.server.data.UserPO;
+
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,11 +18,10 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
-import it.polimi.client.LoadStoreService;
+
 import it.polimi.server.data.CoursePO;
-import it.polimi.server.data.PMF;
-import it.polimi.server.data.UserPO;
 import it.polimi.server.utils.LoadStore;
+
 
 @SuppressWarnings("serial")
 public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadStoreService {
@@ -97,34 +101,171 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 	@Override
 	public List<String> getAttendedCourses(String email) {
 		List<String> courses = new ArrayList<String>();		
-		// Get the Datastore Service
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		// The Query interface assembles a query
-		com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query("AttendingPO");
-		q.addFilter("student", com.google.appengine.api.datastore.Query.FilterOperator.EQUAL, LoadStore.loadUser(email));
-		// PreparedQuery contains the methods for fetching query results from the datastore
-		PreparedQuery pq = datastore.prepare(q);
-		for (Entity result : pq.asIterable()) {
-			CoursePO course = (CoursePO)result.getProperty("course");
-			courses.add(course.toString());
-		}		
+		// get persistence manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(CoursePO.class);
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
+			// check empty results
+			if (results.isEmpty())
+				return courses;
+			else 
+			{
+				do{
+					courseTemp = (CoursePO) iter.next();
+					if(courseTemp.getStudents().contains(email))					
+					{
+						courses.add(courseTemp.getName());
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
 		return courses;
 	}
 
 	@Override
 	public List<String> getTaughtCourses(String email) {
 		List<String> courses = new ArrayList<String>();		
-		// Get the Datastore Service
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-		// The Query interface assembles a query
-		com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query("CoursePO");
-		q.addFilter("professor", com.google.appengine.api.datastore.Query.FilterOperator.EQUAL, LoadStore.loadUser(email));
-		// PreparedQuery contains the methods for fetching query results from the datastore
-		PreparedQuery pq = datastore.prepare(q);
-		for (Entity result : pq.asIterable()) {
-			String course = (String)result.getKey().toString() + " - " + (String)result.getProperty("Name");
-			courses.add(course.toString());
-		}		
+		// get persistence manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(CoursePO.class);
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
+			// check empty results
+			if (results.isEmpty())
+				return courses;
+			else 
+			{
+				do{
+					courseTemp = (CoursePO) iter.next();
+					if(courseTemp.getProfessor().getUser().getEmail().equals(email))					
+					{
+						courses.add(courseTemp.getName());
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
 		return courses;
 	}
+
+	public String storeNewCourse(String email, String name, String description){
+		UserPO professor = LoadStore.loadUser(email);
+		String result = LoadStore.storeNewCourse(professor, name, description);
+		return result;
+	}
+
+	@Override
+	public String deleteTwitterTokens(String email) {
+		// get persistence manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
+			List<UserPO> results = (List<UserPO>)query.execute();
+			Iterator<UserPO> iter = results.iterator();
+			UserPO userTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "email not found";
+			else 
+			{
+				do{
+					userTemp = (UserPO) iter.next();
+					if(userTemp.getUser().getEmail().equals(email))					
+					{
+						userTemp.setTwitterAccessToken(null);
+						userTemp.setTwitterSecretToken(null);
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {
+			// close persistence manager
+			pm.close();
+		}
+		return "Deleted";
+	}
+
+	@Override
+	public String getTwitterAccessToken(String email) {
+		return LoadStore.getTwitterAccessToken(email);
+	}
+
+	@Override
+	public String addStudentToCourse(String email, String course) {
+		
+		// get persistence manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(CoursePO.class);
+			@SuppressWarnings("unchecked")
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "course not found";
+			else 
+			{
+				do{
+					courseTemp = (CoursePO) iter.next();
+					if(courseTemp.getName().equals(course))					
+					{
+						courseTemp.addStudent(email);
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
+		return "";
+	}
+
+	@Override
+	public List<String> getAllCourses() {
+		List<String> courses = new ArrayList<String>();		
+		// get persistence manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(CoursePO.class);
+			@SuppressWarnings("unchecked")
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
+			// check empty results
+			if (results.isEmpty())
+				return courses;
+			else 
+			{
+				do{
+					courseTemp = (CoursePO) iter.next();
+					courses.add(courseTemp.getName());					
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}
+		return courses;
+	}
+	
+	
 }

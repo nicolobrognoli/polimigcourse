@@ -35,6 +35,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   <servlet-name>SessionHandlerImpl</servlet-name>
   <url-pattern>/it.polimi.Twitter/sessionhandler</url-pattern>
 </servlet-mapping>
+<servlet-mapping>
+  <servlet-name>SessionHandlerImpl</servlet-name>
+  <url-pattern>/it.polimi.Home/sessionhandler</url-pattern>
+</servlet-mapping>
   
   <servlet>
     <servlet-name>ConfirmRegistration</servlet-name>
@@ -57,6 +61,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-name>LoadStoreService</servlet-name>
     <url-pattern>/it.polimi.Twitter/loadstoreservice</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+  <servlet-name>LoadStoreService</servlet-name>
+    <url-pattern>/it.polimi.Home/loadstoreservice</url-pattern>
+  </servlet-mapping>
   
    <servlet>
     <servlet-name>TwitterService</servlet-name>
@@ -65,6 +73,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   <servlet-mapping>
     <servlet-name>TwitterService</servlet-name>
     <url-pattern>/it.polimi.Twitter/twitter</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TwitterService</servlet-name>
+    <url-pattern>/it.polimi.Home/twitter</url-pattern>
   </servlet-mapping>
   
   <servlet>

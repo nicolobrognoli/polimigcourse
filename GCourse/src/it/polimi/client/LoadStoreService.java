@@ -1,5 +1,7 @@
 package it.polimi.client;
 
+import it.polimi.server.data.UserPO;
+
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -18,4 +20,14 @@ public interface LoadStoreService extends RemoteService{
 	List<String> getAttendedCourses(String email);
 
 	List<String> getTaughtCourses(String email);
+	
+	List<String> getAllCourses();
+	
+	String storeNewCourse(String email, String name, String description);
+	
+	String deleteTwitterTokens(String email);
+	
+	String getTwitterAccessToken(String email);
+	
+	String addStudentToCourse(String email, String course);
 }

@@ -20,14 +20,14 @@ public class CoursePO {
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 	
-	@Persistent
+	@Persistent(mappedBy = "key")
     private UserPO professor;
     @Persistent
     private String name;
     @Persistent
     private String description;
-    @Persistent(mappedBy = "student")
-    private ArrayList<UserPO> students;
+    @Persistent
+    private ArrayList<String> students;
 	
     public UserPO getProfessor() {
 		return professor;
@@ -47,7 +47,7 @@ public class CoursePO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public ArrayList<UserPO> getStudents() {
+	public ArrayList<String> getStudents() {
 		return students;
 	}
 	/*public void setStudents(ArrayList<UserPO> students) {
@@ -78,18 +78,10 @@ public class CoursePO {
 		UserPO user = LoadStore.loadUser(student);
 		if(!user.isProfessor())
 		{
-			if(this.students == null)
-				this.students = new ArrayList<UserPO>();
-			this.students.add(user);
-			AttendingPO attendingTemp = new AttendingPO();
-			attendingTemp.setCourse(this);
-			attendingTemp.setStudent(user);
-			PersistenceManager pm = PMF.get().getPersistenceManager();
-			pm.makePersistent(attendingTemp);
+			this.students.add(student);
 			return true;
-		}			
-		else
-			return false;
+		}
+		return false;
 	}
 	public String getDescription() {
 		return description;

@@ -1,10 +1,10 @@
 package it.polimi.server;
 
+import it.polimi.client.SessionHandler;
+
 import javax.servlet.http.HttpSession;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
-import it.polimi.client.SessionHandler;
 
 @SuppressWarnings("serial")
 public class SessionHandlerImpl extends RemoteServiceServlet implements SessionHandler {

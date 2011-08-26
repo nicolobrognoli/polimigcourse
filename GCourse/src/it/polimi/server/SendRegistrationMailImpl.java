@@ -1,5 +1,9 @@
 package it.polimi.server;
 
+import it.polimi.client.SendRegistrationMail;
+import it.polimi.server.data.PMF;
+import it.polimi.server.data.UserPO;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.List;
@@ -13,10 +17,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import it.polimi.server.data.UserPO;
-import it.polimi.client.SendRegistrationMail;
-import it.polimi.server.data.PMF;
 
 import com.google.appengine.api.users.User;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;

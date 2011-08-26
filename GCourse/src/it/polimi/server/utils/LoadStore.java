@@ -176,7 +176,8 @@ public class LoadStore {
 		return "deleted";
 	}
 
-	public static String storeNewCourse(UserPO professor, String name, String description){
+	public static String storeNewCourse(UserPO user, String name, String description){
+		UserPO professor = null;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			// get POs from DataStore
@@ -185,15 +186,26 @@ public class LoadStore {
 			List<CoursePO> results = (List<CoursePO>)query.execute();
 			Iterator<CoursePO> iter = results.iterator();
 			CoursePO courseTemp;
-			// check empty results
-			
+			// get POs from DataStore
+			Query query2 = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
+			List<UserPO> results2 = (List<UserPO>)query2.execute();
+			Iterator<UserPO> iter2 = results2.iterator();
+			UserPO userTemp;
+			do{
+				userTemp = (UserPO) iter2.next();
+				if(userTemp.getUser().getEmail().equals(user.getUser().getEmail()))				
+					professor = userTemp;
+				
+			}while(iter2.hasNext());	
 			do{
 				if (!results.isEmpty())
 				{
 					courseTemp = (CoursePO) iter.next();
 					if(courseTemp.getName().equals(name))
-						return "course already exists";
+						return "Course already exists";
 				}				
+			
 				CoursePO course = new CoursePO();
 				course.setName(name);
 				course.setProfessor(professor);
@@ -206,7 +218,7 @@ public class LoadStore {
 			// close persistence manager
 			pm.close();
 		}
-		return "stored";
+		return "Stored";
 	}
 
 	public static String updateStudent(String student, String course){
