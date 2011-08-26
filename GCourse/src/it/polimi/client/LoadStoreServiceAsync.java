@@ -1,5 +1,7 @@
 package it.polimi.client;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface LoadStoreServiceAsync {
@@ -11,4 +13,8 @@ public interface LoadStoreServiceAsync {
 			boolean professor, AsyncCallback<String> callback);
 
 	void isProfessor(String email, AsyncCallback<Boolean> callback);
+
+	void getAttendedCourses(String email, AsyncCallback<List<String>> callback);
+
+	void getTaughtCourses(String email, AsyncCallback<List<String>> asyncCallback);
 }

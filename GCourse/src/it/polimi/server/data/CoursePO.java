@@ -3,14 +3,15 @@ package it.polimi.server.data;
 import it.polimi.server.utils.LoadStore;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.users.User;
 
 @PersistenceCapable
 public class CoursePO {
@@ -51,6 +52,19 @@ public class CoursePO {
 	}
 	public void setStudents(ArrayList<UserPO> students) {
 		this.students = students;
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Iterator<UserPO> iter = students.iterator();				
+		if (!students.isEmpty()){
+			UserPO userTemp;
+			AttendingPO attendingTemp;
+			do{
+				userTemp = (UserPO) iter.next();
+				attendingTemp = new AttendingPO();
+				attendingTemp.setCourse(this);
+				attendingTemp.setStudent(userTemp);
+				pm.makePersistent(attendingTemp);
+			}while(iter.hasNext());									
+		}
 	}
 	public boolean addStudent(String student){
 		UserPO user = LoadStore.loadUser(student);
@@ -59,6 +73,11 @@ public class CoursePO {
 			if(this.students == null)
 				this.students = new ArrayList<UserPO>();
 			this.students.add(user);
+			AttendingPO attendingTemp = new AttendingPO();
+			attendingTemp.setCourse(this);
+			attendingTemp.setStudent(user);
+			PersistenceManager pm = PMF.get().getPersistenceManager();
+			pm.makePersistent(attendingTemp);
 			return true;
 		}			
 		else
@@ -70,6 +89,8 @@ public class CoursePO {
 	public void setDescription(String description) {
 		this.description = description;
 	}    
-	
+	public String toString(){
+		return key.toString()+" - "+name;
+	}
 	
 }

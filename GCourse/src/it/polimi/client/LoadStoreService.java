@@ -1,5 +1,7 @@
 package it.polimi.client;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -12,4 +14,8 @@ public interface LoadStoreService extends RemoteService{
 	String updateUser(String email, String name, String pwd, boolean professor);
 	
 	boolean isProfessor(String email);
+
+	List<String> getAttendedCourses(String email);
+
+	List<String> getTaughtCourses(String email);
 }

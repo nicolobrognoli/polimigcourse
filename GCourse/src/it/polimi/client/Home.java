@@ -1,5 +1,7 @@
 package it.polimi.client;
 
+import java.util.List;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -76,14 +78,50 @@ public class Home implements EntryPoint {
 						corsiPanel.setStyleName("gwt-StackPanel");
 						corsiPanel.setSize("100%", "100%");
 						
-						VerticalPanel gestisciCorsi = new VerticalPanel();
+						final VerticalPanel gestisciCorsi = new VerticalPanel();
 						corsiPanel.add(gestisciCorsi, strGestisciCorsi, false);
 						gestisciCorsi.setSize("100%", "100%");
-						
-						//TODO : da modificare con for che estrae dal datastore i corsi "giusti"
-						RadioButton rdbtnCorsoEsistente = new RadioButton("listaCorsi", "corso esistente 1");
-						gestisciCorsi.add(rdbtnCorsoEsistente);
-						rdbtnCorsoEsistente.setChecked(true);		
+												
+						if(isProfessor)
+							loadStoreService.getTaughtCourses(email, new AsyncCallback<List<String>>(){
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("Errore nel recupero della lista dei corsi");
+								}
+
+								@Override
+								public void onSuccess(List<String> courses) {
+									if(courses.size()>0){
+										RadioButton first = new RadioButton("listaCorsi", courses.get(0));
+										gestisciCorsi.add(first);
+										first.setChecked(true);
+										if(courses.size()>1){
+											for(int i = 1; i<courses.size(); i++)
+												gestisciCorsi.add(new RadioButton("listaCorsi", courses.get(i)));											
+										}
+									}
+								}
+							});
+						else
+							loadStoreService.getAttendedCourses(email, new AsyncCallback<List<String>>(){
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("Errore nel recupero della lista dei corsi");
+								}
+
+								@Override
+								public void onSuccess(List<String> courses) {
+									if(courses.size()>0){
+										RadioButton first = new RadioButton("listaCorsi", courses.get(0));
+										gestisciCorsi.add(first);
+										first.setChecked(true);
+										if(courses.size()>1){
+											for(int i = 1; i<courses.size(); i++)
+												gestisciCorsi.add(new RadioButton("listaCorsi", courses.get(i)));											
+										}
+									}
+								}
+							});								
 						
 						Button btnGestisci = new Button("Gestisci");
 						btnGestisci.addClickHandler(new ClickHandler() {
@@ -132,18 +170,21 @@ public class Home implements EntryPoint {
 							btnCorsoPanel.add(btnCreaCorso);
 						}
 						else{
-							//TODO : da modificare con for che estrae dal datastore i corsi "giusti"
-							ListBox listCorsi = new ListBox(true);
+							final ListBox listCorsi = new ListBox(true);
 							aggiungiCorso.add(listCorsi);
-							listCorsi.addItem("Corso1");
-							listCorsi.addItem("Corso2");
-							listCorsi.addItem("Corso3");
-							listCorsi.addItem("Corso1");
-							listCorsi.addItem("Corso2");
-							listCorsi.addItem("Corso3");
-							listCorsi.addItem("Corso1");
-							listCorsi.addItem("Corso2");
-							listCorsi.addItem("Corso3");
+							loadStoreService.getAttendedCourses(email, new AsyncCallback<List<String>>(){
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("Errore nel recupero della lista dei corsi");
+								}
+
+								@Override
+								public void onSuccess(List<String> courses) {
+									if(courses.size()>0)
+										for(String course : courses)
+											listCorsi.addItem(course);
+								}
+							});
 							listCorsi.setSelectedIndex(0);
 							listCorsi.setVisibleItemCount(6);			
 							
