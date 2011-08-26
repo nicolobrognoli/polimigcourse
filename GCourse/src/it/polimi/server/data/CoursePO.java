@@ -50,9 +50,7 @@ public class CoursePO {
 	public ArrayList<UserPO> getStudents() {
 		return students;
 	}
-	public void setStudents(ArrayList<UserPO> students) {
-		this.students = students;
-		PersistenceManager pm = PMF.get().getPersistenceManager();
+	/*public void setStudents(ArrayList<UserPO> students) {
 		Iterator<UserPO> iter = students.iterator();				
 		if (!students.isEmpty()){
 			UserPO userTemp;
@@ -63,6 +61,16 @@ public class CoursePO {
 				attendingTemp.setCourse(this);
 				attendingTemp.setStudent(userTemp);
 				pm.makePersistent(attendingTemp);
+			}while(iter.hasNext());									
+		}
+	}*/
+	public void setStudents(ArrayList<String> students) {			
+		if (!students.isEmpty()){
+			Iterator<String> iter = students.iterator();			
+			String userTemp;
+			do{
+				userTemp = (String) iter.next();
+				addStudent(userTemp);
 			}while(iter.hasNext());									
 		}
 	}
