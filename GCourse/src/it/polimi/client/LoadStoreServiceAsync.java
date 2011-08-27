@@ -30,4 +30,7 @@ public interface LoadStoreServiceAsync {
 	void addStudentToCourse(String email, String course,AsyncCallback<String> callback);
 
 	void getAllCourses(AsyncCallback<List<String>> callback);
+
+	void getNotAttendedCourses(String email,
+			AsyncCallback<List<String>> callback);
 }

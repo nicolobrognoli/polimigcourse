@@ -106,6 +106,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 		try {
 			// get POs from DataStore
 			Query query = pm.newQuery(CoursePO.class);
+			@SuppressWarnings("unchecked")
 			List<CoursePO> results = (List<CoursePO>)query.execute();
 			Iterator<CoursePO> iter = results.iterator();
 			CoursePO courseTemp;
@@ -265,6 +266,14 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			pm.close();
 		}
 		return courses;
+	}
+
+	@Override
+	public List<String> getNotAttendedCourses(String email) {
+		List<String> all = this.getAllCourses();
+		List<String> attended = this.getAttendedCourses(email);
+		all.removeAll(attended);
+		return all;
 	}
 	
 	

@@ -18,6 +18,8 @@ public interface LoadStoreService extends RemoteService{
 	boolean isProfessor(String email);
 
 	List<String> getAttendedCourses(String email);
+	
+	List<String> getNotAttendedCourses(String email);
 
 	List<String> getTaughtCourses(String email);
 	

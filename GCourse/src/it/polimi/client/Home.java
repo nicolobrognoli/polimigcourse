@@ -184,8 +184,8 @@ public class Home implements EntryPoint {
 						else{
 							final ListBox listCorsi = new ListBox(true);
 							aggiungiCorso.add(listCorsi);
-							//TODO: sistemare...
-							loadStoreService.getAllCourses(new AsyncCallback<List<String>>(){
+							
+							loadStoreService.getNotAttendedCourses(email, new AsyncCallback<List<String>>(){
 								@Override
 								public void onFailure(Throwable caught) {
 									Window.alert("Errore nel recupero della lista dei corsi");

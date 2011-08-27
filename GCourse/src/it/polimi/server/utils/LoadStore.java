@@ -206,15 +206,13 @@ public class LoadStore {
 						return "Course already exists";
 				}				
 			
-				CoursePO course = new CoursePO();
-				course.setName(name);
-				course.setProfessor(professor);
-				course.setDescription(description);
-				pm.makePersistent(course);
-			}while(iter.hasNext());									
-			
+			}while(iter.hasNext());			
+			CoursePO course = new CoursePO();
+			course.setName(name);
+			course.setProfessor(professor);
+			course.setDescription(description);
+			pm.makePersistent(course);
 		} finally {
-			
 			// close persistence manager
 			pm.close();
 		}
