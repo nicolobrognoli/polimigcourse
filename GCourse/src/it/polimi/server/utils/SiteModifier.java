@@ -86,18 +86,27 @@ public class SiteModifier {
 	    	}else{
 	    		page = sitesHelper.createPage("webpage",namePage,course);
 	    	}
-	    	if(fileName!=null){
-				XmlBlob xml = new XmlBlob();
-				xml.setBlob("<p>"+content+"</p>"+"<a href=\"https://sites.google.com/site/provamiagcourse/"+fileName+"\">"+fileName+"</a>");
-				page.setContent(new XhtmlTextConstruct(xml));
-				page.update();
+	    	if(page!=null){
+		    	if(fileName!=null){
+					XmlBlob xml = new XmlBlob();
+					xml.setBlob("<p>"+content+"</p>"+"<a href=\"https://sites.google.com/site/provamiagcourse/"+fileName+"\">"+fileName+"</a>");
+					page.setContent(new XhtmlTextConstruct(xml));
+					page.update();
+		    	}else{
+					XmlBlob xml = new XmlBlob();
+					xml.setBlob("<p>"+content+"</p>");
+					page.setContent(new XhtmlTextConstruct(xml));
+					page.update();
+		    	}
+				return "https://sites.google.com/site/"+this.siteName+"/"+namePage;
+	    	}else{
+	    		return "Errore: creazione pagina fallita.\n";
 	    	}
-			return "https://sites.google.com/site/"+this.siteName+"/"+namePage;
 	
 		} catch (ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return "errore: Exception ServiceException expired"+" path: "+path;
+			return "errore: Exception ServiceException expired"+e.toString();
 		} catch (SitesException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

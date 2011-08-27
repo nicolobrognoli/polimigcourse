@@ -79,6 +79,9 @@ public class MailHandlerServlet extends HttpServlet {
 				if((courseStart>-1)&&(courseEnd>-1)){
 					this.course=body.substring(courseStart+5, courseEnd);
 				}
+				else{
+					return "Corso non presente";
+				}
 			}
 			else{
 				return "Errore: elemnto \"Contenuto\" non presente";
@@ -158,14 +161,22 @@ public class MailHandlerServlet extends HttpServlet {
 		return realUser;
 	}
 	
-	
+	private void postOnTwitter(UserPO tempUser,String returned){
+		  //send new tweet
+	    String accessToken = tempUser.getTwitterAccessToken();
+	    if(accessToken!=null){
+		    String secretToken = tempUser.getTwitterSecretToken();
+			TwitterManager t = new TwitterManager(new AccessToken(accessToken, secretToken), "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
+			t.sendTweet("Nuovo materiale disponibile al link: " + returned);
+	    }
+	}
 	
 	
 	private String uploadRequest(String content,UserPO tempUser, String fileName) throws MalformedURLException, IOException{
 		String msgBody="",returned;
 		
 		returned=parseBody(content);
-		if(!returned.contains("Errore")){
+		if(!returned.contains("Errore")&&!returned.contains("Corso non presente")){
 		msgBody+=this.pageContent+this.pageName;
 		SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
 	    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,fileName);
@@ -178,20 +189,39 @@ public class MailHandlerServlet extends HttpServlet {
 		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,fileName);
 		    msgBody+="Ritornato: "+returned;
 	    }
-	  //send new tweet
-	    String accessToken = tempUser.getTwitterAccessToken();
-	    if(accessToken!=null){
-		    String secretToken = tempUser.getTwitterSecretToken();
-			TwitterManager t = new TwitterManager(new AccessToken(accessToken, secretToken), "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
-			t.sendTweet("Nuovo materiale disponibile al link: " + returned);
-	    }
+	    postOnTwitter(tempUser,returned);
 		return msgBody+="Ritornato: "+returned;
 		}else{
+			if(returned.contains("Corso non presente")){
+				return "Errore: "+returned;
+			}
 			return returned;
 		}
 	}
 	
 	
+	private String postRequest(String content,UserPO tempUser) throws MalformedURLException, IOException{
+		String msgBody="",returned; 
+		msgBody+=this.pageContent+this.pageName;
+		returned=parseBody(content);
+		if(!returned.contains("Errore")&&!returned.contains("Corso non presente")){
+		SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
+	    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,null);
+	    if(returned.contains("expired")){
+			GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
+			access.refreshToken();
+			String newAccessToken=access.getAccessToken();
+			LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
+			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
+		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,null);
+	    }
+
+	    postOnTwitter(tempUser,returned);
+		return "ok";
+		}else{
+			return returned;
+		}
+	}
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -207,7 +237,7 @@ public class MailHandlerServlet extends HttpServlet {
         	Part filePart=null;
         	SiteModifier siteModifier;
 			MimeMessage message = new MimeMessage(session, req.getInputStream());
-			String content="",subject,sender=message.getFrom()[0].toString(),msgBody = "Messaggio ricevuto.",realSender;
+			String content="",subject,sender=message.getFrom()[0].toString(),msgBody = "",realSender;
         	Object o=message.getContent();
         	subject=message.getSubject();
             Message msg = new MimeMessage(session);
@@ -224,74 +254,62 @@ public class MailHandlerServlet extends HttpServlet {
 	        	for (int i = 0; i < multipart.getCount(); i++) {
 	            	  Part part =  multipart.getBodyPart(i);
 	            	  System.out.println(part.getFileName());
-	            	  msgBody=msgBody+"Parte "+i+": "+part.getFileName()+"Tipo: "+part.getContentType();
+	            	  //msgBody=msgBody+"Parte "+i+": "+part.getFileName()+"Tipo: "+part.getContentType();
 	            	  if(part.getFileName()!=null){
 	            		  filePart=part;
 	            	  }else{
 	            		  if(part.isMimeType("text/plain")||part.isMimeType("text/html")){
 	            			  content=(String)part.getContent();
-	            			  msgBody=msgBody+"Body: "+content;
+	            			  //msgBody=msgBody+"Body: "+content;
 	            		 }
 	            		  else{
 	            			  Multipart multipart2=(Multipart)part.getContent();
 	            			  for(int j=0;j<multipart2.getCount();j++){
 	            				  Part part2=multipart2.getBodyPart(j);
-	            				  msgBody=msgBody+"Tipo: "+part2.getContentType()+"Contenuto: "+part2.getContent();
+	            				 // msgBody=msgBody+"Tipo: "+part2.getContentType()+"Contenuto: "+part2.getContent();
 	    	            		  if(part2.isMimeType("text/plain")||part2.isMimeType("text/html")){
 	    	            			  content=(String)part2.getContent();
-	    	            			  msgBody=msgBody+"Body: "+content;
+	    	            			  //msgBody=msgBody+"Body: "+content;
 	    	            		 }
 	            			  }
 	            		  }
 	            	  }
 	            }
 	        	if(subject.contains("Upload")){
-	        		msgBody=msgBody+"upload yes";
+	        		msgBody=msgBody+"Richiesta di Upload. \n";
 		        		if(tempUser==null){
-		        			msgBody+="errore";
+		        			msgBody+="Errore: User non registrato.\n";
 		        		}
 		        		else{
 		        			if(filePart!=null){
 		        				  returned=uploadRequest(content,tempUser,filePart.getFileName());
 		        				  if(!returned.contains("Errore")){
-		        					  msgBody+=returned;
+		        					  msgBody+=returned+"\n";
 		        					  returned=uploadFile(filePart,tempUser);
 		        				  }
 
 	        					  msgBody+=returned;
 		        			  }
 		        			  else{
-		        				  msgBody+="Errore: richiesta di \"Upload\" senza file.";
+		        				  msgBody+="Errore: richiesta di \"Upload\" senza file.\n";
 		        			  }
 		        		}
 	        			/*Azioni per il caricamento su Google Site di un post di comunicazione*/
 		        		
 	        	}
 	        	else{
-	        		msgBody=msgBody+"upload no";
 	        		if(subject.contains("Post")){
-	        			msgBody=msgBody+"Post yes";
+	        			msgBody=msgBody+"Richiesta di Post.\n";
 		        		if(tempUser==null){
-		        			msgBody+="errore";
+		        			msgBody+="Errore: User non registrato.\n";
 		        		}
 		        		else{
-		        			parseBody(content);
-		        			msgBody+=this.pageContent+this.pageName;
-		        			siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-		        		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,null);
-		        		    if(returned.contains("expired")){
-		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
-		        				access.refreshToken();
-		        				String newAccessToken=access.getAccessToken();
-		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
-			        			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
-			        		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,null);
-		        		    }
-		        		    //send new tweet
-		        		    String accessToken = tempUser.getTwitterAccessToken();
-		        		    String secretToken = tempUser.getTwitterSecretToken();
-		        			TwitterManager t = new TwitterManager(new AccessToken(accessToken, secretToken), "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
-		        			t.sendTweet("Nuovo post disponibile al link: " + returned);
+		        			returned=postRequest(content,tempUser);
+		        			if(!returned.contains("Errore")){
+		        				msgBody+=returned+"\n";
+		        			}else{
+		        				msgBody+=returned+"\n";
+		        			}
 		        		}
 	        			/*Azioni per il caricamento su Google Site di un post di comunicazione*/
 	        		}else if(subject.contains("Course")){

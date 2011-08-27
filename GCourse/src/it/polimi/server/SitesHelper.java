@@ -474,6 +474,8 @@ public class SitesHelper {
    public BaseContentEntry<?> createPage(String kind, String title, String parent)
        throws SitesException, MalformedURLException, IOException, ServiceException {
      BaseContentEntry<?> entry = null;
+     int size,i;
+     boolean find=false;
      if (kind.equals("announcement")) {
        entry = new AnnouncementEntry();
      } else if (kind.equals("announcementspage")) {
@@ -501,13 +503,26 @@ public class SitesHelper {
      setContentBlob(entry);
 
      // Upload to a parent page?
-     if (parent !=  null) {
+     if (parent !=  null) {/*
        if (parent.lastIndexOf("/") == -1) {
          parent = getContentFeedUrl() + parent;
+       }*/
+       ContentFeed contentFeed = service.getFeed(new URL(getContentFeedUrl() + "?kind=webpage"), ContentFeed.class);
+       size=contentFeed.getEntries().size();
+       for(i=0;i<size;i++){
+    	   BaseContentEntry tempEntry=contentFeed.getEntries().get(i);
+    	   if(tempEntry.getTitle().getPlainText().contains("corso")){
+    		   parent=tempEntry.getSelfLink().getHref();
+    		   find=true;
+    		   i=size;
+    	   }
        }
-       entry.addLink(SitesLink.Rel.PARENT, Link.Type.ATOM, parent);
+       if(find){
+    	   entry.addLink(SitesLink.Rel.PARENT, Link.Type.ATOM,parent);
+       }else{
+    	   return null;
+       }
      }
-
      return service.insert(new URL(getContentFeedUrl()), entry);
    }
 
