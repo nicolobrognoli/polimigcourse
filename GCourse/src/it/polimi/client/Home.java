@@ -28,9 +28,9 @@ public class Home implements EntryPoint {
 	private final SessionHandlerAsync sessionHandlerService = GWT.create(SessionHandler.class);
 	private final LoadStoreServiceAsync loadStoreService = GWT.create(LoadStoreService.class);
 	private final TwitterServiceAsync twitterService = GWT.create(TwitterService.class);
+	private final SitesServiceAsync sitesService = GWT.create(SitesService.class);
 	
 	boolean isProfessor;
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onModuleLoad() {
 		sessionHandlerService.getSessionEmail(new AsyncCallback<String>() {
@@ -166,6 +166,19 @@ public class Home implements EntryPoint {
 							Button btnCreaCorso = new Button("Crea");
 							btnCreaCorso.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent event) {
+									//create the course page
+									sitesService.createNewPage(email, tbNome.getText(), taDescrizione.getText(), new AsyncCallback<String>(){
+										@Override
+										public void onFailure(Throwable caught) {
+											Window.alert("Errore nella creazione della pagina");
+										}
+
+										@Override
+										public void onSuccess(String result) {
+											Window.alert("Pagina creata: " + result);
+										}
+									});												
+				        		    //store the new course
 									loadStoreService.storeNewCourse(email, tbNome.getText(), taDescrizione.getText(), new AsyncCallback<String>(){
 										@Override
 										public void onFailure(Throwable caught) {
@@ -174,7 +187,7 @@ public class Home implements EntryPoint {
 
 										@Override
 										public void onSuccess(String result) {
-											Window.alert(result);
+											
 										}
 									});
 								}

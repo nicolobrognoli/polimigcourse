@@ -20,7 +20,7 @@ import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAuthorizationR
 @SuppressWarnings("serial")
 public class ConfirmRegistrationServlet extends HttpServlet {
 	
-	private static final String SCOPE = "https://sites.google.com/feeds/";
+	private static final String SCOPE = "https://sites.google.com/feeds/ https://www.google.com/calendar/feeds/";
 	private static final String CALLBACK_URL = "http://polimigcourse.appspot.com/googlecallback";
 	private static final String CLIENT_ID = "267706380696.apps.googleusercontent.com";
 	

@@ -80,6 +80,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   </servlet-mapping>
   
   <servlet>
+    <servlet-name>SitesService</servlet-name>
+    <servlet-class>it.polimi.server.SitesServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SitesService</servlet-name>
+    <url-pattern>/it.polimi.Home/sitesservice</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
     <servlet-name>TwitterCallback</servlet-name>
     <servlet-class>it.polimi.server.TwitterCallback</servlet-class>
   </servlet>

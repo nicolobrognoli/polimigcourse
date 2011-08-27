@@ -29,6 +29,8 @@ public interface LoadStoreService extends RemoteService{
 	
 	String deleteTwitterTokens(String email);
 	
+	String getGoogleAccessToken(String email);
+	
 	String getTwitterAccessToken(String email);
 	
 	String addStudentToCourse(String email, String course);

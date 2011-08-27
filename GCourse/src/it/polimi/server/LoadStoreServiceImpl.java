@@ -275,6 +275,11 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 		all.removeAll(attended);
 		return all;
 	}
+
+	@Override
+	public String getGoogleAccessToken(String email) {
+		return LoadStore.getGoogleAccessToken(email);
+	}
 	
 	
 }

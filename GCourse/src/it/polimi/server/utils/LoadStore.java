@@ -145,6 +145,62 @@ public class LoadStore {
 		return "not found";
 	}
 	
+	public static String getGoogleAccessToken(String email){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
+			List<UserPO> results = (List<UserPO>)query.execute();
+			Iterator<UserPO> iter = results.iterator();
+			UserPO userTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "not found";
+			else 
+			{
+				do{
+					userTemp = (UserPO) iter.next();
+					if(userTemp.getUser().getEmail().equals(email))				
+						return userTemp.getGoogleAccessToken();
+				}while(iter.hasNext());									
+			}
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
+		return "not found";
+	}
+	
+	public static String getGoogleRefreshToken(String email){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
+			List<UserPO> results = (List<UserPO>)query.execute();
+			Iterator<UserPO> iter = results.iterator();
+			UserPO userTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "not found";
+			else 
+			{
+				do{
+					userTemp = (UserPO) iter.next();
+					if(userTemp.getUser().getEmail().equals(email))				
+						return userTemp.getGoogleRefreshToken();
+				}while(iter.hasNext());									
+			}
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
+		return "not found";
+	}
+	
 	public static String deleteUser(String email){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
@@ -253,6 +309,37 @@ public class LoadStore {
 			return "updated";	
 		else
 			return "course not exists";
+	}
+	
+	public static String getUserSiteName(String email){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
+			List<UserPO> results = (List<UserPO>)query.execute();
+			Iterator<UserPO> iter = results.iterator();
+			UserPO userTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "not found";
+			else 
+			{
+				do{
+					userTemp = (UserPO) iter.next();
+					if(userTemp.getUser().getEmail().equals(email))				
+					{
+						return userTemp.getSiteName();
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {
+			
+			// close persistence manager
+			pm.close();
+		}
+		
+		return "error";
 	}
 	
 }

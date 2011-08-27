@@ -33,4 +33,6 @@ public interface LoadStoreServiceAsync {
 
 	void getNotAttendedCourses(String email,
 			AsyncCallback<List<String>> callback);
+
+	void getGoogleAccessToken(String email, AsyncCallback<String> callback);
 }
