@@ -55,5 +55,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlParserAPIs-2.6.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xpp3-1.1.4c-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xpp3-1.1.4c.jar"/>
+	<classpathentry kind="con" path="com.google.gdt.eclipse.managedapis.MANAGED_API_CONTAINER/gdata-calendar-2.0"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-log-3.1.5.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
