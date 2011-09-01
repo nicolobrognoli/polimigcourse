@@ -28,6 +28,7 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Properties; 
 
 import javax.mail.Message;
@@ -172,21 +173,21 @@ public class MailHandlerServlet extends HttpServlet {
 	}
 	
 	
-	private String uploadRequest(String content,UserPO tempUser, String fileName) throws MalformedURLException, IOException{
+	private String uploadRequest(String content,UserPO tempUser, ArrayList<String> stringList) throws MalformedURLException, IOException{
 		String msgBody="",returned;
 		
 		returned=parseBody(content);
 		if(!returned.contains("Errore")&&!returned.contains("Corso non presente")){
 		msgBody+=this.pageContent+this.pageName;
 		SiteModifier siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-	    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,fileName);
+	    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,stringList);
 	    if(returned.contains("expired")){
 			GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
 			access.refreshToken();
 			String newAccessToken=access.getAccessToken();
 			LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
 			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
-		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,fileName);
+		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,stringList);
 		    msgBody+="Ritornato: "+returned;
 	    }
 	    postOnTwitter(tempUser,returned);
@@ -234,15 +235,16 @@ public class MailHandlerServlet extends HttpServlet {
 
         try {
         	String returned;
-        	Part filePart=null;
         	SiteModifier siteModifier;
+        	ArrayList<String> stringList=new ArrayList<String>();
+        	ArrayList<Part> partList=new ArrayList<Part>();
 			MimeMessage message = new MimeMessage(session, req.getInputStream());
 			String content="",subject,sender=message.getFrom()[0].toString(),msgBody = "",realSender;
         	Object o=message.getContent();
         	subject=message.getSubject();
             Message msg = new MimeMessage(session);
             InputStream input=null;
-            int size=0;
+            int size=0,count;
             realSender=this.getRealUser(sender);
             msg.setFrom(new InternetAddress("reply@polimigcourse.appspotmail.com", "PolimiGCourse"));
             System.out.println(realSender);
@@ -256,7 +258,8 @@ public class MailHandlerServlet extends HttpServlet {
 	            	  System.out.println(part.getFileName());
 	            	  //msgBody=msgBody+"Parte "+i+": "+part.getFileName()+"Tipo: "+part.getContentType();
 	            	  if(part.getFileName()!=null){
-	            		  filePart=part;
+	            		  partList.add(part);
+	            		  stringList.add(part.getFileName());
 	            	  }else{
 	            		  if(part.isMimeType("text/plain")||part.isMimeType("text/html")){
 	            			  content=(String)part.getContent();
@@ -281,11 +284,13 @@ public class MailHandlerServlet extends HttpServlet {
 		        			msgBody+="Errore: User non registrato.\n";
 		        		}
 		        		else{
-		        			if(filePart!=null){
-		        				  returned=uploadRequest(content,tempUser,filePart.getFileName());
+		        			if(partList.size()!=0){
+		        				  returned=uploadRequest(content,tempUser,stringList);
 		        				  if(!returned.contains("Errore")){
-		        					  msgBody+=returned+"\n";
-		        					  returned=uploadFile(filePart,tempUser);
+		        					  for(count=0;count<partList.size();count++){
+			        					  msgBody+=returned+"\n";
+			        					  returned=uploadFile(partList.get(count),tempUser);
+		        					  }
 		        				  }
 
 	        					  msgBody+=returned;

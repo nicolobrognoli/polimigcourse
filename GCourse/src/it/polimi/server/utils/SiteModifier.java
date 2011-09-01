@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -74,12 +75,13 @@ public class SiteModifier {
 	    sitesHelper = new SitesHelper("polimigcourse","site",this.siteName);
 	    sitesHelper.login(this.accessToken);
 	}
-	public String createPage(String namePage, String content,String course, String fileName) throws MalformedURLException, IOException {
+	public String createPage(String namePage, String content,String course, ArrayList<String> stringList) throws MalformedURLException, IOException {
+		int count;
 		BaseContentEntry<?> page;
 	    SitesHelper sitesHelper;
 	    sitesHelper = new SitesHelper("polimigcourse","site",this.siteName);
 	    sitesHelper.login(this.accessToken);
-	    String path="";
+	    String path="",file,body;
 	    try {
 	    	if(course==null){
 	    		page = sitesHelper.createPage("webpage",namePage);
@@ -87,9 +89,15 @@ public class SiteModifier {
 	    		page = sitesHelper.createPage("webpage",namePage,course);
 	    	}
 	    	if(page!=null){
-		    	if(fileName!=null){
+		    	if(stringList.size()!=0){
 					XmlBlob xml = new XmlBlob();
-					xml.setBlob("<p>"+content+"</p>"+"<a href=\"https://sites.google.com/site/provamiagcourse/"+fileName+"\">"+fileName+"</a>");
+					body="<p>"+content+"</p>";
+
+		    		for(count=0;count<stringList.size();count++){
+						file=stringList.get(count);
+						body+="<p><a href=\"https://sites.google.com/site/provamiagcourse/"+file+"\">"+file+"</a></p>";
+		    		}
+					xml.setBlob(body);
 					page.setContent(new XhtmlTextConstruct(xml));
 					page.update();
 		    	}else{
