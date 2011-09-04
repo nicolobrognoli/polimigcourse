@@ -16,9 +16,11 @@ package it.polimi.server.utils;
 */
 
 import com.allen_sauer.gwt.log.client.Log;
+import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
 import com.google.gdata.client.calendar.CalendarService;
 import com.google.gdata.data.PlainTextConstruct;
 import com.google.gdata.data.calendar.CalendarEntry;
+import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.data.calendar.CalendarFeed;
 import com.google.gdata.data.calendar.ColorProperty;
 import com.google.gdata.data.calendar.HiddenProperty;
@@ -52,44 +54,59 @@ import java.net.URL;
 public class CalendarHelper {
 
  // The base URL for a user's calendar metafeed (needs a username appended).
- public static final String METAFEED_URL_BASE = 
+ private final String METAFEED_URL_BASE = 
      "https://www.google.com/calendar/feeds/";
 
  // The string to add to the user's metafeedUrl to access the allcalendars
  // feed.
- public static final String ALLCALENDARS_FEED_URL_SUFFIX = 
+ private final String ALLCALENDARS_FEED_URL_SUFFIX = 
      "/allcalendars/full";
 
  // The string to add to the user's metafeedUrl to access the owncalendars
  // feed.
- public static final String OWNCALENDARS_FEED_URL_SUFFIX = 
+ private final String OWNCALENDARS_FEED_URL_SUFFIX = 
      "/owncalendars/full";
+ 
+ // The string to add to the user's metafeedUrl to access the private
+ // feed.
+ private final String PRIVATE_FEED_URL_SUFFIX = 
+     "/private/full";
 
  // The URL for the metafeed of the specified user.
  // (e.g. http://www.google.com/feeds/calendar/jdoe@gmail.com)
- public static URL metafeedUrl = null;
+ private URL metafeedUrl = null;
 
  // The URL for the allcalendars feed of the specified user.
  // (e.g. http://www.googe.com/feeds/calendar/jdoe@gmail.com/allcalendars/full)
- public static URL allcalendarsFeedUrl = null;
+ private URL allcalendarsFeedUrl = null;
 
  // The URL for the owncalendars feed of the specified user.
  // (e.g. http://www.googe.com/feeds/calendar/jdoe@gmail.com/owncalendars/full)
- public static URL owncalendarsFeedUrl = null;
+ private  URL owncalendarsFeedUrl = null;
 
  // The calendar ID of the public Google Doodles calendar
  public static final String DOODLES_CALENDAR_ID = 
      "c4o4i7m2lbamc4k26sc2vokh5g%40group.calendar.google.com";
 
- // The HEX representation of red, blue and green
- public static final String RED = "#A32929";
- public static final String BLUE = "#2952A3";
- public static final String GREEN = "#0D7813";
+ private String email;
 
+ private CalendarService service = new CalendarService("GCourse-Calendar-v1");
  /**
   * Utility classes should not have a public or default constructor.
+ * @param accessToken 
+ * @throws MalformedURLException 
   */
- public CalendarHelper() {
+ public CalendarHelper(String email) {
+	 try {
+		metafeedUrl = new URL(METAFEED_URL_BASE + email);
+		allcalendarsFeedUrl = new URL(METAFEED_URL_BASE + email + ALLCALENDARS_FEED_URL_SUFFIX);
+		owncalendarsFeedUrl = new URL(METAFEED_URL_BASE + email + OWNCALENDARS_FEED_URL_SUFFIX);		
+		this.email = email;
+	 } catch (MalformedURLException e) {
+		Log.warn("Error while setting FeedUrls");
+		e.printStackTrace();
+	}
+	service.setAuthSubToken(LoadStore.getGoogleAccessToken(email));	 
  }
 
  /**
@@ -100,17 +117,33 @@ public class CalendarHelper {
   * @throws IOException If there is a problem communicating with the server.
   * @throws ServiceException If the service is unable to handle the request.
   */
- public void printUserCalendars(CalendarService service, URL feedUrl)
-     throws IOException, ServiceException {
+ public String getCalendarIdFromTitle(String title) throws IOException {
 
    // Send the request and receive the response:
-   CalendarFeed resultFeed = service.getFeed(feedUrl, CalendarFeed.class);
-
-   // Print the title of each calendar
+   CalendarFeed resultFeed = null;
+	try {
+		resultFeed = service.getFeed(owncalendarsFeedUrl, CalendarFeed.class);
+	} catch (ServiceException e) {
+		service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
+		try {
+			resultFeed = service.getFeed(owncalendarsFeedUrl, CalendarFeed.class);
+		} catch (ServiceException e1) {
+			Log.warn("ServiceException while retrieving Calendar Id");
+			e1.printStackTrace();
+		}
+		e.printStackTrace();
+	}
+   CalendarEntry entry;
    for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-     CalendarEntry entry = resultFeed.getEntries().get(i);
-     Log.warn("\t" + entry.getTitle().getPlainText());
+     entry = resultFeed.getEntries().get(i);
+     if (entry.getTitle().getPlainText().equalsIgnoreCase(title)){
+    	 String id = entry.getId();
+    	 Log.warn("Calendar Id: " + id.substring(id.lastIndexOf("/")+1));    	 
+     	return id.substring(id.lastIndexOf("/")+1);
+     }
    }
+   Log.warn("Calendar Not Found");
+   return "Calendar not fount";
  }
 
  /**
@@ -121,24 +154,34 @@ public class CalendarHelper {
   * @throws IOException If there is a problem communicating with the server.
   * @throws ServiceException If the service is unable to handle the request.
   */
-public CalendarEntry createCalendar(CalendarService service)
-     throws IOException, ServiceException {
-   Log.warn("Creating a secondary calendar");
+public CalendarEntry createCalendar(String title, String summary)
+     throws IOException {
+   Log.info("Creating a secondary calendar");
 
    // Create the calendar
    CalendarEntry calendar = new CalendarEntry();
-   calendar.setTitle(new PlainTextConstruct("Little League Schedule"));
-   calendar.setSummary(new PlainTextConstruct(
-       "This calendar contains the practice schedule and game times."));
-   calendar.setTimeZone(new TimeZoneProperty("America/Los_Angeles"));
-   calendar.setHidden(HiddenProperty.FALSE);
-   calendar.setColor(new ColorProperty(BLUE));
-   calendar.addLocation(new Where("", "", "Oakland"));
-
+   calendar.setTitle(new PlainTextConstruct(title));
+   calendar.setSummary(new PlainTextConstruct(summary));
+   //calendar.setTimeZone(new TimeZoneProperty("America/Los_Angeles"));
+   //calendar.setHidden(HiddenProperty.FALSE);
+   //calendar.addLocation(new Where("", "", "Oakland"));
+   
    // Insert the calendar
-   return service.insert(owncalendarsFeedUrl, calendar);
+   CalendarEntry retCalendar = null;
+   try {
+	retCalendar = service.insert(owncalendarsFeedUrl, calendar);
+} catch (ServiceException e) {
+	service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
+	try {
+		retCalendar = service.insert(owncalendarsFeedUrl, calendar);
+	} catch (ServiceException e1) {
+		Log.warn("ServiceException while creating a new Calendar");
+		e1.printStackTrace();
+	}
+	e.printStackTrace();
+}
+   return retCalendar;
  }
-
 
  /**
   * Updates the title, color, and selected properties of the given calendar
@@ -152,10 +195,8 @@ public CalendarEntry createCalendar(CalendarService service)
   */
  public CalendarEntry updateCalendar(CalendarEntry calendar)
      throws IOException, ServiceException {
-   Log.warn("Updating the secondary calendar");
-
+   Log.info("Updating the secondary calendar");
    calendar.setTitle(new PlainTextConstruct("New title"));
-   calendar.setColor(new ColorProperty(GREEN));
    calendar.setSelected(SelectedProperty.TRUE);
    return calendar.update();
  }
@@ -169,11 +210,31 @@ public CalendarEntry createCalendar(CalendarService service)
   */
  public void deleteCalendar(CalendarEntry calendar)
      throws IOException, ServiceException {
-   Log.warn("Deleting the secondary calendar");
-
+   Log.info("Deleting the secondary calendar");
    calendar.delete();
  }
 
+ public CalendarEventEntry createEvent(String calendar, String strEvent) throws IOException{
+	 CalendarEventEntry event = new CalendarEventEntry();
+	 URL privateFeedUrl = new URL(METAFEED_URL_BASE + this.getCalendarIdFromTitle(calendar) + PRIVATE_FEED_URL_SUFFIX);
+	 event.setContent(new PlainTextConstruct(strEvent));
+	 event.setQuickAdd(true);
+	 CalendarEventEntry newEvent = null;
+	 // Send the request and receive the response:
+	 try {
+		newEvent = service.insert(privateFeedUrl, event);	
+	} catch (ServiceException e) {
+		service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
+		try {
+			newEvent = service.insert(privateFeedUrl, event);
+		} catch (ServiceException e1) {
+			Log.warn("ServiceException while creating a new Event");
+			e1.printStackTrace();
+		}
+	}
+	 return newEvent;
+ }
+ 
  /**
   * Subscribes to the public Google Doodles calendar using the allcalendars
   * feed.
@@ -204,7 +265,6 @@ public CalendarEntry createCalendar(CalendarService service)
      throws IOException, ServiceException {
    Log.warn("Updating the display color of the Doodles calendar");
 
-   calendar.setColor(new ColorProperty(BLUE));
    return calendar.update();
  }
 

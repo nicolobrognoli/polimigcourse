@@ -4,13 +4,24 @@ import it.polimi.server.data.CoursePO;
 import it.polimi.server.data.PMF;
 import it.polimi.server.data.UserPO;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson.JacksonFactory;
+
 public class LoadStore {
+	
+	protected static final String CLIENT_ID = "267706380696.apps.googleusercontent.com";
+	protected static final String CLIENT_SECRET = "zBWLvQsYnEF4-AAg1PZYu7eA";
+	
 	public static String updateAccessToken(String email,String accessToken){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
@@ -199,6 +210,22 @@ public class LoadStore {
 			pm.close();
 		}
 		return "not found";
+	}
+	
+	public static String refreshGoogleToken(String email){
+		String accessToken = LoadStore.getGoogleAccessToken(email);
+		String refreshToken = LoadStore.getGoogleRefreshToken(email);
+		final HttpTransport TRANSPORT = new NetHttpTransport();
+		final JsonFactory JSON_FACTORY = new JacksonFactory();
+		GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(accessToken,TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,refreshToken);
+		try {
+			access.refreshToken();
+		} catch (IOException e) {
+			return "Error while refreshing Google token";
+		}
+		accessToken=access.getAccessToken();
+		LoadStore.updateAccessToken(LoadStore.loadUser(email).getUser().getEmail(), accessToken);
+		return accessToken;
 	}
 	
 	public static String deleteUser(String email){
