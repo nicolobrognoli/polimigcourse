@@ -5,7 +5,6 @@ import it.polimi.server.utils.LoadStore;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.jdo.PersistenceManager;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -28,6 +27,8 @@ public class CoursePO {
     private String description;
     @Persistent
     private ArrayList<String> students;
+    @Persistent
+    private String calendarId;
 	
     public UserPO getProfessor() {
 		return professor;
@@ -89,6 +90,12 @@ public class CoursePO {
 	public void setDescription(String description) {
 		this.description = description;
 	}    
+	public String getCalendarId() {
+		return calendarId;
+	}
+	public void setCalendarId(String calendarId) {
+		this.calendarId = calendarId;
+	}
 	public String toString(){
 		return key.toString()+" - "+name;
 	}

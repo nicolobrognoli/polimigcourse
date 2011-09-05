@@ -84,15 +84,13 @@ public class CalendarHelper {
  // (e.g. http://www.googe.com/feeds/calendar/jdoe@gmail.com/owncalendars/full)
  private  URL owncalendarsFeedUrl = null;
 
- // The calendar ID of the public Google Doodles calendar
- public static final String DOODLES_CALENDAR_ID = 
-     "c4o4i7m2lbamc4k26sc2vokh5g%40group.calendar.google.com";
-
  private String email;
 
  private CalendarService service = new CalendarService("GCourse-Calendar-v1");
+ 
  /**
-  * Utility classes should not have a public or default constructor.
+  * Class constructor.
+  * 
  * @param accessToken 
  * @throws MalformedURLException 
   */
@@ -109,109 +107,104 @@ public class CalendarHelper {
 	service.setAuthSubToken(LoadStore.getGoogleAccessToken(email));	 
  }
 
- /**
-  * Prints the titles of calendars in the feed specified by the given URL.
-  * 
-  * @param service An authenticated CalendarService object.
-  * @param feedUrl The URL of a calendar feed to retrieve.
-  * @throws IOException If there is a problem communicating with the server.
-  * @throws ServiceException If the service is unable to handle the request.
-  */
- public String getCalendarIdFromTitle(String title) throws IOException {
-
-   // Send the request and receive the response:
-   CalendarFeed resultFeed = null;
-	try {
-		resultFeed = service.getFeed(owncalendarsFeedUrl, CalendarFeed.class);
-	} catch (ServiceException e) {
-		service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
+ private CalendarEntry getCalendarFromTitle(String title) throws IOException{
+	 CalendarFeed resultFeed = null;
 		try {
 			resultFeed = service.getFeed(owncalendarsFeedUrl, CalendarFeed.class);
-		} catch (ServiceException e1) {
-			Log.warn("ServiceException while retrieving Calendar Id");
-			e1.printStackTrace();
+		} catch (ServiceException e) {
+			service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
+			try {
+				resultFeed = service.getFeed(owncalendarsFeedUrl, CalendarFeed.class);
+			} catch (ServiceException e1) {
+				Log.warn("ServiceException while retrieving Calendar Id");
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
 		}
-		e.printStackTrace();
-	}
-   CalendarEntry entry;
-   for (int i = 0; i < resultFeed.getEntries().size(); i++) {
-     entry = resultFeed.getEntries().get(i);
-     if (entry.getTitle().getPlainText().equalsIgnoreCase(title)){
-    	 String id = entry.getId();
-    	 Log.warn("Calendar Id: " + id.substring(id.lastIndexOf("/")+1));    	 
-     	return id.substring(id.lastIndexOf("/")+1);
-     }
-   }
-   Log.warn("Calendar Not Found");
-   return "Calendar not fount";
+	   CalendarEntry entry;
+	   for (int i = 0; i < resultFeed.getEntries().size(); i++) {
+	     entry = resultFeed.getEntries().get(i);
+	     if (entry.getTitle().getPlainText().equalsIgnoreCase(title)){ 
+	     	return entry;
+	     }
+	   }
+	   return null;
+ }
+ 
+ /**
+  * Returns the id of the calendars with the given title.
+  * 
+  * @param title the title of the calendar which the id must retrieved of.
+  * @throws IOException If there is a problem communicating with the server.
+  */
+ private String getCalendarIdFromTitle(String title) throws IOException {
+	 String id;
+	 if (getCalendarFromTitle(title).getId() != null){
+		 id = getCalendarFromTitle(title).getId();
+		 return id.substring(id.lastIndexOf("/")+1);
+	 }
+	 else
+		 return null;
  }
 
  /**
   * Creates a new secondary calendar using the owncalendars feed.
   * 
-  * @param service An authenticated CalendarService object.
+  * @param title the title of the calendar to create.
+  * @param summary the summary of the calendar to create.
   * @return The newly created calendar entry.
   * @throws IOException If there is a problem communicating with the server.
-  * @throws ServiceException If the service is unable to handle the request.
   */
-public CalendarEntry createCalendar(String title, String summary)
-     throws IOException {
+public String createCalendar(String title, String summary) throws IOException {
    Log.info("Creating a secondary calendar");
 
    // Create the calendar
    CalendarEntry calendar = new CalendarEntry();
    calendar.setTitle(new PlainTextConstruct(title));
    calendar.setSummary(new PlainTextConstruct(summary));
-   //calendar.setTimeZone(new TimeZoneProperty("America/Los_Angeles"));
-   //calendar.setHidden(HiddenProperty.FALSE);
-   //calendar.addLocation(new Where("", "", "Oakland"));
+   calendar.setTimeZone(new TimeZoneProperty("Europe/Rome"));
    
    // Insert the calendar
    CalendarEntry retCalendar = null;
    try {
-	retCalendar = service.insert(owncalendarsFeedUrl, calendar);
-} catch (ServiceException e) {
-	service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
-	try {
-		retCalendar = service.insert(owncalendarsFeedUrl, calendar);
-	} catch (ServiceException e1) {
-		Log.warn("ServiceException while creating a new Calendar");
-		e1.printStackTrace();
-	}
-	e.printStackTrace();
-}
-   return retCalendar;
- }
-
- /**
-  * Updates the title, color, and selected properties of the given calendar
-  * entry using the owncalendars feed. Note that the title can only be updated
-  * with the owncalendars feed.
-  * 
-  * @param calendar The calendar entry to update.
-  * @return The newly updated calendar entry.
-  * @throws IOException If there is a problem communicating with the server.
-  * @throws ServiceException If the service is unable to handle the request.
-  */
- public CalendarEntry updateCalendar(CalendarEntry calendar)
-     throws IOException, ServiceException {
-   Log.info("Updating the secondary calendar");
-   calendar.setTitle(new PlainTextConstruct("New title"));
-   calendar.setSelected(SelectedProperty.TRUE);
-   return calendar.update();
+	   retCalendar = service.insert(owncalendarsFeedUrl, calendar);
+   } catch (ServiceException e) {
+		service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
+		try {
+			retCalendar = service.insert(owncalendarsFeedUrl, calendar);
+		} catch (ServiceException e1) {
+			Log.warn("ServiceException while creating a new Calendar");
+			e1.printStackTrace();
+		}
+		e.printStackTrace();
+   }
+   Log.warn("Calendar ID: " + retCalendar.getId());
+   return retCalendar.getId();
  }
 
  /**
   * Deletes the given calendar entry.
   * 
-  * @param calendar The calendar entry to delete.
+  * @param calendarId The id of the calendar entry to delete.
   * @throws IOException If there is a problem communicating with the server.
   * @throws ServiceException If the service is unable to handle the request.
   */
- public void deleteCalendar(CalendarEntry calendar)
-     throws IOException, ServiceException {
+ public void deleteCalendar(String calendarId) throws IOException {
    Log.info("Deleting the secondary calendar");
-   calendar.delete();
+   CalendarEntry calendar = new CalendarEntry();
+   calendar.setId(calendarId);
+   try {
+	   calendar.delete();
+   } catch (ServiceException e) {
+	   service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
+		try {
+			calendar.delete();
+		} catch (ServiceException e1) {
+			Log.warn("ServiceException while deleting a Calendar");
+			e1.printStackTrace();
+		}
+		e.printStackTrace();
+   	}
  }
 
  public CalendarEventEntry createEvent(String calendar, String strEvent) throws IOException{
@@ -236,59 +229,54 @@ public CalendarEntry createCalendar(String title, String summary)
  }
  
  /**
-  * Subscribes to the public Google Doodles calendar using the allcalendars
+  * Subscribes a Google calendar using the allcalendars
   * feed.
   * 
-  * @param service An authenticated CalendarService object.
+  * @param calendarId the id of the calendar to subscribe.
   * @return The newly created calendar entry.
   * @throws IOException If there is a problem communicating with the server.
-  * @throws ServiceException If the service is unable to handle the request.
   */
- public CalendarEntry createSubscription(CalendarService service)
-     throws IOException, ServiceException {
-   Log.warn("Subscribing to the Google Doodles calendar");
+ public CalendarEntry createSubscription(String calendarId) throws IOException{
+   Log.info("Subscribing to the Google Doodles calendar");
 
    CalendarEntry calendar = new CalendarEntry();
-   calendar.setId(DOODLES_CALENDAR_ID);
-   return service.insert(allcalendarsFeedUrl, calendar);
- }
-
- /**
-  * Updated the color property of the given calendar entry.
-  * 
-  * @param calendar The calendar entry to update.
-  * @return The newly updated calendar entry.
-  * @throws IOException If there is a problem communicating with the server.
-  * @throws ServiceException If the service is unable to handle the request.
-  */
- public CalendarEntry updateSubscription(CalendarEntry calendar)
-     throws IOException, ServiceException {
-   Log.warn("Updating the display color of the Doodles calendar");
-
-   return calendar.update();
+   calendar.setId(calendarId);
+   try {
+	   return service.insert(allcalendarsFeedUrl, calendar);
+   } catch (ServiceException e) {
+	service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
+	try {
+		return service.insert(allcalendarsFeedUrl, calendar);
+	} catch (ServiceException e1) {
+		Log.warn("ServiceException while creating a new Event");
+		e1.printStackTrace();
+	}
+   }
+   return null;
  }
 
  /**
   * Deletes the given calendar entry.
   * 
-  * @param calendar The calendar entry to delete
+  * @param calendarId The Id of the calendar entry to delete.
   * @throws IOException If there is a problem communicating with the server.
-  * @throws ServiceException If the service is unable to handle the request.
   */
- public void deleteSubscription(CalendarEntry calendar)
-     throws IOException, ServiceException {
-   Log.warn("Deleting the subscription to the Doodles calendar");
-
-   calendar.delete();
+ public void deleteSubscription(String calendarId) throws IOException {
+	 Log.info("Deleting the secondary calendar");
+	   CalendarEntry calendar = new CalendarEntry();
+	   calendar.setId(calendarId);
+	   try {
+		   calendar.delete();
+	   } catch (ServiceException e) {
+		   service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
+			try {
+				calendar.delete();
+			} catch (ServiceException e1) {
+				Log.warn("ServiceException while deleting a Subscription");
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+	   	}
  } 
  
- /**
-  * Prints the command line usage of this sample application.
-  */
- public void usage() {
-   Log.warn("Syntax: CalendarFeedDemo <username> <password>");
-   Log.warn("\nThe username and password are used for "
-       + "authentication.  The sample application will modify the specified "
-       + "user's calendars so you may want to use a test account.");
- }  
 }
