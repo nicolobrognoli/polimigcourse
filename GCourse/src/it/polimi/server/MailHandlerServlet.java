@@ -178,6 +178,7 @@ public class MailHandlerServlet extends HttpServlet {
 
 		        			if(partList.size()!=0){
 		        				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,tempUser,stringList);
+		        				  postOnTwitter(tempUser,returned);
 		        				  if(!returned.contains("Errore")){
 		        					  for(count=0;count<partList.size();count++){
 			        					  msgBody+=returned+"\n";
@@ -195,18 +196,13 @@ public class MailHandlerServlet extends HttpServlet {
 	        	else{
 	        		if(subject.contains("Post")){
 	        			msgBody=msgBody+"Richiesta di Post.\n";
-		        		if(tempUser==null){
-		        			msgBody+="Errore: User non registrato.\n";
-		        		}
-		        		else{
-		        			returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,tempUser);
-		        			if(!returned.contains("Errore")){
-		        				msgBody+=returned+"\n";
-		        			}else{
-		        				msgBody+=returned+"\n";
-		        			}
-		        		}
-	        			/*Azioni per il caricamento su Google Site di un post di comunicazione*/
+	        			returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,tempUser);
+	        			if(!returned.contains("Errore")){
+	        				msgBody+=returned+"\n";
+	        			}else{
+	        				postOnTwitter(tempUser,returned);
+	        				msgBody+=returned+"\n";
+	        			}
 	        		}else if(subject.contains("Course")){
 	        			parseBody(content);
 	        			msgBody+=this.pageContent+this.pageName;
@@ -219,6 +215,7 @@ public class MailHandlerServlet extends HttpServlet {
 		        			this.siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
 		        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
 	        		    }
+	        		    postOnTwitter(tempUser,returned);
 	        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
 	        			/*Errore oppure un'altra azione*/
 	        		}
