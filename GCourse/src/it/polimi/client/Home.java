@@ -6,6 +6,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -31,6 +32,9 @@ public class Home implements EntryPoint {
 	private final SitesServiceAsync sitesService = GWT.create(SitesService.class);
 	
 	boolean isProfessor;
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	@Override
 	public void onModuleLoad() {
 		sessionHandlerService.getSessionEmail(new AsyncCallback<String>() {
@@ -55,14 +59,12 @@ public class Home implements EntryPoint {
 					@Override
 					public void onSuccess(Boolean p) {
 						isProfessor = p;
-						String strGestisciCorsi;
+						String strGestisciCorsi = "Gestisci i corsi a cui sei iscritto";
 						String strAggiungiCorso;
 						if(isProfessor){
-							strGestisciCorsi = "Gestisci i tuoi corsi";
 							strAggiungiCorso = "Crea un corso";
 						}
 						else{
-							strGestisciCorsi = "Gestisci i corsi a cui sei iscritto";
 							strAggiungiCorso = "Iscriviti ad un corso";
 						}
 						RootLayoutPanel rootLayoutPanel = RootLayoutPanel.get();
@@ -80,31 +82,17 @@ public class Home implements EntryPoint {
 						corsiPanel.setStyleName("gwt-StackPanel");
 						corsiPanel.setSize("100%", "100%");
 						
-						final VerticalPanel gestisciCorsi = new VerticalPanel();
-						corsiPanel.add(gestisciCorsi, strGestisciCorsi, false);
-						gestisciCorsi.setSize("100%", "100%");
+						
 												
-						if(isProfessor)
-							loadStoreService.getTaughtCourses(email, new AsyncCallback<List<String>>(){
-								@Override
-								public void onFailure(Throwable caught) {
-									Window.alert("Errore nel recupero della lista dei corsi");
-								}
-
-								@Override
-								public void onSuccess(List<String> courses) {
-									if(courses.size()>0){
-										RadioButton first = new RadioButton("listaCorsi", courses.get(0));
-										gestisciCorsi.add(first);
-										first.setValue(true);
-										if(courses.size()>1){
-											for(int i = 1; i<courses.size(); i++)
-												gestisciCorsi.add(new RadioButton("listaCorsi", courses.get(i)));											
-										}
-									}
-								}
-							});
-						else
+						if(!isProfessor)					
+						{
+							final VerticalPanel gestisciCorsi = new VerticalPanel();
+							corsiPanel.add(gestisciCorsi, strGestisciCorsi, false);
+							gestisciCorsi.setSize("100%", "100%");
+							
+							
+							
+							final ListBox listCorsi = new ListBox(true);
 							loadStoreService.getAttendedCourses(email, new AsyncCallback<List<String>>(){
 								@Override
 								public void onFailure(Throwable caught) {
@@ -114,29 +102,50 @@ public class Home implements EntryPoint {
 								@Override
 								public void onSuccess(List<String> courses) {
 									if(courses.size()>0){
-										RadioButton first = new RadioButton("listaCorsi", courses.get(0));
-										gestisciCorsi.add(first);
-										first.setValue(true);
-										if(courses.size()>1){
-											for(int i = 1; i<courses.size(); i++)
-												gestisciCorsi.add(new RadioButton("listaCorsi", courses.get(i)));											
-										}
+										for(String course : courses)
+											listCorsi.addItem(course);
 									}
 								}
-							});								
+							});	
+							
+							Button btnGestisci = new Button("Gestisci");
+							btnGestisci.addClickHandler(new ClickHandler() {
+								public void onClick(ClickEvent event) {
+									if(!isProfessor){
+										gestisciCorsi.clear();
+										int index = listCorsi.getSelectedIndex();
+										final String course = listCorsi.getItemText(index);
+										
+										final Label corso = new Label("Corso: " +course);
+										final Label nota = new Label("Decidere quali contenuti ricevere:");
+										final CheckBox lecture = new CheckBox("Appunti");
+										final CheckBox exercise = new CheckBox("Esercizi");
+										final Button confirm = new Button("Conferma");
+										
+										//TODO: prendere valore da datastore
+										lecture.setValue(true);
+										exercise.setValue(false);
+										
+										gestisciCorsi.add(corso);
+										gestisciCorsi.add(nota);
+										gestisciCorsi.add(lecture);
+										gestisciCorsi.add(exercise);
+										gestisciCorsi.add(confirm);
+										
+										confirm.addClickHandler(new ClickHandler() {
+											public void onClick(ClickEvent event) {
+												//TODO: salva su datastore
+												Window.open("/home.html", "_self", "");
+											}
+										});
+									}
+								}
+							});
+							gestisciCorsi.add(listCorsi);
+							gestisciCorsi.add(btnGestisci);
+						}
 						
-						Button btnGestisci = new Button("Gestisci");
-						btnGestisci.addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent event) {
-								if(isProfessor){
-									//TODO: Gestisci il corso selezionato di cui sei il professore
-								}
-								else{
-									//TODO: Gestisci i corsi selezionati di cui sei studente
-								}
-							}
-						});
-						gestisciCorsi.add(btnGestisci);
+						
 						
 						VerticalPanel aggiungiCorso = new VerticalPanel();
 						corsiPanel.add(aggiungiCorso, strAggiungiCorso, false);
@@ -228,6 +237,7 @@ public class Home implements EntryPoint {
 								@Override
 								public void onSuccess(String result) {
 									Window.alert("Iscrizione al corso: " + course + " avvenuta con successo.");
+									Window.open("/home.html", "_self", "");
 								}
 							});
 								}
