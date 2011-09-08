@@ -13,7 +13,7 @@ public class UserPO {
 
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private Key key;
+    private Key userKey;
 
     @Persistent
     private User user;
@@ -55,11 +55,6 @@ public class UserPO {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-
-	public Key getKey() {
-		return key;
-	}
-
 
 
 	public boolean isConfirmed() {
@@ -138,5 +133,9 @@ public class UserPO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Key getUserKey() {
+		return userKey;
 	}
 }

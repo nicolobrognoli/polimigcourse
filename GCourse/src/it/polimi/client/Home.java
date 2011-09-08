@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.DecoratedStackPanel;
 import com.google.gwt.user.client.ui.TextArea;
@@ -32,9 +31,7 @@ public class Home implements EntryPoint {
 	private final SitesServiceAsync sitesService = GWT.create(SitesService.class);
 	
 	boolean isProfessor;
-	/**
-	 * @wbp.parser.entryPoint
-	 */
+
 	@Override
 	public void onModuleLoad() {
 		sessionHandlerService.getSessionEmail(new AsyncCallback<String>() {
@@ -93,6 +90,7 @@ public class Home implements EntryPoint {
 							
 							
 							final ListBox listCorsi = new ListBox(true);
+						
 							loadStoreService.getAttendedCourses(email, new AsyncCallback<List<String>>(){
 								@Override
 								public void onFailure(Throwable caught) {
@@ -102,8 +100,23 @@ public class Home implements EntryPoint {
 								@Override
 								public void onSuccess(List<String> courses) {
 									if(courses.size()>0){
-										for(String course : courses)
-											listCorsi.addItem(course);
+										for(final String key : courses)
+										{
+											loadStoreService.getCourseNameProfessor(key, new AsyncCallback<String>(){
+												@Override
+												public void onFailure(Throwable caught) {
+													Window.alert("Errore nel recupero della lista dei corsi");
+												}
+				
+												@Override
+												public void onSuccess(String name) {
+													listCorsi.addItem(name, key);
+													
+												}
+											});	
+											
+										}
+											
 									}
 								}
 							});	
@@ -215,20 +228,39 @@ public class Home implements EntryPoint {
 
 								@Override
 								public void onSuccess(List<String> courses) {
-									if(courses.size()>0)
-										for(String course : courses)
-											listCorsi.addItem(course);
+									if(courses.size()>0){
+										for(final String key : courses)
+										{
+											loadStoreService.getCourseNameProfessor(key, new AsyncCallback<String>(){
+												@Override
+												public void onFailure(Throwable caught) {
+													Window.alert("Errore nel recupero della lista dei corsi");
+												}
+				
+												@Override
+												public void onSuccess(String name) {
+													listCorsi.addItem(name, key);
+													System.out.println("add "+key);
+												}
+											});	
+											
+										}
+											
+									}
 								}
 							});
 							listCorsi.setSelectedIndex(0);
 							listCorsi.setVisibleItemCount(6);			
-							
+						
+							//TODO
 							Button btnIscriviti = new Button("Iscriviti");
 							btnIscriviti.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent event) {
 									int index = listCorsi.getSelectedIndex();
+									final String key = listCorsi.getValue(index);
+									Window.alert(key);
 									final String course = listCorsi.getItemText(index);
-									loadStoreService.addStudentToCourse(email, course, new AsyncCallback<String>(){
+									loadStoreService.addStudentToCourse(email, key, new AsyncCallback<String>(){
 								@Override
 								public void onFailure(Throwable caught) {
 									Window.alert("Errore nell' iscrizione ai corsi");

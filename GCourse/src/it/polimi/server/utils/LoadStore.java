@@ -1,5 +1,6 @@
 package it.polimi.server.utils;
 
+import it.polimi.server.data.AttendingPO;
 import it.polimi.server.data.CoursePO;
 import it.polimi.server.data.PMF;
 import it.polimi.server.data.UserPO;
@@ -50,6 +51,34 @@ public class LoadStore {
 			pm.close();
 		}
 		return "updated";
+	}
+	
+	public static CoursePO getCourse(String key){
+		// get persistence manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(CoursePO.class);
+			@SuppressWarnings("unchecked")
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
+			// check empty results
+			if (results.isEmpty())
+				return null;
+			else 
+			{
+				do{
+					courseTemp = (CoursePO) iter.next();
+					if(courseTemp.getCourseKey().toString().equals(key))
+						return courseTemp;
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}
+		return null;
 	}
 	
 	public static String storeAccessToken(String email, String kind, String accessToken, String refreshToken){
@@ -302,29 +331,23 @@ public class LoadStore {
 		return "Stored";
 	}
 
-	public static String updateStudent(String student, String course){
+	/*public static String updateStudent(String student, String course){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		boolean ok = false;
 		try {
 			
 			// get POs from DataStore
-			Query query = pm.newQuery(CoursePO.class);
+			Query query = pm.newQuery(AttendingPO.class);
 			@SuppressWarnings("unchecked")
-			List<CoursePO> results = (List<CoursePO>)query.execute();
-			Iterator<CoursePO> iter = results.iterator();
-			CoursePO courseTemp;
+			List<AttendingPO> results = (List<AttendingPO>)query.execute();
+			Iterator<AttendingPO> iter = results.iterator();
+			AttendingPO attendingTemp;
 			
 			do{
-				courseTemp = (CoursePO) iter.next();
-				if(courseTemp.getName().equals(course))
+				attendingTemp = (AttendingPO) iter.next();
+				if(attendingTemp.getCourse().getName().equals(course) && attendingTemp.getStudent().getUser().getEmail().equals(student))
 				{
-					if(courseTemp.getStudents().contains(student))
-						return "already registered";
-					else
-					{
-						courseTemp.addStudent(student);
-						ok = true;
-					}					
+							
 				}					
 			}while(iter.hasNext());		
 			
@@ -336,7 +359,7 @@ public class LoadStore {
 			return "updated";	
 		else
 			return "course not exists";
-	}
+	}*/
 	
 	public static String getUserSiteName(String email){
 		PersistenceManager pm = PMF.get().getPersistenceManager();

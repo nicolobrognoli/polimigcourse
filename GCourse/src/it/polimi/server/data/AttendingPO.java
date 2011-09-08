@@ -1,5 +1,7 @@
 package it.polimi.server.data;
 
+import it.polimi.server.utils.LoadStore;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -15,21 +17,38 @@ public class AttendingPO {
     private Key key;
 	
 	@Persistent
-    private CoursePO course;
+    private String courseKey;
 	@Persistent
-    private UserPO student;	
+    private String student;	
+	@Persistent
+	private boolean lecture;
+	@Persistent
+	private boolean exercise;
 	
-    public CoursePO getCourse() {
-		return course;
+  
+	public String getCourseKey() {
+		return courseKey;
 	}
-	public void setCourse(CoursePO course) {
-		this.course = course;
+	public void setCourseKey(String courseKey) {
+		this.courseKey = courseKey;
 	}
-	public UserPO getStudent() {
+	public String getStudent() {
 		return student;
 	}
-	public void setStudent(UserPO student) {
-		this.student = student;
+	public void setStudent(String student) {
+		this.student = student;		
+	}
+	public boolean isLecture() {
+		return lecture;
+	}
+	public void setLecture(boolean lecture) {
+		this.lecture = lecture;
+	}
+	public boolean isExercise() {
+		return exercise;
+	}
+	public void setExercise(boolean exercise) {
+		this.exercise = exercise;
 	}
 	
 }

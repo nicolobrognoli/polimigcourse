@@ -1,6 +1,7 @@
 package it.polimi.server;
 
 import it.polimi.client.LoadStoreService;
+import it.polimi.server.data.AttendingPO;
 import it.polimi.server.data.PMF;
 import it.polimi.server.data.UserPO;
 
@@ -15,6 +16,7 @@ import javax.jdo.Query;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -105,26 +107,25 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			// get POs from DataStore
-			Query query = pm.newQuery(CoursePO.class);
+			Query query = pm.newQuery(AttendingPO.class);
 			@SuppressWarnings("unchecked")
-			List<CoursePO> results = (List<CoursePO>)query.execute();
-			Iterator<CoursePO> iter = results.iterator();
-			CoursePO courseTemp;
+			List<AttendingPO> results = (List<AttendingPO>)query.execute();
+			Iterator<AttendingPO> iter = results.iterator();
+			AttendingPO attendingTemp;
 			// check empty results
 			if (results.isEmpty())
 				return courses;
 			else 
 			{
 				do{
-					courseTemp = (CoursePO) iter.next();
-					if(courseTemp.getStudents().contains(email))					
+					attendingTemp = (AttendingPO) iter.next();
+					if(attendingTemp.getStudent().equals(email))					
 					{
-						courses.add(courseTemp.getName());
+						courses.add(attendingTemp.getCourseKey());
 					}
 				}while(iter.hasNext());									
 			}
-		} finally {
-			
+		} finally {			
 			// close persistence manager
 			pm.close();
 		}
@@ -207,36 +208,47 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 	}
 
 	@Override
-	public String addStudentToCourse(String email, String course) {
-		
+	public String addStudentToCourse(String email, String courseKey) {
+		boolean ok = true;
 		// get persistence manager
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
 			// get POs from DataStore
-			Query query = pm.newQuery(CoursePO.class);
+			Query query = pm.newQuery(AttendingPO.class);
 			@SuppressWarnings("unchecked")
-			List<CoursePO> results = (List<CoursePO>)query.execute();
-			Iterator<CoursePO> iter = results.iterator();
-			CoursePO courseTemp;
+			List<AttendingPO> results = (List<AttendingPO>)query.execute();
+			Iterator<AttendingPO> iter = results.iterator();
+			AttendingPO attendingTemp;
 			// check empty results
 			if (results.isEmpty())
-				return "course not found";
+				ok = true;
 			else 
 			{
 				do{
-					courseTemp = (CoursePO) iter.next();
-					if(courseTemp.getName().equals(course))					
-					{
-						courseTemp.addStudent(email);
-					}
+					attendingTemp = (AttendingPO) iter.next();
+					//check if is already stored
+					if(attendingTemp.getCourseKey().equals(courseKey) && attendingTemp.getStudent().equals(email))
+						ok= false;
 				}while(iter.hasNext());									
 			}
-		} finally {
-			
+			if(ok)
+			{
+				AttendingPO a = new AttendingPO();
+				a.setCourseKey(courseKey);
+				a.setLecture(true);
+				a.setExercise(true);
+				a.setStudent(email);
+				pm.makePersistent(a);
+			}
+			else
+			{
+				return "already registered";
+			}
+		} finally {			
 			// close persistence manager
 			pm.close();
 		}
-		return "";
+		return "completed";
 	}
 
 	@Override
@@ -258,7 +270,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			{
 				do{
 					courseTemp = (CoursePO) iter.next();
-					courses.add(courseTemp.getName());					
+					courses.add(courseTemp.getCourseKey().toString());					
 				}while(iter.hasNext());									
 			}
 		} finally {			
@@ -280,6 +292,36 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 	public String getGoogleAccessToken(String email) {
 		return LoadStore.getGoogleAccessToken(email);
 	}
+
+	@Override
+	public String getCourseNameProfessor(String key) {
+		// get persistence manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(CoursePO.class);
+			@SuppressWarnings("unchecked")
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "error";
+			else 
+			{
+				do{
+					courseTemp = (CoursePO) iter.next();
+					if(courseTemp.getCourseKey().toString().equals(key))
+						return courseTemp.getName() + " - " + courseTemp.getProfessor().getUser().getEmail();
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}
+		return null;
+	}
+
 	
 	
 }

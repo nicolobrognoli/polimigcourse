@@ -1,9 +1,11 @@
 package it.polimi.client;
 
+import it.polimi.server.data.CoursePO;
 import it.polimi.server.data.UserPO;
 
 import java.util.List;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface LoadStoreServiceAsync {
@@ -35,4 +37,7 @@ public interface LoadStoreServiceAsync {
 			AsyncCallback<List<String>> callback);
 
 	void getGoogleAccessToken(String email, AsyncCallback<String> callback);
+
+	void getCourseNameProfessor(String key, AsyncCallback<String> callback);
+
 }

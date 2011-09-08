@@ -1,6 +1,7 @@
 package it.polimi.client;
 
-import it.polimi.server.data.UserPO;
+import it.polimi.server.data.CoursePO;
+
 
 import java.util.List;
 
@@ -34,4 +35,7 @@ public interface LoadStoreService extends RemoteService{
 	String getTwitterAccessToken(String email);
 	
 	String addStudentToCourse(String email, String course);
+	
+	String getCourseNameProfessor(String key);
+	
 }
