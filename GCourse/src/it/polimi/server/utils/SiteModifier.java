@@ -1,12 +1,14 @@
 package it.polimi.server.utils;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -14,10 +16,13 @@ import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.util.ArrayList;
 
+import javax.mail.MessagingException;
+import javax.mail.Part;
 import javax.servlet.http.HttpServletResponse;
 
 import it.polimi.server.SitesException;
 import it.polimi.server.SitesHelper;
+import it.polimi.server.data.UserPO;
 
 import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
 import com.google.api.client.http.HttpTransport;
@@ -46,6 +51,10 @@ import com.google.gdata.util.ServiceException;
 import com.google.gdata.util.XmlBlob;
 
 public class SiteModifier {
+	private static final String CLIENT_ID = "267706380696.apps.googleusercontent.com";
+	private static final String CLIENT_SECRET = "zBWLvQsYnEF4-AAg1PZYu7eA";
+	private static final HttpTransport TRANSPORT = new NetHttpTransport();
+	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	
 	private String accessToken, siteName;
 
@@ -121,5 +130,76 @@ public class SiteModifier {
 			return "errore: Exception SitesException";
 		}
 	}
-
+	
+	public String uploadFile(Part part,UserPO tempUser) throws IOException, MessagingException{
+		  InputStream input=part.getInputStream();
+		  int size=part.getSize();
+		  String siteName,fileName,fileType;
+		  URL endpoint=new URL("https://sites.google.com/feeds/content/site/"+tempUser.getSiteName());
+		  HttpURLConnection  urlc =(HttpURLConnection) endpoint.openConnection();
+		  urlc.setDoOutput(true);
+		  urlc.setDoInput(true);
+		  urlc.setRequestProperty("Host","sites.google.com");
+		  urlc.setRequestProperty("GData-Version","1.4");
+		  urlc.setRequestProperty("Authorization","AuthSub token=\""+tempUser.getGoogleAccessToken()+"\"");
+		  urlc.setRequestProperty("Content-Type","multipart/related;boundary=END_OF_PART");
+		  OutputStream out = urlc.getOutputStream();
+		  DataOutputStream writer = new DataOutputStream(out);
+		  siteName=tempUser.getSiteName();
+		  fileName=part.getFileName();
+		  fileType=part.getContentType();
+			  writer.writeBytes("\r\n--END_OF_PART\r\nContent-Type: application/atom+xml\r\n\r\n");
+			  writer.writeBytes("<entry xmlns=\"http://www.w3.org/2005/Atom\">"+
+" <category scheme=\"http://schemas.google.com/g/2005#kind\" "+
+"term=\"http://schemas.google.com/sites/2008#attachment\" label=\"attachment\" />"+
+"<link rel=\"http://schemas.google.com/sites/2008#parent\" "+
+"href=\"https://sites.google.com/feeds/content/site/"+siteName+"\" />"+
+"<title>"+fileName+"</title>"+
+"<summary>HR packet</summary>"+
+"</entry>"+
+"\r\n\r\n--END_OF_PART\r\n");
+		  writer.writeBytes("Content-Type: "+fileType+"\r\n\r\n") ;int j;
+		  for(j=0;j<size;j++){
+			 writer.write(input.read());
+		  }
+		  writer.writeBytes("\r\n--END_OF_PART--\r\n");
+		  input.close();
+		  writer.flush();
+		  writer.close();
+        StringBuffer answer = new StringBuffer();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(urlc.getInputStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            answer.append(line);
+        }
+        reader.close();
+		  urlc.disconnect();
+		return answer.toString();
+	}
+	public String postRequest(String course,String pageContent,String pageName, UserPO tempUser) throws MalformedURLException, IOException{
+		String returned; 
+	    returned=createPage(pageName,pageContent,course,null);
+	    if(returned.contains("expired")){
+			GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
+			access.refreshToken();
+			String newAccessToken=access.getAccessToken();
+			LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
+		    returned=createPage(pageName,pageContent,course,null);
+	    }
+			return returned;
+	}
+	
+	public String uploadRequest(String course,String pageContent,String pageName,UserPO tempUser, ArrayList<String> stringList) throws MalformedURLException, IOException{
+		String returned;
+	    returned=createPage(pageName,pageContent,course,stringList);
+	    if(returned.contains("expired")){
+			GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
+			access.refreshToken();
+			String newAccessToken=access.getAccessToken();
+			LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
+		    returned=createPage(pageName,pageContent,course,stringList);
+		}
+		return returned;
+	}
+	
 }
