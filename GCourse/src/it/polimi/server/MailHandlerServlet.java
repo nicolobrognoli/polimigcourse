@@ -164,16 +164,18 @@ public class MailHandlerServlet extends HttpServlet {
 	            		  }
 	            	  }
 	            }
+        		if(tempUser==null){
+        			msgBody+="Errore: User non registrato.\n";
+	        		throw new MessagingException();
+        		}
 	        	returned=parseBody(content);
 	        	if(returned.contains("Errore")||returned.contains("Corso non presente")){
 	        		throw new MessagingException();
 	        	}
+    			this.siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
 	        	if(subject.contains("Upload")){
 	        		msgBody=msgBody+"Richiesta di Upload. \n";
-		        		if(tempUser==null){
-		        			msgBody+="Errore: User non registrato.\n";
-		        		}
-		        		else{
+
 		        			if(partList.size()!=0){
 		        				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,tempUser,stringList);
 		        				  if(!returned.contains("Errore")){
@@ -188,8 +190,6 @@ public class MailHandlerServlet extends HttpServlet {
 		        			  else{
 		        				  msgBody+="Errore: richiesta di \"Upload\" senza file.\n";
 		        			  }
-		        		}
-	        			/*Azioni per il caricamento su Google Site di un post di comunicazione*/
 		        		
 	        	}
 	        	else{
@@ -210,7 +210,6 @@ public class MailHandlerServlet extends HttpServlet {
 	        		}else if(subject.contains("Course")){
 	        			parseBody(content);
 	        			msgBody+=this.pageContent+this.pageName;
-	        			this.siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
 	        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
 	        		    if(returned.contains("expired")){
 	        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
