@@ -186,6 +186,7 @@ public class MailHandlerServlet extends HttpServlet {
 			access.refreshToken();
 			String newAccessToken=access.getAccessToken();
 			LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
+			//tempUser.setGoogleAccessToken(newAccessToken);
 			siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
 		    returned=siteModifier.createPage(this.pageName,this.pageContent,this.course,stringList);
 		    msgBody+="Ritornato: "+returned;

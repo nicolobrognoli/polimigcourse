@@ -95,7 +95,7 @@ public class SiteModifier {
 
 		    		for(count=0;count<stringList.size();count++){
 						file=stringList.get(count);
-						body+="<p><a href=\"https://sites.google.com/site/provamiagcourse/"+file+"\">"+file+"</a></p>";
+						body+="<p><a href=\"https://sites.google.com/site/"+this.siteName+"/"+file+"\">"+file+"</a></p>";
 		    		}
 					xml.setBlob(body);
 					page.setContent(new XhtmlTextConstruct(xml));
@@ -106,7 +106,7 @@ public class SiteModifier {
 					page.setContent(new XhtmlTextConstruct(xml));
 					page.update();
 		    	}
-				return "https://sites.google.com/site/"+this.siteName+"/"+namePage;
+				return "https://sites.google.com/site/"+this.siteName+"/"+course+"/"+namePage;
 	    	}else{
 	    		return "Errore: creazione pagina fallita.\n";
 	    	}
