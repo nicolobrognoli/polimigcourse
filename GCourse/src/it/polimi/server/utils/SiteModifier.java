@@ -72,7 +72,7 @@ public class SiteModifier {
 	    sitesHelper.login(this.accessToken);
 	    String path="",file,body;
 	    try {
-	    	if(course==null){
+	    	if(course == null){
 	    		page = sitesHelper.createPage("webpage",namePage);
 	    	}else{
 	    		page = sitesHelper.createPage("webpage",namePage,course);

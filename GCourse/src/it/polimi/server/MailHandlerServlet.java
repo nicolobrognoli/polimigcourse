@@ -168,10 +168,15 @@ public class MailHandlerServlet extends HttpServlet {
 	            }
         		if(tempUser==null){
         			msgBody+="Errore: User non registrato.\n";
+		            msg.setText(msgBody);
+		            Transport.send(msg);
 	        		throw new MessagingException();
         		}
 	        	returned=parseBody(content);
-	        	if(returned.contains("Errore")||returned.contains("Corso non presente")){
+	        	if(returned.contains("Errore")){
+	        		msgBody+=returned;
+		            msg.setText(msgBody);
+		            Transport.send(msg);
 	        		throw new MessagingException();
 	        	}
     			this.siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
@@ -240,21 +245,22 @@ public class MailHandlerServlet extends HttpServlet {
 	        				msgBody+=returned+"\n";
 	        			}
 	        			
-	        		}else if(subject.contains("Course")){
-	        			parseBody(content);
-	        			msgBody+=this.pageContent+this.pageName;
-	        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
-	        		    if(returned.contains("expired")){
-	        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
-	        				access.refreshToken();
-	        				String newAccessToken=access.getAccessToken();
-	        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
-		        			this.siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
+	        		}else {
+		        			if(subject.contains("Course")){
+		        			msgBody+=this.pageContent+this.pageName;
 		        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
-	        		    }
-	        		    postOnTwitter(tempUser,returned);
-	        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
-	        			/*Errore oppure un'altra azione*/
+		        		    if(returned.contains("expired")){
+		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
+		        				access.refreshToken();
+		        				String newAccessToken=access.getAccessToken();
+		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
+			        			this.siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
+			        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
+		        		    }
+		        		    postOnTwitter(tempUser,returned);
+		        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
+		        			/*Errore oppure un'altra azione*/
+		        		}
 	        		}
 	        	}
 	            msg.setText(msgBody);
