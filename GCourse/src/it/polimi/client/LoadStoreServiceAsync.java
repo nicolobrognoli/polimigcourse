@@ -40,4 +40,10 @@ public interface LoadStoreServiceAsync {
 
 	void getCourseNameProfessor(String key, AsyncCallback<String> callback);
 
+	void getCourseSettings(String key, String email, String parameter,
+			AsyncCallback<Boolean> callback);
+
+	void storeCourseSettings(String key, String email, boolean lecture,
+			boolean exercise, AsyncCallback<String> callback);
+
 }

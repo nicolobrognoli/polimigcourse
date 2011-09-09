@@ -17,6 +17,8 @@ public interface LoadStoreService extends RemoteService{
 	String updateUser(String email, String name, String pwd, boolean professor);
 	
 	boolean isProfessor(String email);
+	
+	boolean getCourseSettings(String key, String email, String parameter);
 
 	List<String> getAttendedCourses(String email);
 	
@@ -37,5 +39,8 @@ public interface LoadStoreService extends RemoteService{
 	String addStudentToCourse(String email, String course);
 	
 	String getCourseNameProfessor(String key);
+	
+	String storeCourseSettings(String key, String email, boolean lecture, boolean exercise);
+	
 	
 }

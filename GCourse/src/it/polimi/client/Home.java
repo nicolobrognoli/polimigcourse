@@ -128,6 +128,7 @@ public class Home implements EntryPoint {
 										gestisciCorsi.clear();
 										int index = listCorsi.getSelectedIndex();
 										final String course = listCorsi.getItemText(index);
+										final String key = listCorsi.getValue(index);
 										
 										final Label corso = new Label("Corso: " +course);
 										final Label nota = new Label("Decidere quali contenuti ricevere:");
@@ -135,9 +136,28 @@ public class Home implements EntryPoint {
 										final CheckBox exercise = new CheckBox("Esercizi");
 										final Button confirm = new Button("Conferma");
 										
-										//TODO: prendere valore da datastore
-										lecture.setValue(true);
-										exercise.setValue(false);
+										loadStoreService.getCourseSettings(key, email, "lecture", new AsyncCallback<Boolean>(){
+												@Override
+												public void onFailure(Throwable caught) {
+													Window.alert("Errore nella lettura dei settings");
+												}
+				
+												@Override
+												public void onSuccess(Boolean value) {
+													lecture.setValue(value);													
+												}
+											});
+										loadStoreService.getCourseSettings(key, email, "exercise", new AsyncCallback<Boolean>(){
+											@Override
+											public void onFailure(Throwable caught) {
+												Window.alert("Errore nella lettura dei settings");
+											}
+			
+											@Override
+											public void onSuccess(Boolean value) {
+												exercise.setValue(value);												
+											}
+										});									
 										
 										gestisciCorsi.add(corso);
 										gestisciCorsi.add(nota);
@@ -147,8 +167,17 @@ public class Home implements EntryPoint {
 										
 										confirm.addClickHandler(new ClickHandler() {
 											public void onClick(ClickEvent event) {
-												//TODO: salva su datastore
-												Window.open("/home.html", "_self", "");
+												loadStoreService.storeCourseSettings(key, email, lecture.getValue(), exercise.getValue(), new AsyncCallback<String>(){
+											@Override
+											public void onFailure(Throwable caught) {
+												Window.alert("Errore nella lettura dei settings");
+											}
+			
+											@Override
+											public void onSuccess(String value) {
+												Window.open("/home.html", "_self", "");											
+											}
+										});													
 											}
 										});
 									}
@@ -252,7 +281,6 @@ public class Home implements EntryPoint {
 							listCorsi.setSelectedIndex(0);
 							listCorsi.setVisibleItemCount(6);			
 						
-							//TODO
 							Button btnIscriviti = new Button("Iscriviti");
 							btnIscriviti.addClickHandler(new ClickHandler() {
 								public void onClick(ClickEvent event) {

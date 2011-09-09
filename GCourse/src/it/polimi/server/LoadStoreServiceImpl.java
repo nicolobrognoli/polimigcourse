@@ -322,6 +322,72 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 		return null;
 	}
 
+	@Override
+	public boolean getCourseSettings(String key, String email, String parameter) {
+		boolean value = false;
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(AttendingPO.class);
+			@SuppressWarnings("unchecked")
+			List<AttendingPO> results = (List<AttendingPO>)query.execute();
+			Iterator<AttendingPO> iter = results.iterator();
+			AttendingPO attendingTemp;
+			// check empty results
+			if (results.isEmpty())
+				return value;
+			else 
+			{
+				do{
+					attendingTemp = (AttendingPO) iter.next();
+					if(attendingTemp.getStudent().equals(email) && attendingTemp.getCourseKey().equals(key))					
+					{
+						if(parameter.equals("lecture"))
+							value = attendingTemp.isLecture();
+						else if(parameter.equals("exercise"))
+							value = attendingTemp.isExercise();
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}
+		return value;
+	}
+
+	@Override
+	public String storeCourseSettings(String key, String email,
+			boolean lecture, boolean exercise) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(AttendingPO.class);
+			@SuppressWarnings("unchecked")
+			List<AttendingPO> results = (List<AttendingPO>)query.execute();
+			Iterator<AttendingPO> iter = results.iterator();
+			AttendingPO attendingTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "Attending empty";
+			else 
+			{
+				do{
+					attendingTemp = (AttendingPO) iter.next();
+					if(attendingTemp.getStudent().equals(email) && attendingTemp.getCourseKey().equals(key))					
+					{
+						attendingTemp.setLecture(lecture);
+						attendingTemp.setExercise(exercise);
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}
+		return null;
+	}
+
 	
 	
 }
