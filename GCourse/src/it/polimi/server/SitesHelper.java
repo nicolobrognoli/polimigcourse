@@ -511,7 +511,7 @@ public class SitesHelper {
        size=contentFeed.getEntries().size();
        for(i=0;i<size;i++){
     	   BaseContentEntry tempEntry=contentFeed.getEntries().get(i);
-    	   if(tempEntry.getTitle().getPlainText().contains("corso")){
+    	   if(tempEntry.getTitle().getPlainText().contains(parent)){
     		   parent=tempEntry.getSelfLink().getHref();
     		   find=true;
     		   i=size;
