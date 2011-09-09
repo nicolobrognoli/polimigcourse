@@ -314,7 +314,7 @@ public class LoadStore {
 				if (!results.isEmpty())
 				{
 					courseTemp = (CoursePO) iter.next();
-					if(courseTemp.getName().equals(name))
+					if(courseTemp.getName().equals(name) && courseTemp.getProfessor().getUser().getEmail().equals(professor.getUser().getEmail()))
 						return "Course already exists";
 				}				
 			
@@ -331,35 +331,6 @@ public class LoadStore {
 		return "Stored";
 	}
 
-	/*public static String updateStudent(String student, String course){
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		boolean ok = false;
-		try {
-			
-			// get POs from DataStore
-			Query query = pm.newQuery(AttendingPO.class);
-			@SuppressWarnings("unchecked")
-			List<AttendingPO> results = (List<AttendingPO>)query.execute();
-			Iterator<AttendingPO> iter = results.iterator();
-			AttendingPO attendingTemp;
-			
-			do{
-				attendingTemp = (AttendingPO) iter.next();
-				if(attendingTemp.getCourse().getName().equals(course) && attendingTemp.getStudent().getUser().getEmail().equals(student))
-				{
-							
-				}					
-			}while(iter.hasNext());		
-			
-		} finally {			
-			// close persistence manager
-			pm.close();
-		}
-		if(ok)
-			return "updated";	
-		else
-			return "course not exists";
-	}*/
 	
 	public static String getUserSiteName(String email){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
