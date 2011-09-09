@@ -6,6 +6,7 @@ import it.polimi.server.data.PMF;
 import it.polimi.server.data.UserPO;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -129,6 +130,7 @@ public class LoadStore {
 		try {
 			// get POs from DataStore
 			Query query = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
 			List<UserPO> results = (List<UserPO>)query.execute();
 			Iterator<UserPO> iter = results.iterator();
 			UserPO userTemp;
@@ -361,6 +363,66 @@ public class LoadStore {
 		}
 		
 		return "error";
+	}
+	
+	public static List<UserPO> getStudentsEnrolled(String key){
+		List<UserPO> students = new ArrayList<UserPO>();
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(AttendingPO.class);
+			@SuppressWarnings("unchecked")
+			List<AttendingPO> results = (List<AttendingPO>)query.execute();
+			Iterator<AttendingPO> iter = results.iterator();
+			AttendingPO attendingTemp;
+			// check empty results
+			if (results.isEmpty())
+				return students;
+			else 
+			{
+				do{
+					attendingTemp = (AttendingPO) iter.next();
+					if(attendingTemp.getCourseKey().equals(key))					
+					{
+						students.add(LoadStore.loadUser(attendingTemp.getStudent()));
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}
+		
+		return students;
+	}
+	
+	public static String getCourseKey(String courseName, String professor){
+		String key = ""; 
+		// get persistence manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(CoursePO.class);
+			@SuppressWarnings("unchecked")
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
+			// check empty results
+			if (results.isEmpty())
+				key = "";
+			else 
+			{
+				do{
+					courseTemp = (CoursePO) iter.next();
+					if(courseTemp.getName().equals(courseName) && courseTemp.getProfessor().getUser().getEmail().equals(professor))
+						key = courseTemp.getCourseKey().toString();
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}
+		return key;
 	}
 	
 }
