@@ -4,24 +4,24 @@ import java.util.List;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.DecoratedStackPanel;
-import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TabPanel;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
 
 public class Home implements EntryPoint {
 
@@ -74,7 +74,7 @@ public class Home implements EntryPoint {
 						panel.add(corsi, "Corsi", false);
 						corsi.setSize("100%", "100%");
 						
-						DecoratedStackPanel corsiPanel = new DecoratedStackPanel();
+						final DecoratedStackPanel corsiPanel = new DecoratedStackPanel();
 						corsi.setWidget(corsiPanel);
 						corsiPanel.setStyleName("gwt-StackPanel");
 						corsiPanel.setSize("100%", "100%");
@@ -193,7 +193,35 @@ public class Home implements EntryPoint {
 						corsiPanel.add(aggiungiCorso, strAggiungiCorso, false);
 						aggiungiCorso.setSize("100%", "100%");		
 						
-						if(isProfessor){
+						if(isProfessor){						
+							loadStoreService.getTaughtCourses(email, new AsyncCallback<List<String>>(){
+								@Override
+								public void onFailure(Throwable caught) {
+									Window.alert("Errore nel recupero della lista dei corsi");
+								}
+
+								@Override
+								public void onSuccess(List<String> courses) {
+									if(courses.size()>0){
+										VerticalPanel listaCorsi = new VerticalPanel();
+										corsiPanel.add(listaCorsi, "Lista Corsi", false);
+										listaCorsi.setSize("100%", "100%");
+										
+										HorizontalPanel listaCorsiPanel = new HorizontalPanel();
+										listaCorsi.add(listaCorsiPanel);
+										final ListBox listCorsi = new ListBox(true);
+										listaCorsi.add(listCorsi);
+										
+										for(final String name : courses)
+										{
+											listCorsi.addItem(name);
+										}
+										listCorsi.setSelectedIndex(0);
+										listCorsi.setVisibleItemCount(6);
+									}
+								}
+							});
+							
 							HorizontalPanel nomeCorsoPanel = new HorizontalPanel();
 							aggiungiCorso.add(nomeCorsoPanel);
 							Label lblNome = new Label("Nome del corso: ");
@@ -226,7 +254,7 @@ public class Home implements EntryPoint {
 
 										@Override
 										public void onSuccess(String result) {
-											Window.alert("Pagina creata: " + result);
+											Window.alert("Pagina creata: " + result);											
 										}
 									});												
 				        		    //store the new course
@@ -238,7 +266,7 @@ public class Home implements EntryPoint {
 
 										@Override
 										public void onSuccess(String result) {
-											
+											Window.open("/home.html", "_self", "");
 										}
 									});
 								}
@@ -269,7 +297,6 @@ public class Home implements EntryPoint {
 												@Override
 												public void onSuccess(String name) {
 													listCorsi.addItem(name, key);
-													System.out.println("add "+key);
 												}
 											});	
 											
@@ -286,20 +313,42 @@ public class Home implements EntryPoint {
 								public void onClick(ClickEvent event) {
 									int index = listCorsi.getSelectedIndex();
 									final String key = listCorsi.getValue(index);
-									Window.alert(key);
 									final String course = listCorsi.getItemText(index);
 									loadStoreService.addStudentToCourse(email, key, new AsyncCallback<String>(){
-								@Override
-								public void onFailure(Throwable caught) {
-									Window.alert("Errore nell' iscrizione ai corsi");
-								}
-
-								@Override
-								public void onSuccess(String result) {
-									Window.alert("Iscrizione al corso: " + course + " avvenuta con successo.");
-									Window.open("/home.html", "_self", "");
-								}
-							});
+										@Override
+										public void onFailure(Throwable caught) {
+											Window.alert("Errore nell' iscrizione ai corsi");
+										}
+		//TODO
+										@Override
+										public void onSuccess(String result) {
+											Window.alert("Iscrizione al corso: " + course + " avvenuta con successo.");
+											Window.open("/home.html", "_self", "");
+										}
+									});
+									loadStoreService.getCourseDescription(key, new AsyncCallback<String>(){
+										@Override
+										public void onFailure(Throwable caught) {
+											Window.alert("");
+										}
+		//TODO
+										@Override
+										public void onSuccess(String descr) {
+											String corso = course.substring(0, course.indexOf("-"));
+											corso = corso.trim();
+											sitesService.createNewPage(email, corso, descr, new AsyncCallback<String>(){
+												@Override
+												public void onFailure(Throwable caught) {													
+												}
+				
+												@Override
+												public void onSuccess(String result) {													
+												}
+											});
+										}
+									});
+										
+									
 								}
 							});
 							aggiungiCorso.add(btnIscriviti);

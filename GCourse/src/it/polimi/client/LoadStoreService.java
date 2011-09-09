@@ -1,8 +1,5 @@
 package it.polimi.client;
 
-import it.polimi.server.data.CoursePO;
-
-
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -42,5 +39,8 @@ public interface LoadStoreService extends RemoteService{
 	
 	String storeCourseSettings(String key, String email, boolean lecture, boolean exercise);
 	
+	String getCourseName(String key);
+	
+	String getCourseDescription(String key);
 	
 }

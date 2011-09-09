@@ -18,23 +18,25 @@ import it.polimi.server.utils.LoadStore;
 import it.polimi.server.utils.SiteModifier;
 import it.polimi.server.utils.TwitterManager;
 
-import java.io.IOException; 
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Properties; 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
-import javax.mail.Session; 
+import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage; 
+import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.servlet.http.*; 
-
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import twitter4j.auth.AccessToken;
 
@@ -176,33 +178,68 @@ public class MailHandlerServlet extends HttpServlet {
 	        	if(subject.contains("Upload")){
 	        		msgBody=msgBody+"Richiesta di Upload. \n";
 
-		        			if(partList.size()!=0){
-		        				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,tempUser,stringList);
-		        				  postOnTwitter(tempUser,returned);
-		        				  if(!returned.contains("Errore")){
-		        					  for(count=0;count<partList.size();count++){
-			        					  msgBody+=returned+"\n";
-			        					  returned=this.siteModifier.uploadFile(partList.get(count),tempUser);
-		        					  }
-		        				  }
+        			if(partList.size()!=0){
+        				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,tempUser,stringList);
+        				  postOnTwitter(tempUser,returned);
+        				  if(!returned.contains("Errore")){
+        					  for(count=0;count<partList.size();count++){
+	        					  msgBody+=returned+"\n";
+	        					  returned=this.siteModifier.uploadFile(partList.get(count),tempUser);
+        					  }
+        				  }
 
-	        					  msgBody+=returned;
-		        			  }
-		        			  else{
-		        				  msgBody+="Errore: richiesta di \"Upload\" senza file.\n";
-		        			  }
+    					  msgBody+=returned;
+        			  }
+        			  else{
+        				  msgBody+="Errore: richiesta di \"Upload\" senza file.\n";
+        			  }
+        			returned += "\nUtenti iscritti:\n";
+        			List<UserPO> listStudents = LoadStore.getStudentsEnrolled(LoadStore.getCourseKey(this.course, tempUser.getUser().getEmail()));
+        			Iterator<UserPO> iter = listStudents.iterator();
+        			UserPO student;
+        			do{
+        				student = (UserPO) iter.next();
+    					returned += student.getUser().getEmail() + " \n";
+    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
+    					if(partList.size()!=0)
+    					{
+          				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,student,stringList);
+          				  if(!returned.contains("Errore"))
+          				  {
+          					  for(count=0;count<partList.size();count++){
+  	        					  msgBody+=returned+"\n";
+  	        					  returned=this.siteModifier.uploadFile(partList.get(count),student);
+          					  }
+          				  }
+          			  }          			  
+    				}while(iter.hasNext());	
 		        		
 	        	}
 	        	else{
 	        		if(subject.contains("Post")){
 	        			msgBody=msgBody+"Richiesta di Post.\n";
 	        			returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,tempUser);
+	        			//TODO: mandare aggiornamenti agli studenti
+	        			
+	        			returned += "\nUtenti iscritti:\n";
+	        			List<UserPO> listStudents = LoadStore.getStudentsEnrolled(LoadStore.getCourseKey(this.course, tempUser.getUser().getEmail()));
+	        			Iterator<UserPO> iter = listStudents.iterator();
+	        			UserPO student;
+	        			do{
+	        				student = (UserPO) iter.next();
+	    					returned += student.getUser().getEmail() + " \n";
+	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
+	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
+	    				}while(iter.hasNext());	        			
+	        			
+	        			
 	        			if(!returned.contains("Errore")){
 	        				msgBody+=returned+"\n";
 	        			}else{
 	        				postOnTwitter(tempUser,returned);
 	        				msgBody+=returned+"\n";
 	        			}
+	        			
 	        		}else if(subject.contains("Course")){
 	        			parseBody(content);
 	        			msgBody+=this.pageContent+this.pageName;

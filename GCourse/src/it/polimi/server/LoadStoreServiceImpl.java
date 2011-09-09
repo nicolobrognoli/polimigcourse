@@ -2,9 +2,10 @@ package it.polimi.server;
 
 import it.polimi.client.LoadStoreService;
 import it.polimi.server.data.AttendingPO;
+import it.polimi.server.data.CoursePO;
 import it.polimi.server.data.PMF;
 import it.polimi.server.data.UserPO;
-
+import it.polimi.server.utils.LoadStore;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,16 +14,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-
-
-import it.polimi.server.data.CoursePO;
-import it.polimi.server.utils.LoadStore;
 
 
 @SuppressWarnings("serial")
@@ -386,6 +378,18 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			pm.close();
 		}
 		return null;
+	}
+
+	@Override
+	public String getCourseName(String key) {
+		CoursePO course = LoadStore.getCourse(key);
+		return course.getName();
+	}
+
+	@Override
+	public String getCourseDescription(String key) {
+		CoursePO course = LoadStore.getCourse(key);
+		return course.getDescription();
 	}
 
 	

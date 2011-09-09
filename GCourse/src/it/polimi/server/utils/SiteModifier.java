@@ -1,52 +1,32 @@
 package it.polimi.server.utils;
 
+import it.polimi.server.SitesException;
+import it.polimi.server.SitesHelper;
+import it.polimi.server.data.UserPO;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.Part;
-import javax.servlet.http.HttpServletResponse;
-
-import it.polimi.server.SitesException;
-import it.polimi.server.SitesHelper;
-import it.polimi.server.data.UserPO;
 
 import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson.JacksonFactory;
-import com.google.appengine.api.blobstore.BlobInfo;
-import com.google.appengine.api.blobstore.BlobKey;
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.files.AppEngineFile;
-import com.google.appengine.api.files.FileReadChannel;
-import com.google.appengine.api.files.FileService;
-import com.google.appengine.api.files.FileServiceFactory;
-import com.google.appengine.api.files.FileWriteChannel;
-import com.google.appengine.api.urlfetch.HTTPResponse;
-import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
-import com.google.gdata.client.sites.SitesService;
-import com.google.gdata.data.Content;
 import com.google.gdata.data.XhtmlTextConstruct;
 import com.google.gdata.data.sites.BaseContentEntry;
-import com.google.gdata.data.sites.BasePageEntry;
-import com.google.gdata.data.sites.SiteEntry;
 import com.google.gdata.util.ServiceException;
 import com.google.gdata.util.XmlBlob;
 
@@ -84,7 +64,7 @@ public class SiteModifier {
 	    sitesHelper = new SitesHelper("polimigcourse","site",this.siteName);
 	    sitesHelper.login(this.accessToken);
 	}
-	public String createPage(String namePage, String content,String course, ArrayList<String> stringList) throws MalformedURLException, IOException {
+	public String createPage(String namePage, String content, String course, ArrayList<String> stringList) throws MalformedURLException, IOException {
 		int count;
 		BaseContentEntry<?> page;
 	    SitesHelper sitesHelper;
@@ -98,7 +78,7 @@ public class SiteModifier {
 	    		page = sitesHelper.createPage("webpage",namePage,course);
 	    	}
 	    	if(page!=null){
-		    	if(stringList.size()!=0){
+		    	if(stringList != null){
 					XmlBlob xml = new XmlBlob();
 					body="<p>"+content+"</p>";
 
@@ -115,7 +95,10 @@ public class SiteModifier {
 					page.setContent(new XhtmlTextConstruct(xml));
 					page.update();
 		    	}
-				return "https://sites.google.com/site/"+this.siteName+"/"+course+"/"+namePage;
+		    	if(course != null)
+		    		return "https://sites.google.com/site/"+this.siteName+"/"+course+"/"+namePage;
+		    	else
+		    		return "https://sites.google.com/site/"+this.siteName+"/"+namePage;
 	    	}else{
 	    		return "Errore: creazione pagina fallita.\n";
 	    	}
@@ -188,6 +171,26 @@ public class SiteModifier {
 	    }
 			return returned;
 	}
+	
+//	public String postRequest(String course,String pageContent,String pageName, List<UserPO> listUser) throws MalformedURLException, IOException{
+//		Iterator<UserPO> iter = listUser.iterator();
+//		UserPO userTemp;
+//		do{
+//			userTemp = (UserPO) iter.next();
+//			String returned; 
+//		    returned=createPage(pageName,pageContent,course,null);
+//		    if(returned.contains("expired")){
+//				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
+//				access.refreshToken();
+//				String newAccessToken=access.getAccessToken();
+//				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
+//			    returned=createPage(pageName,pageContent,course,null);
+//		    }
+//		}while(iter.hasNext());
+//		
+//		
+//		return "";
+//	}
 	
 	public String uploadRequest(String course,String pageContent,String pageName,UserPO tempUser, ArrayList<String> stringList) throws MalformedURLException, IOException{
 		String returned;

@@ -15,24 +15,18 @@ package it.polimi.server.utils;
 * limitations under the License.
 */
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
 import com.google.gdata.client.calendar.CalendarService;
 import com.google.gdata.data.PlainTextConstruct;
 import com.google.gdata.data.calendar.CalendarEntry;
 import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.data.calendar.CalendarFeed;
-import com.google.gdata.data.calendar.ColorProperty;
-import com.google.gdata.data.calendar.HiddenProperty;
-import com.google.gdata.data.calendar.SelectedProperty;
 import com.google.gdata.data.calendar.TimeZoneProperty;
-import com.google.gdata.data.extensions.Where;
-import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
 * Demonstrates interactions with the Calendar data API's calendar feeds using

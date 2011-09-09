@@ -1,7 +1,5 @@
 package it.polimi.server.data;
 
-import it.polimi.server.utils.LoadStore;
-
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
