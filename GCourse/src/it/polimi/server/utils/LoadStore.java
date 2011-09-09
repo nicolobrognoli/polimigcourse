@@ -78,7 +78,12 @@ public class LoadStore {
 		} finally {			
 			// close persistence manager
 			pm.close();
-		}
+		}/*
+		CoursePO course = new CoursePO();
+		course.setName("corso");
+		
+		course.setDescription("da codice");
+		*/
 		return null;
 	}
 	
