@@ -24,6 +24,7 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 	private static final String CALLBACK_URL = "http://polimigcourse.appspot.com/googlecallback";
 	private static final String CLIENT_ID = "267706380696.apps.googleusercontent.com";
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/html");
@@ -59,7 +60,7 @@ public class ConfirmRegistrationServlet extends HttpServlet {
 			{
 				boolean ok = false;
 				do{
-					userTemp = (UserPO) iter.next();
+					userTemp = iter.next();
 					if(userTemp.getUser().getEmail().equals(email) && !userTemp.isConfirmed())
 					{
 						userTemp.setConfirmed(true);	

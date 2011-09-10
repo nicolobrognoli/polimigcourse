@@ -126,6 +126,7 @@ public class MailHandlerServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 
+	@Override
 	public void doPost(HttpServletRequest req, 
                        HttpServletResponse resp) 
             throws IOException { 
@@ -215,7 +216,7 @@ public class MailHandlerServlet extends HttpServlet {
         			Iterator<UserPO> iter = listStudents.iterator();
         			UserPO student;
         			do{
-        				student = (UserPO) iter.next();
+        				student = iter.next();
         				if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
         				{
         					if(this.courseManager.checkStudentsSettings(student, this.EXERCISE))
@@ -268,7 +269,7 @@ public class MailHandlerServlet extends HttpServlet {
 	        			Iterator<UserPO> iter = listStudents.iterator();
 	        			UserPO student;
 	        			do{
-	        				student = (UserPO) iter.next();
+	        				student = iter.next();
 	        				if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
 	        				{
 	        					if(this.courseManager.checkStudentsSettings(student, this.EXERCISE))

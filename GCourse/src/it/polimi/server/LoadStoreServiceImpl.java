@@ -24,6 +24,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 	private final String EXERCISE = "exercise";
 	
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	public String updateUser(String email, String name, String  pwd, boolean professor) throws IllegalArgumentException {
 		// get persistence manager
@@ -40,7 +41,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			else 
 			{
 				do{
-					userTemp = (UserPO) iter.next();
+					userTemp = iter.next();
 					if(userTemp.getUser().getEmail().equals(email))					
 					{
 						userTemp.setNickname(name);
@@ -74,7 +75,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			else 
 			{
 				do{
-					userTemp = (UserPO) iter.next();
+					userTemp = iter.next();
 					if(userTemp.getUser().getEmail().equals(email))					
 					{
 						userTemp.setNickname(name);
@@ -114,7 +115,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			else 
 			{
 				do{
-					attendingTemp = (AttendingPO) iter.next();
+					attendingTemp = iter.next();
 					if(attendingTemp.getStudent().equals(email))					
 					{
 						courses.add(attendingTemp.getCourseKey());
@@ -145,7 +146,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			else 
 			{
 				do{
-					courseTemp = (CoursePO) iter.next();
+					courseTemp = iter.next();
 					if(courseTemp.getProfessor().getUser().getEmail().equals(email))					
 					{
 						courses.add(courseTemp.getName());
@@ -160,6 +161,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 		return courses;
 	}
 
+	@Override
 	public String storeNewCourse(String email, String name, String description){
 		UserPO professor = LoadStore.loadUser(email);
 		String result = LoadStore.storeNewCourse(professor, name, description);
@@ -183,7 +185,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			else 
 			{
 				do{
-					userTemp = (UserPO) iter.next();
+					userTemp = iter.next();
 					if(userTemp.getUser().getEmail().equals(email))					
 					{
 						userTemp.setTwitterAccessToken(null);
@@ -221,7 +223,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			else 
 			{
 				do{
-					attendingTemp = (AttendingPO) iter.next();
+					attendingTemp = iter.next();
 					//check if is already stored
 					if(attendingTemp.getCourseKey().equals(courseKey) && attendingTemp.getStudent().equals(email))
 						ok= false;
@@ -265,7 +267,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			else 
 			{
 				do{
-					courseTemp = (CoursePO) iter.next();
+					courseTemp = iter.next();
 					courses.add(courseTemp.getCourseKey().toString());					
 				}while(iter.hasNext());									
 			}
@@ -306,7 +308,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			else 
 			{
 				do{
-					courseTemp = (CoursePO) iter.next();
+					courseTemp = iter.next();
 					if(courseTemp.getCourseKey().toString().equals(key))
 						return courseTemp.getName() + " - " + courseTemp.getProfessor().getUser().getEmail();
 				}while(iter.hasNext());									
@@ -340,7 +342,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			else 
 			{
 				do{
-					attendingTemp = (AttendingPO) iter.next();
+					attendingTemp = iter.next();
 					if(attendingTemp.getStudent().equals(email) && attendingTemp.getCourseKey().equals(key))					
 					{
 						attendingTemp.setLecture(lecture);
@@ -379,7 +381,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			else 
 			{
 				do{
-					courseTemp = (CoursePO) iter.next();
+					courseTemp = iter.next();
 					if(courseTemp.getName().equals(name) && courseTemp.getProfessor().getUser().getEmail().equals(userEmail))
 						ret = courseTemp.getDescription();
 				}while(iter.hasNext());									

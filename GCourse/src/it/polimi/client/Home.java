@@ -123,6 +123,7 @@ public class Home implements EntryPoint {
 							
 							Button btnGestisci = new Button("Gestisci");
 							btnGestisci.addClickHandler(new ClickHandler() {
+								@Override
 								public void onClick(ClickEvent event) {
 									if(!isProfessor){
 										gestisciCorsi.clear();
@@ -166,6 +167,7 @@ public class Home implements EntryPoint {
 										gestisciCorsi.add(confirm);
 										
 										confirm.addClickHandler(new ClickHandler() {
+											@Override
 											public void onClick(ClickEvent event) {
 												loadStoreService.storeCourseSettings(key, email, lecture.getValue(), exercise.getValue(), new AsyncCallback<String>(){
 											@Override
@@ -244,6 +246,7 @@ public class Home implements EntryPoint {
 							aggiungiCorso.add(btnCorsoPanel);
 							Button btnCreaCorso = new Button("Crea");
 							btnCreaCorso.addClickHandler(new ClickHandler() {
+								@Override
 								public void onClick(ClickEvent event) {
 									//create the course page
 									sitesService.createNewPage(email, tbNome.getText(), taDescrizione.getText(), new AsyncCallback<String>(){
@@ -310,6 +313,7 @@ public class Home implements EntryPoint {
 						
 							Button btnIscriviti = new Button("Iscriviti");
 							btnIscriviti.addClickHandler(new ClickHandler() {
+								@Override
 								public void onClick(ClickEvent event) {
 									int index = listCorsi.getSelectedIndex();
 									final String key = listCorsi.getValue(index);
@@ -331,12 +335,11 @@ public class Home implements EntryPoint {
 									loadStoreService.getCourseDescription(name, userEmail, new AsyncCallback<String>(){
 										@Override
 										public void onFailure(Throwable caught) {
-											Window.alert("error." + name + ".." + userEmail);
+											Window.alert("RPC error.");
 										}
 		//TODO
 										@Override
 										public void onSuccess(String descr) {
-											Window.alert("." + name + ".." + userEmail);
 											String corso = course.substring(0, course.indexOf("-"));
 											corso = corso.trim();
 											sitesService.createNewPage(email, corso, descr, new AsyncCallback<String>(){
@@ -369,6 +372,7 @@ public class Home implements EntryPoint {
 						
 						Button btnTwitGrant = new Button("Vai");
 						btnTwitGrant.addClickHandler(new ClickHandler() {
+							@Override
 							public void onClick(ClickEvent event) {
 								twitterService.getAuthUrl(new AsyncCallback<String>(){
 								@Override
@@ -393,6 +397,7 @@ public class Home implements EntryPoint {
 						
 						Button btnTwitDeny = new Button("Vai");
 						btnTwitDeny.addClickHandler(new ClickHandler() {
+							@Override
 							public void onClick(ClickEvent event) {
 								loadStoreService.deleteTwitterTokens(email, new AsyncCallback<String>(){
 								@Override

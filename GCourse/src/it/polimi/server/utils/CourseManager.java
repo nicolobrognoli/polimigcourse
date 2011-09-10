@@ -2,9 +2,6 @@ package it.polimi.server.utils;
 
 import it.polimi.server.data.UserPO;
 
-import java.util.Iterator;
-import java.util.List;
-
 public class CourseManager {
 	private final String LECTURE = "lecture";
 	private final String EXERCISE = "exercise";

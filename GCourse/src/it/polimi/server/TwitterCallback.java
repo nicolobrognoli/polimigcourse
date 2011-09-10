@@ -17,6 +17,7 @@ import twitter4j.auth.RequestToken;
 @SuppressWarnings("serial")
 public class TwitterCallback extends HttpServlet {
 	
+	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
