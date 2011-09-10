@@ -41,6 +41,6 @@ public interface LoadStoreService extends RemoteService{
 	
 	String getCourseName(String key);
 	
-	String getCourseDescription(String key);
+	String getCourseDescription(String name, String userEmail);
 	
 }

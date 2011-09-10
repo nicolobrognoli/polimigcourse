@@ -26,7 +26,7 @@ public class SitesServiceImpl extends RemoteServiceServlet implements SitesServi
 	public String createNewPage(String email, String title, String content) {
 		
 		SiteModifier siteModifier = new SiteModifier(LoadStore.getGoogleAccessToken(email), LoadStore.getUserSiteName(email));
-	    String returned = null;
+	    String returned = "";
 		try {
 			returned = siteModifier.createPage(title, content, null,null);
 			if(returned.contains("expired")){

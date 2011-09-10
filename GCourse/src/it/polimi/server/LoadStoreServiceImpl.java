@@ -362,10 +362,36 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 	}
 
 	@Override
-	public String getCourseDescription(String key) {
-		CoursePO course = LoadStore.getCourse(key);
-		return course.getDescription();
+	public String getCourseDescription(String name, String userEmail) {
+		String ret = "n";
+		// get persistence manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(CoursePO.class);
+			@SuppressWarnings("unchecked")
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "error";
+			else 
+			{
+				do{
+					courseTemp = (CoursePO) iter.next();
+					if(courseTemp.getName().equals(name) && courseTemp.getProfessor().getUser().getEmail().equals(userEmail))
+						ret = courseTemp.getDescription();
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}
+		return ret;
 	}
+
+	
 
 	
 	

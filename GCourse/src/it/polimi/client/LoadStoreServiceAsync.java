@@ -44,7 +44,8 @@ public interface LoadStoreServiceAsync {
 
 	void getCourseName(String key, AsyncCallback<String> callback);
 
-	void getCourseDescription(String key, AsyncCallback<String> callback);
+	void getCourseDescription(String name, String userEmail,
+			AsyncCallback<String> callback);
 
 
 }

@@ -191,7 +191,8 @@ public class MailHandlerServlet extends HttpServlet {
 	        	//TODO
 	        	this.courseManager = new CourseManager(this.course, tempUser);
     			this.siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
-	        	if(subject.contains("Upload")){
+	        	//manage an upload request
+    			if(subject.contains("Upload") || subject.contains("upload")){
 	        		msgBody=msgBody+"Richiesta di Upload. \n";
 
         			if(partList.size()!=0){
@@ -215,24 +216,49 @@ public class MailHandlerServlet extends HttpServlet {
         			UserPO student;
         			do{
         				student = (UserPO) iter.next();
-    					returned += student.getUser().getEmail() + " \n";
-    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
-    					if(partList.size()!=0)
-    					{
-          				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,student,stringList);
-          				  if(!returned.contains("Errore"))
-          				  {
-          					  for(count=0;count<partList.size();count++){
-  	        					  msgBody+=returned+"\n";
-  	        					  returned=this.siteModifier.uploadFile(partList.get(count),student);
-          					  }
-          				  }
-          			  }          			  
+        				if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
+        				{
+        					if(this.courseManager.checkStudentsSettings(student, this.EXERCISE))
+        					{
+        						returned += student.getUser().getEmail() + " \n";
+            					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
+            					if(partList.size()!=0)
+            					{
+                  				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,student,stringList);
+                  				  if(!returned.contains("Errore"))
+                  				  {
+                  					  for(count=0;count<partList.size();count++){
+          	        					  msgBody+=returned+"\n";
+          	        					  returned=this.siteModifier.uploadFile(partList.get(count),student);
+                  					  }
+                  				  }
+                  			  }    
+        					}
+        				}
+        				else
+        				{
+        					if(this.courseManager.checkStudentsSettings(student, this.LECTURE))
+        					{
+        						returned += student.getUser().getEmail() + " \n";
+            					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
+            					if(partList.size()!=0)
+            					{
+                  				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,student,stringList);
+                  				  if(!returned.contains("Errore"))
+                  				  {
+                  					  for(count=0;count<partList.size();count++){
+          	        					  msgBody+=returned+"\n";
+          	        					  returned=this.siteModifier.uploadFile(partList.get(count),student);
+                  					  }
+                  				  }
+                  			  }   
+        					}
+        				}
     				}while(iter.hasNext());	
 		        		
 	        	}
 	        	else{
-	        		if(subject.contains("Post")){
+	        		if(subject.contains("Post") || subject.contains("post")){
 	        			msgBody=msgBody+"Richiesta di Post.\n";
 	        			returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,tempUser);
 	        			//TODO: mandare aggiornamenti agli studenti
@@ -272,7 +298,7 @@ public class MailHandlerServlet extends HttpServlet {
 	        			}
 	        			
 	        		}else {
-		        			if(subject.contains("Course")){
+		        			if(subject.contains("Course") || subject.contains("course")){
 		        			msgBody+=this.pageContent+this.pageName;
 		        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
 		        		    if(returned.contains("expired")){

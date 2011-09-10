@@ -35,7 +35,6 @@ public class CourseManager {
 	}
 
 	public boolean checkStudentsSettings(UserPO student, String parameter){
-		String returned;
 		String key = LoadStore.getCourseKey(this.courseName, this.professor.getUser().getEmail());
 		boolean value = false;
 		

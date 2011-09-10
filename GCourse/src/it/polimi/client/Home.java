@@ -326,14 +326,17 @@ public class Home implements EntryPoint {
 											Window.open("/home.html", "_self", "");
 										}
 									});
-									loadStoreService.getCourseDescription(key, new AsyncCallback<String>(){
+									final String name = course.substring(0,course.indexOf("-")).trim();
+									final String userEmail = course.substring(course.indexOf("-")+1).trim();
+									loadStoreService.getCourseDescription(name, userEmail, new AsyncCallback<String>(){
 										@Override
 										public void onFailure(Throwable caught) {
-											Window.alert("");
+											Window.alert("error." + name + ".." + userEmail);
 										}
 		//TODO
 										@Override
 										public void onSuccess(String descr) {
+											Window.alert("." + name + ".." + userEmail);
 											String corso = course.substring(0, course.indexOf("-"));
 											corso = corso.trim();
 											sitesService.createNewPage(email, corso, descr, new AsyncCallback<String>(){
