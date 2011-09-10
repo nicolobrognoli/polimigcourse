@@ -14,6 +14,7 @@ public class MailHandlerServlet extends HttpServlet {
 */
 
 import it.polimi.server.data.UserPO;
+import it.polimi.server.utils.CourseManager;
 import it.polimi.server.utils.LoadStore;
 import it.polimi.server.utils.SiteModifier;
 import it.polimi.server.utils.TwitterManager;
@@ -50,15 +51,16 @@ import com.google.api.client.json.jackson.JacksonFactory;
 
 
 public class MailHandlerServlet extends HttpServlet { 
-    /**
-	 * 
-	 */
+    
+	private final String LECTURE = "lecture";
+	private final String EXERCISE = "exercise";
 	private static final String CLIENT_ID = "267706380696.apps.googleusercontent.com";
 	private static final String CLIENT_SECRET = "zBWLvQsYnEF4-AAg1PZYu7eA";
 	private static final HttpTransport TRANSPORT = new NetHttpTransport();
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 	private String pageName,pageContent,course=null;
 	private SiteModifier siteModifier;
+	private CourseManager courseManager;
 	
 	private String parseBody(String body){
 		int titleStart,titleEnd,contentStart,contentEnd,courseStart,courseEnd;
@@ -68,22 +70,29 @@ public class MailHandlerServlet extends HttpServlet {
 		contentEnd=body.indexOf("/Contenuto");
 		courseStart=body.indexOf("Corso");
 		courseEnd=body.indexOf("/Corso");
-		if((titleStart>-1)&&(titleEnd>-1)){
+		if((titleStart>-1)&&(titleEnd>-1))
+		{
 			this.pageName=body.substring(titleStart+6, titleEnd);
-			if((contentStart>-1)&&(contentEnd>-1)){
+			this.pageName = this.pageName.trim();
+			if((contentStart>-1)&&(contentEnd>-1))
+			{
 				this.pageContent=body.substring(contentStart+9, contentEnd);
-				if((courseStart>-1)&&(courseEnd>-1)){
+				this.pageContent = this.pageContent.trim();
+				if((courseStart>-1)&&(courseEnd>-1))
+				{
 					this.course=body.substring(courseStart+5, courseEnd);
+					this.course = this.course.trim();
 				}
-				else{
+				else
+				{
 					return "Corso non presente";
 				}
 			}
 			else{
-				return "Errore: elemnto \"Contenuto\" non presente";
+				return "Errore: elemento \"Contenuto\" non presente";
 			}
 		}else{
-			return "Errore: elemnto \"Titolo\" non presente";
+			return "Errore: elemento \"Titolo\" non presente";
 		}
 		return "ok";
 	}
@@ -137,7 +146,7 @@ public class MailHandlerServlet extends HttpServlet {
             msg.setFrom(new InternetAddress("reply@polimigcourse.appspotmail.com", "PolimiGCourse"));
             System.out.println(realSender);
             msg.addRecipient(Message.RecipientType.TO,message.getFrom()[0]);
-            msg.setSubject("Your Example.com account has been activated");
+            msg.setSubject("Aggiornamento modifiche.");
             MimeMultipart multipart=(MimeMultipart)o;
     		UserPO tempUser=LoadStore.loadUser(realSender);
 	        try {
@@ -179,6 +188,8 @@ public class MailHandlerServlet extends HttpServlet {
 		            Transport.send(msg);
 	        		throw new MessagingException();
 	        	}
+	        	//TODO
+	        	this.courseManager = new CourseManager(this.course, tempUser);
     			this.siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
 	        	if(subject.contains("Upload")){
 	        		msgBody=msgBody+"Richiesta di Upload. \n";
@@ -232,9 +243,24 @@ public class MailHandlerServlet extends HttpServlet {
 	        			UserPO student;
 	        			do{
 	        				student = (UserPO) iter.next();
-	    					returned += student.getUser().getEmail() + " \n";
-	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
-	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
+	        				if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
+	        				{
+	        					if(this.courseManager.checkStudentsSettings(student, this.EXERCISE))
+	        					{
+	        						returned += student.getUser().getEmail() + " \n";
+	    	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
+	    	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
+	        					}
+	        				}
+	        				else
+	        				{
+	        					if(this.courseManager.checkStudentsSettings(student, this.LECTURE))
+	        					{
+	        						returned += student.getUser().getEmail() + " \n";
+	    	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
+	    	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
+	        					}
+	        				}
 	    				}while(iter.hasNext());	        			
 	        			
 	        			

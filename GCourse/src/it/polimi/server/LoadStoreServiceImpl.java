@@ -20,6 +20,10 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadStoreService {
 
+	private final String LECTURE = "lecture";
+	private final String EXERCISE = "exercise";
+	
+	
 	@SuppressWarnings("unchecked")
 	public String updateUser(String email, String name, String  pwd, boolean professor) throws IllegalArgumentException {
 		// get persistence manager
@@ -316,36 +320,7 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 
 	@Override
 	public boolean getCourseSettings(String key, String email, String parameter) {
-		boolean value = false;
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		try {
-			// get POs from DataStore
-			Query query = pm.newQuery(AttendingPO.class);
-			@SuppressWarnings("unchecked")
-			List<AttendingPO> results = (List<AttendingPO>)query.execute();
-			Iterator<AttendingPO> iter = results.iterator();
-			AttendingPO attendingTemp;
-			// check empty results
-			if (results.isEmpty())
-				return value;
-			else 
-			{
-				do{
-					attendingTemp = (AttendingPO) iter.next();
-					if(attendingTemp.getStudent().equals(email) && attendingTemp.getCourseKey().equals(key))					
-					{
-						if(parameter.equals("lecture"))
-							value = attendingTemp.isLecture();
-						else if(parameter.equals("exercise"))
-							value = attendingTemp.isExercise();
-					}
-				}while(iter.hasNext());									
-			}
-		} finally {			
-			// close persistence manager
-			pm.close();
-		}
-		return value;
+		return LoadStore.getCourseSettings(key, email, parameter);
 	}
 
 	@Override

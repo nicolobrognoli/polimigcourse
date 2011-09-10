@@ -23,6 +23,8 @@ public class LoadStore {
 	
 	protected static final String CLIENT_ID = "267706380696.apps.googleusercontent.com";
 	protected static final String CLIENT_SECRET = "zBWLvQsYnEF4-AAg1PZYu7eA";
+	private static final String LECTURE = "lecture";
+	private static final String EXERCISE = "exercise";
 	
 	public static String updateAccessToken(String email,String accessToken){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
@@ -428,6 +430,39 @@ public class LoadStore {
 			pm.close();
 		}
 		return key;
+	}
+	
+	public static boolean getCourseSettings(String key, String email, String parameter){
+		boolean value = false;
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(AttendingPO.class);
+			@SuppressWarnings("unchecked")
+			List<AttendingPO> results = (List<AttendingPO>)query.execute();
+			Iterator<AttendingPO> iter = results.iterator();
+			AttendingPO attendingTemp;
+			// check empty results
+			if (results.isEmpty())
+				return value;
+			else 
+			{
+				do{
+					attendingTemp = (AttendingPO) iter.next();
+					if(attendingTemp.getStudent().equals(email) && attendingTemp.getCourseKey().equals(key))					
+					{
+						if(parameter.equals(LECTURE))
+							value = attendingTemp.isLecture();
+						else if(parameter.equals(EXERCISE))
+							value = attendingTemp.isExercise();
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}
+		return value;
 	}
 	
 }
