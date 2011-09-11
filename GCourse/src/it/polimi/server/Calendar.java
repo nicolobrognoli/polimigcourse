@@ -32,15 +32,11 @@ public class Calendar extends HttpServlet {
 		CalendarHelper ch = new CalendarHelper("simone.benefico@gmail.com");
 	   // Demonstrate retrieving various calendar feeds.
 	   try {
-	     // Create a new secondary calendar, update it, then delete it.
-	     //ch.createCalendar("Titolo", "Calendario");
-	     //ch.createEvent("Titolo", "Tennis with John April 11 3pm-3:30pm");
-	     ch.deleteCalendar("sdcpsmifb515c44ves1cvmiego%40group.calendar.google.com");
-
-	     // Subscribe to the Google Doodles calendar, update the personalization
-	     // settings, then delete the subscription.
-	     //ch.createSubscription("c4o4i7m2lbamc4k26sc2vokh5g@group.calendar.google.com");	     
-	     ch.deleteSubscription("c4o4i7m2lbamc4k26sc2vokh5g%40group.calendar.google.com");
+	     String calendar = ch.createCalendar("Titolo", "Calendario");
+	     ch.createEvent(calendar, "Tennis with John April 11 3pm-3:30pm");
+	     ch.createSubscription(calendar);	     
+	     ch.deleteSubscription(calendar);
+	     ch.deleteCalendar(calendar);
 	   } catch (IOException e) {
 	     // Communications error
 	     Log.warn("There was a problem communicating with the service.");
