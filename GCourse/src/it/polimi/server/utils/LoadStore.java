@@ -459,6 +459,37 @@ public class LoadStore {
 		return value;
 	}
 	
+	public static String loadCalendarId(String courseName, String profEmail){
+		String value = null;
+		// get persistence manager
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(CoursePO.class);
+			@SuppressWarnings("unchecked")
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
+			// check empty results
+			if (results.isEmpty())
+				value = null;
+			else 
+			{
+				do{
+					courseTemp = (CoursePO) iter.next();
+					if(courseTemp.getName().equals(courseName) && courseTemp.getProfessor().getUser().getEmail().equals(profEmail))
+					{
+						value = courseTemp.getCalendarId();						 
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}		
+		return value;
+	}
+	
 	public static boolean storeCalendarId(String id, String courseName, String profEmail){
 		boolean value = false;
 		// get persistence manager

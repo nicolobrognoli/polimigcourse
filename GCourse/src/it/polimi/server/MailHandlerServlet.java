@@ -42,6 +42,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import twitter4j.auth.AccessToken;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -59,13 +60,13 @@ public class MailHandlerServlet extends HttpServlet {
 	private static final String CLIENT_SECRET = "zBWLvQsYnEF4-AAg1PZYu7eA";
 	private static final HttpTransport TRANSPORT = new NetHttpTransport();
 	private static final JsonFactory JSON_FACTORY = new JacksonFactory();
-	private String pageName,pageContent,course=null;
+	private String pageName,pageContent,course=null, event;
 	private SiteModifier siteModifier;
 	private CourseManager courseManager;
 	private CalendarHelper calendarHelper;
 	
 	private String parseBody(String body, String subject){
-		if(!subject.contains("event"))
+		if(!subject.contains("evento") && !subject.contains("Evento"))
 		{
 			int titleStart,titleEnd,contentStart,contentEnd,courseStart,courseEnd;
 			titleStart=body.indexOf("Titolo");
@@ -103,7 +104,32 @@ public class MailHandlerServlet extends HttpServlet {
 			return "ok";
 		}
 		else 
+		{
+			int eventStart, eventEnd, courseStart, courseEnd;
+			eventStart = body.indexOf("Evento");
+			eventEnd = body.indexOf("/Evento");
+			courseStart = body.indexOf("Corso");
+			courseEnd = body.indexOf("/Corso");
+			if((eventStart>-1)&&(eventEnd>-1))
+			{
+				this.event=body.substring(eventStart+6, eventEnd);
+				this.event = this.event.trim();
+				if((courseStart>-1)&&(courseEnd>-1))
+				{
+					this.course = body.substring(courseStart+5, courseEnd);
+					this.course = this.course.trim();
+				}
+				else
+				{
+					return "Corso non presente";
+				}
+			}
+			else{
+				return "Errore: elemento \"Contenuto\" non presente";
+			}
 			return "ok";
+		}
+			
 	}
 	
 	private String getRealUser(String sender){
@@ -335,21 +361,35 @@ public class MailHandlerServlet extends HttpServlet {
 		        				{
 		        					if(this.course != null)
 		        					{
-		        						calendarHelper = new CalendarHelper(sender);
+		        						calendarHelper = new CalendarHelper(tempUser.getUser().getEmail());
 			        					String id = calendarHelper.createCalendar(this.pageName, this.pageContent);
-		        						LoadStore.storeCalendarId(id, this.course, realSender);
+		        						LoadStore.storeCalendarId(id, this.course, tempUser.getUser().getEmail());
 		        						msgBody += "Creazione calendario riuscita.";
 		        					}		        						
 		        					else
 		        						msgBody += "Corso non specificato, nessuna modifica apportata";
 		        				}
-		        				else if(subject.contains("event") || subject.contains("event"))
+		        				else if(subject.contains("Evento") || subject.contains("evento"))
 		        				{
+		        					if(this.course != null)
+		        					{
+		        						calendarHelper = new CalendarHelper(tempUser.getUser().getEmail());
+		        						String id = LoadStore.loadCalendarId(this.course, tempUser.getUser().getEmail());
+		        						if(id == null)
+		        							msgBody = "Creare prima il calendario per il corso.";
+		        						else
+		        						{
+		        							Log.warn("Evento" + this.event);
+		        							Log.warn("\nID:" + id);
+		        							calendarHelper.createEvent(id, this.event);
+		        							msgBody += "Nuovo evento creato nel calendario.";
+		        						}
+		        					}
+		        					else
+		        						msgBody += "Corso non specificato, nessuna modifica apportata.";
 		        					
 		        				}
-		        			}
-		        		
-		        			
+		        			}	        			
 	        		}
 	        		
 	        	}
