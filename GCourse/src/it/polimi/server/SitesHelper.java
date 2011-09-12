@@ -59,8 +59,6 @@ import com.google.gdata.data.sites.SitesLink;
 import com.google.gdata.data.sites.Theme;
 import com.google.gdata.data.sites.WebAttachmentEntry;
 import com.google.gdata.data.sites.WebPageEntry;
-import com.google.gdata.data.spreadsheet.Column;
-import com.google.gdata.data.spreadsheet.Field;
 import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
 import com.google.gdata.util.XmlBlob;
@@ -408,16 +406,14 @@ public class SitesHelper {
      entry.setTitle(new PlainTextConstruct(title));
      setContentBlob(entry);
 
-     // Upload to a parent page?
-     if (parent !=  null) {/*
-       if (parent.lastIndexOf("/") == -1) {
-         parent = getContentFeedUrl() + parent;
-       }*/
+     // Upload to a parent page
+     if (parent !=  null) {
+       
        ContentFeed contentFeed = service.getFeed(new URL(getContentFeedUrl() + "?kind=webpage"), ContentFeed.class);
        size=contentFeed.getEntries().size();
        for(i=0;i<size;i++){
-    	   BaseContentEntry tempEntry=contentFeed.getEntries().get(i);
-    	   if(tempEntry.getTitle().getPlainText().contains(parent)){
+    	   BaseContentEntry<?> tempEntry=contentFeed.getEntries().get(i);
+    	   if(tempEntry.getTitle().getPlainText().equals(parent)){
     		   parent=tempEntry.getSelfLink().getHref();
     		   find=true;
     		   i=size;

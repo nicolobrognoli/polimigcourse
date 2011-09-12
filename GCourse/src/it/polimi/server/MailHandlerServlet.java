@@ -62,7 +62,7 @@ public class MailHandlerServlet extends HttpServlet {
 	private SiteModifier siteModifier;
 	private CourseManager courseManager;
 	
-	private String parseBody(String body){
+	private String parseBody(String body, String subject){
 		int titleStart,titleEnd,contentStart,contentEnd,courseStart,courseEnd;
 		titleStart=body.indexOf("Titolo");
 		titleEnd=body.indexOf("/Titolo");
@@ -74,6 +74,8 @@ public class MailHandlerServlet extends HttpServlet {
 		{
 			this.pageName=body.substring(titleStart+6, titleEnd);
 			this.pageName = this.pageName.trim();
+			if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
+				this.pageName += "[Exercise]";
 			if((contentStart>-1)&&(contentEnd>-1))
 			{
 				this.pageContent=body.substring(contentStart+9, contentEnd);
@@ -182,20 +184,20 @@ public class MailHandlerServlet extends HttpServlet {
 		            Transport.send(msg);
 	        		throw new MessagingException();
         		}
-	        	returned=parseBody(content);
+	        	returned=parseBody(content, subject);
 	        	if(returned.contains("Errore")){
 	        		msgBody+=returned;
 		            msg.setText(msgBody);
 		            Transport.send(msg);
 	        		throw new MessagingException();
 	        	}
-	        	//TODO
+ 
 	        	this.courseManager = new CourseManager(this.course, tempUser);
     			this.siteModifier=new SiteModifier(tempUser.getGoogleAccessToken(),tempUser.getSiteName());
 	        	//manage an upload request
     			if(subject.contains("Upload") || subject.contains("upload")){
 	        		msgBody=msgBody+"Richiesta di Upload. \n";
-
+	        		
         			if(partList.size()!=0){
         				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,tempUser,stringList);
         				  postOnTwitter(tempUser,returned);
@@ -262,41 +264,44 @@ public class MailHandlerServlet extends HttpServlet {
 	        		if(subject.contains("Post") || subject.contains("post")){
 	        			msgBody=msgBody+"Richiesta di Post.\n";
 	        			returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,tempUser);
-	        			//TODO: mandare aggiornamenti agli studenti
-	        			
-	        			returned += "\nUtenti iscritti:\n";
+	        			//inviare aggiornamenti agli studenti
 	        			List<UserPO> listStudents = LoadStore.getStudentsEnrolled(LoadStore.getCourseKey(this.course, tempUser.getUser().getEmail()));
 	        			Iterator<UserPO> iter = listStudents.iterator();
-	        			UserPO student;
-	        			do{
-	        				student = iter.next();
-	        				if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
-	        				{
-	        					if(this.courseManager.checkStudentsSettings(student, this.EXERCISE))
-	        					{
-	        						returned += student.getUser().getEmail() + " \n";
-	    	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
-	    	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
-	        					}
-	        				}
-	        				else
-	        				{
-	        					if(this.courseManager.checkStudentsSettings(student, this.LECTURE))
-	        					{
-	        						returned += student.getUser().getEmail() + " \n";
-	    	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
-	    	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
-	        					}
-	        				}
-	    				}while(iter.hasNext());	        			
-	        			
-	        			
-	        			if(!returned.contains("Errore")){
-	        				msgBody+=returned+"\n";
-	        			}else{
-	        				postOnTwitter(tempUser,returned);
-	        				msgBody+=returned+"\n";
+	        			if(listStudents != null && !listStudents.isEmpty())
+	        			{
+	        				returned += "\nUtenti iscritti:\n";
+	        				UserPO student;
+		        			do{
+		        				student = iter.next();
+		        				if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
+		        				{
+		        					if(this.courseManager.checkStudentsSettings(student, this.EXERCISE))
+		        					{
+		        						returned += student.getUser().getEmail() + " \n";
+		    	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
+		    	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
+		        					}
+		        				}
+		        				else
+		        				{
+		        					if(this.courseManager.checkStudentsSettings(student, this.LECTURE))
+		        					{
+		        						returned += student.getUser().getEmail() + " \n";
+		    	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
+		    	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
+		        					}
+		        				}
+		    				}while(iter.hasNext());	        			
+		        			
+		        			
+		        			if(!returned.contains("Errore")){
+		        				msgBody+=returned+"\n";
+		        			}else{
+		        				postOnTwitter(tempUser,returned);
+		        				msgBody+=returned+"\n";
+		        			}
 	        			}
+	        			
 	        			
 	        		}else {
 		        			if(subject.contains("Course") || subject.contains("course")){
@@ -312,21 +317,19 @@ public class MailHandlerServlet extends HttpServlet {
 		        		    }
 		        		    postOnTwitter(tempUser,returned);
 		        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
-		        			/*Errore oppure un'altra azione*/
 		        		}
 	        		}
 	        	}
 	            msg.setText(msgBody);
 
     	        } catch (AddressException e) {
-    	            // ...
+    	            e.printStackTrace();
     	        } catch (MessagingException e) {
-    	            // ...
+    	            e.printStackTrace();
     	        }
             Transport.send(msg);
 
 		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

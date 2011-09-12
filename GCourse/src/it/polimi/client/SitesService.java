@@ -8,5 +8,5 @@ public interface SitesService extends RemoteService{
 	
 	String createNewPage(String email, String title, String content);
 	
-	String listSiteContent(String email, String course);
+	String pushContentToStudents(String email, String course);
 }

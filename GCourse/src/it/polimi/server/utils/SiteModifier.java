@@ -105,11 +105,9 @@ public class SiteModifier {
 	    	}
 	
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "errore: Exception ServiceException expired"+e.toString();
 		} catch (SitesException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "errore: Exception SitesException";
 		}

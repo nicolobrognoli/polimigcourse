@@ -393,8 +393,7 @@ public class LoadStore {
 		} finally {			
 			// close persistence manager
 			pm.close();
-		}
-		
+		}		
 		return students;
 	}
 	

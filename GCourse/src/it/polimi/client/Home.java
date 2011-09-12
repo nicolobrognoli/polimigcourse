@@ -185,7 +185,7 @@ public class Home implements EntryPoint {
 											}
 										});
 										final String name = course.substring(0,course.indexOf("-")).trim();
-										//TODO: scaricare materiale gia' presente.
+										//scaricare materiale gia' presente.
 										loadStoreService.getCourseProfessor(key, new AsyncCallback<String>(){
 													@Override
 													public void onFailure(Throwable caught) {
@@ -197,7 +197,17 @@ public class Home implements EntryPoint {
 														download.addClickHandler(new ClickHandler() {
 															@Override
 															public void onClick(ClickEvent event) {
-																sitesService.listSiteContent(profEmail, name, new AsyncCallback<String>(){
+																loadStoreService.storeCourseSettings(key, email, lecture.getValue(), exercise.getValue(), new AsyncCallback<String>(){
+																	@Override
+																	public void onFailure(Throwable caught) {
+																		Window.alert("Errore nella lettura dei settings");
+																	}
+									
+																	@Override
+																	public void onSuccess(String value) {			
+																	}
+																});	
+																sitesService.pushContentToStudents(profEmail, name, new AsyncCallback<String>(){
 																	@Override
 																	public void onFailure(Throwable caught) {
 																		Window.alert("RPC error");
@@ -206,7 +216,11 @@ public class Home implements EntryPoint {
 																	@Override
 																	public void onSuccess(String value) {
 																		if(value.equals("ok"))
+																		{
 																			Window.alert("Aggiornamento eseguito correttamente.");
+																			Window.open("/home.html", "_self", "");
+																		}
+																			
 																	}
 																});
 																								
@@ -357,7 +371,6 @@ public class Home implements EntryPoint {
 										public void onFailure(Throwable caught) {
 											Window.alert("Errore nell' iscrizione ai corsi");
 										}
-		//TODO
 										@Override
 										public void onSuccess(String result) {
 											Window.alert("Iscrizione al corso: " + course + " avvenuta con successo.");											
@@ -370,7 +383,6 @@ public class Home implements EntryPoint {
 										public void onFailure(Throwable caught) {
 											Window.alert("RPC error.");
 										}
-		//TODO
 										@Override
 										public void onSuccess(String descr) {
 											String corso = course.substring(0, course.indexOf("-"));
