@@ -14,6 +14,7 @@ public class MailHandlerServlet extends HttpServlet {
 */
 
 import it.polimi.server.data.UserPO;
+import it.polimi.server.utils.CalendarHelper;
 import it.polimi.server.utils.CourseManager;
 import it.polimi.server.utils.LoadStore;
 import it.polimi.server.utils.SiteModifier;
@@ -61,42 +62,48 @@ public class MailHandlerServlet extends HttpServlet {
 	private String pageName,pageContent,course=null;
 	private SiteModifier siteModifier;
 	private CourseManager courseManager;
+	private CalendarHelper calendarHelper;
 	
 	private String parseBody(String body, String subject){
-		int titleStart,titleEnd,contentStart,contentEnd,courseStart,courseEnd;
-		titleStart=body.indexOf("Titolo");
-		titleEnd=body.indexOf("/Titolo");
-		contentStart=body.indexOf("Contenuto");
-		contentEnd=body.indexOf("/Contenuto");
-		courseStart=body.indexOf("Corso");
-		courseEnd=body.indexOf("/Corso");
-		if((titleStart>-1)&&(titleEnd>-1))
+		if(!subject.contains("event"))
 		{
-			this.pageName=body.substring(titleStart+6, titleEnd);
-			this.pageName = this.pageName.trim();
-			if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
-				this.pageName += "[Exercise]";
-			if((contentStart>-1)&&(contentEnd>-1))
+			int titleStart,titleEnd,contentStart,contentEnd,courseStart,courseEnd;
+			titleStart=body.indexOf("Titolo");
+			titleEnd=body.indexOf("/Titolo");
+			contentStart=body.indexOf("Contenuto");
+			contentEnd=body.indexOf("/Contenuto");
+			courseStart=body.indexOf("Corso");
+			courseEnd=body.indexOf("/Corso");
+			if((titleStart>-1)&&(titleEnd>-1))
 			{
-				this.pageContent=body.substring(contentStart+9, contentEnd);
-				this.pageContent = this.pageContent.trim();
-				if((courseStart>-1)&&(courseEnd>-1))
+				this.pageName=body.substring(titleStart+6, titleEnd);
+				this.pageName = this.pageName.trim();
+				if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
+					this.pageName += "[Exercise]";
+				if((contentStart>-1)&&(contentEnd>-1))
 				{
-					this.course=body.substring(courseStart+5, courseEnd);
-					this.course = this.course.trim();
+					this.pageContent=body.substring(contentStart+9, contentEnd);
+					this.pageContent = this.pageContent.trim();
+					if((courseStart>-1)&&(courseEnd>-1))
+					{
+						this.course=body.substring(courseStart+5, courseEnd);
+						this.course = this.course.trim();
+					}
+					else
+					{
+						return "Corso non presente";
+					}
 				}
-				else
-				{
-					return "Corso non presente";
+				else{
+					return "Errore: elemento \"Contenuto\" non presente";
 				}
+			}else{
+				return "Errore: elemento \"Titolo\" non presente";
 			}
-			else{
-				return "Errore: elemento \"Contenuto\" non presente";
-			}
-		}else{
-			return "Errore: elemento \"Titolo\" non presente";
+			return "ok";
 		}
-		return "ok";
+		else 
+			return "ok";
 	}
 	
 	private String getRealUser(String sender){
@@ -260,7 +267,8 @@ public class MailHandlerServlet extends HttpServlet {
     				}while(iter.hasNext());	
 		        		
 	        	}
-	        	else{
+	        	else
+	        	{
 	        		if(subject.contains("Post") || subject.contains("post")){
 	        			msgBody=msgBody+"Richiesta di Post.\n";
 	        			returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,tempUser);
@@ -303,22 +311,48 @@ public class MailHandlerServlet extends HttpServlet {
 	        			}
 	        			
 	        			
-	        		}else {
-		        			if(subject.contains("Course") || subject.contains("course")){
-		        			msgBody+=this.pageContent+this.pageName;
-		        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
-		        		    if(returned.contains("expired")){
-		        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
-		        				access.refreshToken();
-		        				String newAccessToken=access.getAccessToken();
-		        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
-			        			this.siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
-			        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
-		        		    }
-		        		    postOnTwitter(tempUser,returned);
-		        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
-		        		}
 	        		}
+	        		else 
+	        		{
+		        			if(subject.contains("Course") || subject.contains("course"))
+		        			{
+			        			msgBody+=this.pageContent+this.pageName;
+			        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
+			        		    if(returned.contains("expired")){
+			        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
+			        				access.refreshToken();
+			        				String newAccessToken=access.getAccessToken();
+			        				LoadStore.updateAccessToken(tempUser.getUser().getEmail(), newAccessToken);
+				        			this.siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
+				        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
+			        		    }
+			        		    postOnTwitter(tempUser,returned);
+			        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
+		        			}
+		        			else
+		        			{
+		        				//TODO: calendar.
+		        				if(subject.contains("New Calendar") || subject.contains("new calendar") || subject.contains("New calendar"))
+		        				{
+		        					if(this.course != null)
+		        					{
+		        						calendarHelper = new CalendarHelper(sender);
+			        					String id = calendarHelper.createCalendar(this.pageName, this.pageContent);
+		        						LoadStore.storeCalendarId(id, this.course, sender);
+		        						msgBody += "Creazione calendario riuscita.";
+		        					}		        						
+		        					else
+		        						msgBody += "Corso non specificato, nessuna modifica apportata";
+		        				}
+		        				else if(subject.contains("event") || subject.contains("event"))
+		        				{
+		        					
+		        				}
+		        			}
+		        		
+		        			
+	        		}
+	        		
 	        	}
 	            msg.setText(msgBody);
 
