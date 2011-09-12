@@ -35,8 +35,8 @@ public class Calendar extends HttpServlet {
 	     String calendar = ch.createCalendar("Titolo", "Calendario");
 	     ch.createEvent(calendar, "Tennis with John April 11 3pm-3:30pm");
 	     ch.createSubscription(calendar);	     
-	     ch.deleteSubscription(calendar);
-	     ch.deleteCalendar(calendar);
+	     //ch.deleteSubscription(calendar);
+	     //ch.deleteCalendar(calendar);
 	   } catch (IOException e) {
 	     // Communications error
 	     Log.warn("There was a problem communicating with the service.");

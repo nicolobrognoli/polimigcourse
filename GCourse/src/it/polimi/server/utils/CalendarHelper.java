@@ -25,6 +25,7 @@ import com.google.gdata.data.PlainTextConstruct;
 import com.google.gdata.data.calendar.CalendarEntry;
 import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.data.calendar.CalendarFeed;
+import com.google.gdata.data.calendar.HiddenProperty;
 import com.google.gdata.data.calendar.TimeZoneProperty;
 import com.google.gdata.util.InvalidEntryException;
 import com.google.gdata.util.ServiceException;
@@ -154,6 +155,8 @@ public class CalendarHelper {
 	   calendar.setTitle(new PlainTextConstruct(title));
 	   calendar.setSummary(new PlainTextConstruct(summary));
 	   calendar.setTimeZone(new TimeZoneProperty("Europe/Rome"));   
+	   calendar.setHidden(HiddenProperty.FALSE);
+
 	   // Insert the calendar
 	   CalendarEntry retCalendar = null;
 	   try {
@@ -168,7 +171,7 @@ public class CalendarHelper {
 			}
 			e.printStackTrace();
 	   }
-	   Log.warn("Calendar ID: " + retCalendar.getId());
+	   Log.info("Calendar ID: " + retCalendar.getId());
 	   return retCalendar.getId();
 	 }
 	
