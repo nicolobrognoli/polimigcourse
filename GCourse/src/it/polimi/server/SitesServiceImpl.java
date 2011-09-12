@@ -1,11 +1,15 @@
 package it.polimi.server;
 
 import it.polimi.client.SitesService;
+import it.polimi.server.data.UserPO;
 import it.polimi.server.utils.LoadStore;
 import it.polimi.server.utils.SiteModifier;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
 import com.google.api.client.http.HttpTransport;
@@ -47,6 +51,7 @@ public class SitesServiceImpl extends RemoteServiceServlet implements SitesServi
 
 	@Override
 	public String listSiteContent(String email, String course) {
+		List<String> listContent = new ArrayList<String>();
 		SiteModifier siteModifier = new SiteModifier(LoadStore.getGoogleAccessToken(email), LoadStore.getUserSiteName(email));
 	    String returned = "Error Impl";
 	    try {		
@@ -55,14 +60,52 @@ public class SitesServiceImpl extends RemoteServiceServlet implements SitesServi
 			String newAccessToken = access.getAccessToken();
 			LoadStore.updateAccessToken(email, newAccessToken);
 			siteModifier = new SiteModifier(newAccessToken, LoadStore.getUserSiteName(email));
-			returned = siteModifier.listSiteContent(email, course);		
+			listContent = siteModifier.listSiteContent(email, course);		
+			Iterator<String> contentIter = listContent.iterator();
+			do{
+				String content = contentIter.next();
+				String title = this.parseTitle(content);
+				String body = this.parseBody(content);
+				String studentEmail;
+				List<UserPO> listStudents = LoadStore.getStudentsEnrolled(LoadStore.getCourseKey(course, email));
+				Iterator<UserPO> iter = listStudents.iterator();
+				UserPO student;
+				do{
+					student = iter.next();
+					studentEmail = student.getUser().getEmail();
+					siteModifier = new SiteModifier(LoadStore.getGoogleAccessToken(studentEmail), LoadStore.getUserSiteName(studentEmail));
+					returned = siteModifier.createPage(title, body, course, null);
+					if(returned.contains("expired")){
+						access = new GoogleAccessProtectedResource(LoadStore.getGoogleAccessToken(studentEmail),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET, LoadStore.getGoogleRefreshToken(studentEmail));
+						access.refreshToken();
+						newAccessToken = access.getAccessToken();
+						LoadStore.updateAccessToken(studentEmail, newAccessToken);
+						siteModifier = new SiteModifier(newAccessToken, LoadStore.getUserSiteName(studentEmail));
+						returned = siteModifier.createPage(title, body, course, null);
+				    }
+				}while(iter.hasNext());	
+			}while(contentIter.hasNext());
 			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}	    
-	    return returned;
+	    return "ok";
+	}
+	
+	private String parseTitle(String content){
+		int begin, end;
+		begin = content.indexOf("<t>") + 3;
+		end = content.indexOf("</t>");
+		return content.substring(begin, end);
+	}
+	
+	private String parseBody(String content){
+		int begin, end;
+		begin = content.indexOf("<c>") + 3;
+		end = content.indexOf("</c>");
+		return content.substring(begin, end);
 	}
 
 }

@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -265,33 +267,30 @@ public class SitesHelper {
      }
    }
 
-   /**
-    * Fetches and displays entries from the content feed.
-    *
-    * @param kind An entry kind to fetch. For example, "webpage". If null, the
-    *     entire content feed is returned.
-    */
-   public String listSiteContents(String kind, String course) throws IOException, ServiceException {
+  
+   public List<String> listSiteContents(String kind, String course) throws IOException, ServiceException {
      String url = kind.equals("all") ? getContentFeedUrl() : getContentFeedUrl() + "?kind=" + kind;
      ContentFeed contentFeed = service.getFeed(new URL(url), ContentFeed.class);
 
-     String siteContent = "." + course + ".";
+     List<String> listContent = new ArrayList<String>();
      String parentId = null;
+     String content = null;
+     int begin, end;
      
      for (WebPageEntry entry : contentFeed.getEntries(WebPageEntry.class)) {
     	 if(entry.getTitle().getPlainText().equals(course))
 	    	   parentId = this.getEntryId(entry);      
      }
-     siteContent += "Parent: " + parentId;
      for (WebPageEntry entry : contentFeed.getEntries(WebPageEntry.class)) {    	 
-         if (entry.getParentLink() != null && parentId != null && this.getEntryId(entry.getParentLink().getHref()).equals(parentId)) {     
-        	 siteContent += "  title: " + entry.getTitle().getPlainText() + "  id: " + getEntryId(entry);
-        	 siteContent += "  parent id: " + getEntryId(entry.getParentLink().getHref());
-        	 siteContent += "  content: " + getContentBlob(entry);
+         if (entry.getParentLink() != null && parentId != null && this.getEntryId(entry.getParentLink().getHref()).equals(parentId)) {        	
+        	 content = this.getContentBlob(entry);
+        	 begin = content.indexOf("<td class='sites-layout-tile sites-tile-name-content-1'>") + 56;
+        	 end = content.indexOf("</td>");
+        	 content = content.substring(begin, end);
+        	 listContent.add("<t>" + entry.getTitle().getPlainText() + "</t>" + "<c>" + content + "</c>");        	
          }            
-     }
-     
-     return siteContent;
+     }     
+     return listContent;
    }
 
    public String getContentBlob(BaseContentEntry<?> entry) {

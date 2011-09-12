@@ -14,6 +14,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.mail.MessagingException;
 import javax.mail.Part;
 
@@ -203,20 +206,24 @@ public class SiteModifier {
 		return returned;
 	}
 	
-	public String listSiteContent(String email, String course){
+	public List<String> listSiteContent(String email, String course){
 		SitesHelper sitesHelper;
 	    sitesHelper = new SitesHelper("polimigcourse","site",this.siteName);
 	    sitesHelper.login(this.accessToken);
-	    String content = "error SiteModifier";
+	    List<String> listContent = new ArrayList<String>(); 
 		try {
-			content = sitesHelper.listSiteContents("webpage", course);
-			Log.warn(content);
+			listContent = sitesHelper.listSiteContents("webpage", course);
+			Iterator<String> iter = listContent.iterator();
+			do{
+				Log.warn(iter.next());
+			}while(iter.hasNext());
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}	    
-	    return content;
+	    return listContent;
 	}
 	
 }

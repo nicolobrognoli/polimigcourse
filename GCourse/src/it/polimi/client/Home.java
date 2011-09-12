@@ -204,8 +204,9 @@ public class Home implements EntryPoint {
 																	}
 									
 																	@Override
-																	public void onSuccess(String content) {
-																		Window.alert(content);										
+																	public void onSuccess(String value) {
+																		if(value.equals("ok"))
+																			Window.alert("Aggiornamento eseguito correttamente.");
 																	}
 																});
 																								
