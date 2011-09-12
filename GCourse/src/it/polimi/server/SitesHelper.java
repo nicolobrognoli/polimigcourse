@@ -271,120 +271,27 @@ public class SitesHelper {
     * @param kind An entry kind to fetch. For example, "webpage". If null, the
     *     entire content feed is returned.
     */
-   public void listSiteContents(String kind) throws IOException, ServiceException {
+   public String listSiteContents(String kind, String course) throws IOException, ServiceException {
      String url = kind.equals("all") ? getContentFeedUrl() : getContentFeedUrl() + "?kind=" + kind;
      ContentFeed contentFeed = service.getFeed(new URL(url), ContentFeed.class);
 
+     String siteContent = "." + course + ".";
+     String parentId = null;
+     
      for (WebPageEntry entry : contentFeed.getEntries(WebPageEntry.class)) {
-       System.out.println("WebPageEntry:");
-       System.out.println("  title: " + entry.getTitle().getPlainText());
-       System.out.println("  id: " + getEntryId(entry));
-       if (entry.getParentLink() != null) {
-         System.out.println("  parent id: " + getEntryId(entry.getParentLink().getHref()));
-       }
-       System.out.println("  authors: " + entry.getAuthors().get(0).getEmail());
-       System.out.println("  content: " + getContentBlob(entry));
-       System.out.println("");
+    	 if(entry.getTitle().getPlainText().equals(course))
+	    	   parentId = this.getEntryId(entry);      
      }
-
-     for (ListPageEntry entry : contentFeed.getEntries(ListPageEntry.class)) {
-       System.out.println("ListPageEntry:");
-       System.out.println("  title: " + entry.getTitle().getPlainText());
-       System.out.println("  id: " + getEntryId(entry));
-       if (entry.getParentLink() != null) {
-         System.out.println("  parent id: " + getEntryId(entry.getParentLink().getHref()));
-       }
-       for (Column col : entry.getData().getColumns()) {
-         System.out.print("  [" + col.getIndex() + "] " + col.getName() + "\t");
-       }
-       System.out.println("");
+     siteContent += "Parent: " + parentId;
+     for (WebPageEntry entry : contentFeed.getEntries(WebPageEntry.class)) {    	 
+         if (entry.getParentLink() != null && parentId != null && this.getEntryId(entry.getParentLink().getHref()).equals(parentId)) {     
+        	 siteContent += "  title: " + entry.getTitle().getPlainText() + "  id: " + getEntryId(entry);
+        	 siteContent += "  parent id: " + getEntryId(entry.getParentLink().getHref());
+        	 siteContent += "  content: " + getContentBlob(entry);
+         }            
      }
-
-     for (ListItemEntry entry : contentFeed.getEntries(ListItemEntry.class)) {
-       if (entry.getParentLink() != null) {
-         System.out.println("  parent id: " + getEntryId(entry.getParentLink().getHref()));
-       }
-       for (Field field : entry.getFields()) {
-         System.out.print("  [" + field.getIndex() + "] " + field.getValue() + "\t");
-       }
-       System.out.println("\n");
-     }
-
-     for (FileCabinetPageEntry entry : contentFeed.getEntries(FileCabinetPageEntry.class)) {
-       System.out.println("FileCabinetPageEntry:");
-       System.out.println("  title: " + entry.getTitle().getPlainText());
-       System.out.println("  id: " + getEntryId(entry));
-       if (entry.getParentLink() != null) {
-         System.out.println("  parent id: " + getEntryId(entry.getParentLink().getHref()));
-       }
-       System.out.println("  content: " + getContentBlob(entry));
-       System.out.println("");
-     }
-
-     for (CommentEntry entry : contentFeed.getEntries(CommentEntry.class)) {
-       System.out.println("CommentEntry:");
-       System.out.println("  id: " + getEntryId(entry));
-       if (entry.getParentLink() != null) {
-         System.out.println("  parent id: " + getEntryId(entry.getParentLink().getHref()));
-       }
-       System.out.println("  in-reply-to: " + entry.getInReplyTo().toString());
-       System.out.println("  content: " + getContentBlob(entry));
-       System.out.println("");
-     }
-
-     for (AnnouncementsPageEntry entry : contentFeed.getEntries(AnnouncementsPageEntry.class)) {
-       System.out.println("AnnouncementsPageEntry:");
-       System.out.println("  title: " + entry.getTitle().getPlainText());
-       System.out.println("  id: " + getEntryId(entry));
-       if (entry.getParentLink() != null) {
-         System.out.println("  parent id: " + getEntryId(entry.getParentLink().getHref()));
-       }
-       System.out.println("  content: " + getContentBlob(entry));
-       System.out.println("");
-     }
-
-     for (AnnouncementEntry entry : contentFeed.getEntries(AnnouncementEntry.class)) {
-       System.out.println("AnnouncementEntry:");
-       System.out.println("  title: " + entry.getTitle().getPlainText());
-       System.out.println("  id: " + getEntryId(entry));
-       if (entry.getParentLink() != null) {
-         System.out.println("  parent id: " + getEntryId(entry.getParentLink().getHref()));
-       }
-       System.out.println("  draft?: " + entry.isDraft());
-       System.out.println("  content: " + getContentBlob(entry));
-       System.out.println("");
-     }
-
-     for (AttachmentEntry entry : contentFeed.getEntries(AttachmentEntry.class)) {
-       System.out.println("AttachmentEntry:");
-       System.out.println("  title: " + entry.getTitle().getPlainText());
-       System.out.println("  id: " + getEntryId(entry));
-       if (entry.getParentLink() != null) {
-         System.out.println("  parent id: " + getEntryId(entry.getParentLink().getHref()));
-       }
-       if (entry.getSummary() != null) {
-         System.out.println("  description: " + entry.getSummary().getPlainText());
-       }
-       System.out.println("  revision: " + entry.getRevision().getValue());
-       MediaContent content = (MediaContent) entry.getContent();
-       System.out.println("  src: " + content.getUri());
-       System.out.println("  content type: " + content.getMimeType().getMediaType());
-       System.out.println("");
-     }
-
-     for (WebAttachmentEntry entry : contentFeed.getEntries(WebAttachmentEntry.class)) {
-       System.out.println("WebAttachmentEntry:");
-       System.out.println("  title: " + entry.getTitle().getPlainText());
-       System.out.println("  id: " + getEntryId(entry));
-       if (entry.getParentLink() != null) {
-         System.out.println("  parent id: " + getEntryId(entry.getParentLink().getHref()));
-       }
-       if (entry.getSummary() != null) {
-         System.out.println("  description: " + entry.getSummary().getPlainText());
-       }
-       System.out.println("  src: " + ((MediaContent) entry.getContent()).getUri());
-       System.out.println("");
-     }
+     
+     return siteContent;
    }
 
    public String getContentBlob(BaseContentEntry<?> entry) {

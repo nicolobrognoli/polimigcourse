@@ -45,4 +45,24 @@ public class SitesServiceImpl extends RemoteServiceServlet implements SitesServi
 	    return returned;
 	}
 
+	@Override
+	public String listSiteContent(String email, String course) {
+		SiteModifier siteModifier = new SiteModifier(LoadStore.getGoogleAccessToken(email), LoadStore.getUserSiteName(email));
+	    String returned = "Error Impl";
+	    try {		
+			GoogleAccessProtectedResource access = new GoogleAccessProtectedResource(LoadStore.getGoogleAccessToken(email),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET, LoadStore.getGoogleRefreshToken(email));
+			access.refreshToken();
+			String newAccessToken = access.getAccessToken();
+			LoadStore.updateAccessToken(email, newAccessToken);
+			siteModifier = new SiteModifier(newAccessToken, LoadStore.getUserSiteName(email));
+			returned = siteModifier.listSiteContent(email, course);		
+			
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	    
+	    return returned;
+	}
+
 }

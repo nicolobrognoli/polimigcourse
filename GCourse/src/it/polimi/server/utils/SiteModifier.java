@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import javax.mail.MessagingException;
 import javax.mail.Part;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.api.client.googleapis.auth.oauth2.draft10.GoogleAccessProtectedResource;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -200,6 +201,22 @@ public class SiteModifier {
 		    returned=createPage(pageName,pageContent,course,stringList);
 		}
 		return returned;
+	}
+	
+	public String listSiteContent(String email, String course){
+		SitesHelper sitesHelper;
+	    sitesHelper = new SitesHelper("polimigcourse","site",this.siteName);
+	    sitesHelper.login(this.accessToken);
+	    String content = "error SiteModifier";
+		try {
+			content = sitesHelper.listSiteContents("webpage", course);
+			Log.warn(content);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}	    
+	    return content;
 	}
 	
 }

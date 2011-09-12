@@ -7,4 +7,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface SitesService extends RemoteService{
 	
 	String createNewPage(String email, String title, String content);
+	
+	String listSiteContent(String email, String course);
 }

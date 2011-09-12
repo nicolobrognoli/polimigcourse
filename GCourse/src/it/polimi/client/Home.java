@@ -136,6 +136,7 @@ public class Home implements EntryPoint {
 										final CheckBox lecture = new CheckBox("Appunti");
 										final CheckBox exercise = new CheckBox("Esercizi");
 										final Button confirm = new Button("Conferma");
+										final Button download = new Button("Scarica il materiale gia' presente");
 										
 										loadStoreService.getCourseSettings(key, email, "lecture", new AsyncCallback<Boolean>(){
 												@Override
@@ -165,23 +166,55 @@ public class Home implements EntryPoint {
 										gestisciCorsi.add(lecture);
 										gestisciCorsi.add(exercise);
 										gestisciCorsi.add(confirm);
+										gestisciCorsi.add(download);
 										
 										confirm.addClickHandler(new ClickHandler() {
 											@Override
 											public void onClick(ClickEvent event) {
 												loadStoreService.storeCourseSettings(key, email, lecture.getValue(), exercise.getValue(), new AsyncCallback<String>(){
-											@Override
-											public void onFailure(Throwable caught) {
-												Window.alert("Errore nella lettura dei settings");
-											}
-			
-											@Override
-											public void onSuccess(String value) {
-												Window.open("/home.html", "_self", "");											
-											}
-										});													
+													@Override
+													public void onFailure(Throwable caught) {
+														Window.alert("Errore nella lettura dei settings");
+													}
+					
+													@Override
+													public void onSuccess(String value) {
+														Window.open("/home.html", "_self", "");											
+													}
+												});													
 											}
 										});
+										final String name = course.substring(0,course.indexOf("-")).trim();
+										//TODO: scaricare materiale gia' presente.
+										loadStoreService.getCourseProfessor(key, new AsyncCallback<String>(){
+													@Override
+													public void onFailure(Throwable caught) {
+														Window.alert("RPC error");
+													}
+					
+													@Override
+													public void onSuccess(final String profEmail) {
+														download.addClickHandler(new ClickHandler() {
+															@Override
+															public void onClick(ClickEvent event) {
+																sitesService.listSiteContent(profEmail, name, new AsyncCallback<String>(){
+																	@Override
+																	public void onFailure(Throwable caught) {
+																		Window.alert("RPC error");
+																	}
+									
+																	@Override
+																	public void onSuccess(String content) {
+																		Window.alert(content);										
+																	}
+																});
+																								
+															}
+														});								
+													}
+												});
+										
+										
 									}
 								}
 							});
@@ -326,8 +359,7 @@ public class Home implements EntryPoint {
 		//TODO
 										@Override
 										public void onSuccess(String result) {
-											Window.alert("Iscrizione al corso: " + course + " avvenuta con successo.");
-											Window.open("/home.html", "_self", "");
+											Window.alert("Iscrizione al corso: " + course + " avvenuta con successo.");											
 										}
 									});
 									final String name = course.substring(0,course.indexOf("-")).trim();
@@ -348,7 +380,8 @@ public class Home implements EntryPoint {
 												}
 				
 												@Override
-												public void onSuccess(String result) {													
+												public void onSuccess(String result) {	
+													Window.open("/home.html", "_self", "");
 												}
 											});
 										}
