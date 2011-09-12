@@ -154,7 +154,6 @@ public class MailHandlerServlet extends HttpServlet {
             int count;
             realSender=this.getRealUser(sender);
             msg.setFrom(new InternetAddress("reply@polimigcourse.appspotmail.com", "PolimiGCourse"));
-            System.out.println(realSender);
             msg.addRecipient(Message.RecipientType.TO,message.getFrom()[0]);
             msg.setSubject("Aggiornamento modifiche.");
             MimeMultipart multipart=(MimeMultipart)o;
@@ -338,7 +337,7 @@ public class MailHandlerServlet extends HttpServlet {
 		        					{
 		        						calendarHelper = new CalendarHelper(sender);
 			        					String id = calendarHelper.createCalendar(this.pageName, this.pageContent);
-		        						LoadStore.storeCalendarId(id, this.course, sender);
+		        						LoadStore.storeCalendarId(id, this.course, realSender);
 		        						msgBody += "Creazione calendario riuscita.";
 		        					}		        						
 		        					else
