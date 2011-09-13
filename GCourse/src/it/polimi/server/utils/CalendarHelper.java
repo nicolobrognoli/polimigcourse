@@ -15,6 +15,8 @@ package it.polimi.server.utils;
 * limitations under the License.
 */
 
+
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,6 +25,9 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gdata.client.calendar.CalendarService;
 import com.google.gdata.data.DateTime;
 import com.google.gdata.data.PlainTextConstruct;
+import com.google.gdata.data.acl.AclEntry;
+import com.google.gdata.data.acl.AclScope;
+import com.google.gdata.data.calendar.CalendarAclRole;
 import com.google.gdata.data.calendar.CalendarEntry;
 import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.data.calendar.CalendarFeed;
@@ -98,7 +103,7 @@ public class CalendarHelper {
 			Log.warn("Error while setting FeedUrls");
 			e.printStackTrace();
 		}
-		service.setAuthSubToken(LoadStore.getGoogleAccessToken(email));	 
+		service.setAuthSubToken(LoadStore.refreshGoogleToken(email));	 
 	 }
 	
 	 private CalendarEntry getCalendarFromTitle(String title) throws IOException{
@@ -158,7 +163,7 @@ public class CalendarHelper {
 	   calendar.setSummary(new PlainTextConstruct(summary));
 	   calendar.setTimeZone(new TimeZoneProperty("Europe/Rome"));   
 	   calendar.setHidden(HiddenProperty.FALSE);
-
+	   
 	   // Insert the calendar
 	   CalendarEntry retCalendar = null;
 	   try {
@@ -173,7 +178,6 @@ public class CalendarHelper {
 			}
 			e.printStackTrace();
 	   }
-	   Log.info("Calendar ID: " + retCalendar.getId());
 	   return retCalendar.getId();
 	 }
 	
@@ -268,7 +272,6 @@ public class CalendarHelper {
 	  * @throws IOException If there is a problem communicating with the server.
 	  */
 	 public CalendarEntry createSubscription(String calendarIdURL) throws IOException{
-	   Log.info("Subscribing to the Google Doodles calendar");
 	   CalendarEntry calendar = new CalendarEntry();
 	   calendar.setId(cleanCalendarId(calendarIdURL));
 	   try {
@@ -278,7 +281,7 @@ public class CalendarHelper {
 			try {
 				return service.insert(allcalendarsFeedUrl, calendar);
 			} catch (ServiceException e1) {
-				Log.warn("ServiceException while creating a new Event");
+				Log.warn("ServiceException while creating a new subscription");
 				e1.printStackTrace();
 			}
 	   }
@@ -308,5 +311,23 @@ public class CalendarHelper {
 				e.printStackTrace();
 		   	}
 	 } 
+	 
+	 public void setAcl(String calendarIdURL, String userEmail, String profEmail){
+		 	AclEntry entry = new AclEntry();
+			entry.setScope(new AclScope(AclScope.Type.USER, userEmail));
+			entry.setRole(CalendarAclRole.READ);
+
+			URL aclUrl = null;
+			try {
+				aclUrl = new URL("https://www.google.com/calendar/feeds/" + this.cleanCalendarId(calendarIdURL) + "/acl/full");
+				AclEntry insertedEntry = service.insert(aclUrl, entry);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ServiceException e) {
+				e.printStackTrace();			
+			}
+
+			Log.warn("student:" + userEmail+"AclUrl:"+aclUrl);
+	 }
 	 
 }

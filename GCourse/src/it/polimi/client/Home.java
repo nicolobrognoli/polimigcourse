@@ -29,6 +29,7 @@ public class Home implements EntryPoint {
 	private final LoadStoreServiceAsync loadStoreService = GWT.create(LoadStoreService.class);
 	private final TwitterServiceAsync twitterService = GWT.create(TwitterService.class);
 	private final SitesServiceAsync sitesService = GWT.create(SitesService.class);
+	private final CalendarServiceAsync calendarService = GWT.create(CalendarService.class);
 	
 	boolean isProfessor;
 
@@ -376,8 +377,23 @@ public class Home implements EntryPoint {
 											Window.alert("Iscrizione al corso: " + course + " avvenuta con successo.");											
 										}
 									});
+									
+									
+									
 									final String name = course.substring(0,course.indexOf("-")).trim();
 									final String userEmail = course.substring(course.indexOf("-")+1).trim();
+									//TODO: iscrizione al calendar del corso.
+									calendarService.subscribeCalendar(email, userEmail, key, new AsyncCallback<String>(){
+										@Override
+										public void onFailure(Throwable caught) {
+											Window.alert("Errore RPC");
+										}
+										@Override
+										public void onSuccess(String result) {
+											if(result.equals("ok"))
+												Window.alert("Calendario creato.");											
+										}
+									});
 									loadStoreService.getCourseDescription(name, userEmail, new AsyncCallback<String>(){
 										@Override
 										public void onFailure(Throwable caught) {

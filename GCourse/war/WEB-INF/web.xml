@@ -89,6 +89,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   </servlet-mapping>
   
   <servlet>
+    <servlet-name>CalendarService</servlet-name>
+    <servlet-class>it.polimi.server.CalendarServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CalendarService</servlet-name>
+    <url-pattern>/it.polimi.Home/calendarservice</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
     <servlet-name>TwitterCallback</servlet-name>
     <servlet-class>it.polimi.server.TwitterCallback</servlet-class>
   </servlet>

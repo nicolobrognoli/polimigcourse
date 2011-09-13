@@ -127,9 +127,8 @@ public class MailHandlerServlet extends HttpServlet {
 		else 
 		{
 			//creazione evento calendario
-			int eventStart, eventEnd, beginStart, beginEnd, finishStart, finishEnd, dateStart, dateEnd;
-			eventStart = body.indexOf("Evento");
-			eventEnd = body.indexOf("/Evento");
+			int beginStart, beginEnd, finishStart, finishEnd, dateStart, dateEnd;
+
 			titleStart=body.indexOf("Titolo");
 			titleEnd=body.indexOf("/Titolo");
 			contentStart=body.indexOf("Contenuto");
@@ -142,75 +141,58 @@ public class MailHandlerServlet extends HttpServlet {
 			beginEnd = body.indexOf("/Inizio");
 			finishStart = body.indexOf("Fine");
 			finishEnd = body.indexOf("/Fine");
-			//inserimento quick add
-			if((eventStart>-1)&&(eventEnd>-1))
+		
+			//inserimento standard
+			if((titleStart>-1)&&(titleEnd>-1))
 			{
-				this.event=body.substring(eventStart+6, eventEnd);
-				this.event = this.event.trim();
-				if((courseStart>-1)&&(courseEnd>-1))
+				this.pageName=body.substring(titleStart+6, titleEnd);
+				this.pageName = this.pageName.trim();
+			
+				if((contentStart>-1)&&(contentEnd>-1))
 				{
-					this.course = body.substring(courseStart+5, courseEnd);
-					this.course = this.course.trim();
-				}
-				else
-				{
-					return "Corso non presente";
-				}
-			}
-			else
-			{
-				//inserimento standard
-				if((titleStart>-1)&&(titleEnd>-1))
-				{
-					this.pageName=body.substring(titleStart+6, titleEnd);
-					this.pageName = this.pageName.trim();
-				
-					if((contentStart>-1)&&(contentEnd>-1))
+					this.pageContent=body.substring(contentStart+9, contentEnd);
+					this.pageContent = this.pageContent.trim();
+					if((courseStart>-1)&&(courseEnd>-1))
 					{
-						this.pageContent=body.substring(contentStart+9, contentEnd);
-						this.pageContent = this.pageContent.trim();
-						if((courseStart>-1)&&(courseEnd>-1))
+						this.course=body.substring(courseStart+5, courseEnd);
+						this.course = this.course.trim();
+						if((beginStart>-1)&&(beginEnd>-1))
 						{
-							this.course=body.substring(courseStart+5, courseEnd);
-							this.course = this.course.trim();
-							if((beginStart>-1)&&(beginEnd>-1))
+							this.startTime = body.substring(beginStart + 6, beginEnd);
+							this.startTime = this.startTime.trim();
+							if((finishStart>-1)&&(finishEnd>-1))
 							{
-								this.startTime = body.substring(beginStart + 6, beginEnd);
-								this.startTime = this.startTime.trim();
-								if((finishStart>-1)&&(finishEnd>-1))
+								this.endTime = body.substring(finishStart + 4, finishEnd);
+								this.endTime = this.endTime.trim();
+								if((dateStart>-1)&&(dateEnd>-1))
 								{
-									this.endTime = body.substring(finishStart + 4, finishEnd);
-									this.endTime = this.endTime.trim();
-									if((dateStart>-1)&&(dateEnd>-1))
-									{
-										this.date = body.substring(dateStart + 4, dateEnd);
-										this.date = this.date.trim();
-									}
-									else
-										return "Errore: data non presente";
+									this.date = body.substring(dateStart + 4, dateEnd);
+									this.date = this.date.trim();
 								}
-								else 
-									return "Errore: orario fine non presente";
+								else
+									return "Errore: data non presente";
 							}
-							else
-								return "Errore: orario inizio non presente";
-							
+							else 
+								return "Errore: orario fine non presente";
 						}
 						else
-						{
-							return "Corso non presente";
-						}
+							return "Errore: orario inizio non presente";
+						
 					}
-					else{
-						return "Errore: elemento \"Contenuto\" non presente";
+					else
+					{
+						return "Corso non presente";
 					}
-				}else{
-					return "Errore: elemento \"Titolo\" non presente";
 				}
+				else{
+					return "Errore: elemento \"Contenuto\" non presente";
+				}
+			}else
+			{
+				return "Errore: elemento \"Titolo\" non presente";
 			}
-			return "ok";
 		}
-			
+		return "ok";			
 	}
 	
 	private String getRealUser(String sender){
@@ -422,7 +404,6 @@ public class MailHandlerServlet extends HttpServlet {
 	        		{
 		        			if(subject.contains("Course") || subject.contains("course"))
 		        			{
-			        			msgBody+=this.pageContent+this.pageName;
 			        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
 			        		    if(returned.contains("expired")){
 			        				GoogleAccessProtectedResource access=new GoogleAccessProtectedResource(tempUser.getGoogleAccessToken(),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET,tempUser.getGoogleRefreshToken());
@@ -433,7 +414,13 @@ public class MailHandlerServlet extends HttpServlet {
 				        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
 			        		    }
 			        		    postOnTwitter(tempUser,returned);
+			        		    msgBody += "Corso creato alla pagina: " + returned;
 			        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
+			        			//creazione calendario associato al corso			        			
+        						calendarHelper = new CalendarHelper(tempUser.getUser().getEmail());
+	        					String id = calendarHelper.createCalendar(this.pageName, this.pageContent);
+        						LoadStore.storeCalendarId(id, this.pageName, tempUser.getUser().getEmail());
+        						msgBody += "\nE' stato creato un calendario associato al corso.";	        					
 		        			}
 		        			else
 		        			{
