@@ -68,44 +68,65 @@ public class MailHandlerServlet extends HttpServlet {
 	private String parseBody(String body, String subject){
 		int titleStart,titleEnd,contentStart,contentEnd,courseStart,courseEnd;
 		if(!subject.contains("evento") && !subject.contains("Evento"))
-		{			
-			titleStart=body.indexOf("Titolo");
-			titleEnd=body.indexOf("/Titolo");
-			contentStart=body.indexOf("Contenuto");
-			contentEnd=body.indexOf("/Contenuto");
-			courseStart=body.indexOf("Corso");
-			courseEnd=body.indexOf("/Corso");
-			if((titleStart>-1)&&(titleEnd>-1))
+		{		
+			if(subject.contains("delete calendar") || subject.contains("Delete calendar") || subject.contains("Delete Calendar"))
 			{
-				this.pageName=body.substring(titleStart+6, titleEnd);
-				this.pageName = this.pageName.trim();
-				if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
-					this.pageName += "[Exercise]";
-				if((contentStart>-1)&&(contentEnd>-1))
+				//eliminazione calendario
+				courseStart=body.indexOf("Corso");
+				courseEnd=body.indexOf("/Corso");
+				if((courseStart>-1)&&(courseEnd>-1))
 				{
-					this.pageContent=body.substring(contentStart+9, contentEnd);
-					this.pageContent = this.pageContent.trim();
-					if((courseStart>-1)&&(courseEnd>-1))
-					{
-						this.course=body.substring(courseStart+5, courseEnd);
-						this.course = this.course.trim();
-					}
-					else
-					{
-						return "Corso non presente";
-					}
+					this.course=body.substring(courseStart+5, courseEnd);
+					this.course = this.course.trim();
 				}
-				else{
-					return "Errore: elemento \"Contenuto\" non presente";
+				else
+				{
+					return "Corso non presente";
 				}
-			}else{
-				return "Errore: elemento \"Titolo\" non presente";
+				return "ok";
 			}
-			return "ok";
+			else
+			{ 
+				//creazione pagine + creazione calendario
+				titleStart=body.indexOf("Titolo");
+				titleEnd=body.indexOf("/Titolo");
+				contentStart=body.indexOf("Contenuto");
+				contentEnd=body.indexOf("/Contenuto");
+				courseStart=body.indexOf("Corso");
+				courseEnd=body.indexOf("/Corso");
+				if((titleStart>-1)&&(titleEnd>-1))
+				{
+					this.pageName=body.substring(titleStart+6, titleEnd);
+					this.pageName = this.pageName.trim();
+					if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
+						this.pageName += "[Exercise]";
+					if((contentStart>-1)&&(contentEnd>-1))
+					{
+						this.pageContent=body.substring(contentStart+9, contentEnd);
+						this.pageContent = this.pageContent.trim();
+						if((courseStart>-1)&&(courseEnd>-1))
+						{
+							this.course=body.substring(courseStart+5, courseEnd);
+							this.course = this.course.trim();
+						}
+						else
+						{
+							return "Corso non presente";
+						}
+					}
+					else{
+						return "Errore: elemento \"Contenuto\" non presente";
+					}
+				}else{
+					return "Errore: elemento \"Titolo\" non presente";
+				}
+				return "ok";
+			}
+			
 		}
 		else 
 		{
-		
+			//creazione evento calendario
 			int eventStart, eventEnd, beginStart, beginEnd, finishStart, finishEnd, dateStart, dateEnd;
 			eventStart = body.indexOf("Evento");
 			eventEnd = body.indexOf("/Evento");
@@ -436,19 +457,37 @@ public class MailHandlerServlet extends HttpServlet {
 		        						calendarHelper = new CalendarHelper(tempUser.getUser().getEmail());
 		        						String id = LoadStore.loadCalendarId(this.course, tempUser.getUser().getEmail());
 		        						if(id == null)
-		        							msgBody = "Creare prima il calendario per il corso.";
+		        							msgBody = "Creare prima il calendario per il corso: " + this.course;
 		        						else
 		        						{
-		        							Log.warn("Titolo" + this.pageName + "Start " + this.startTime + "End" + this.endTime);
-		        						
 		        							calendarHelper.createEvent(id, this.pageName, this.pageContent, this.date, this.startTime, this.endTime);
-		        							msgBody += "Nuovo evento creato nel calendario.";
+		        							msgBody += "Nuovo evento creato nel calendario del corso " + this.course;
 		        						}
 		        					}
 		        					else
 		        						msgBody += "Corso non specificato, nessuna modifica apportata.";
 		        					
 		        				}
+		        				else if(subject.contains("delete calendar") || subject.contains("Delete calendar") || subject.contains("Delete Calendar"))
+		        				{
+		        					if(this.course != null)
+		        					{
+		        						calendarHelper = new CalendarHelper(tempUser.getUser().getEmail());
+		        						String id = LoadStore.loadCalendarId(this.course, tempUser.getUser().getEmail());
+		        						if(id != null)
+		        						{
+		        							calendarHelper.deleteCalendar(id);
+			        						LoadStore.storeCalendarId(null, this.course, tempUser.getUser().getEmail());
+			        						msgBody += "Cancellazione calendario del corso " + this.course + " completata con successo.";
+		        						}
+		        						else
+		        							msgBody += "Nessun calendario e' associato al corso: " + this.course;
+		        							
+		        					}
+		        					else
+		        						msgBody += "Corso non specificato, nessuna modifica apportata";
+		        				}
+		        					
 		        			}	        			
 	        		}
 	        		

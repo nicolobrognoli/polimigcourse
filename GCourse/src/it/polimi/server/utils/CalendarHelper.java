@@ -184,8 +184,7 @@ public class CalendarHelper {
 	  * @throws IOException If there is a problem communicating with the server.
 	  * @throws ServiceException If the service is unable to handle the request.
 	  */
-	 public void deleteCalendar(String calendarIdURL) throws IOException {
-	   Log.info("Deleting the secondary calendar");	   
+	 public void deleteCalendar(String calendarIdURL) throws IOException {  
 	   try {
 		   CalendarFeed resultFeed = service.getFeed(new URL(METAFEED_URL_BASE + email + OWNCALENDARS_FEED_URL_SUFFIX), CalendarFeed.class);
 		   for (int i = 0; i < resultFeed.getEntries().size(); i++) {
@@ -194,6 +193,7 @@ public class CalendarHelper {
 				   entry.delete();
 		   }
 	   }catch (ServiceException e) {
+		   Log.warn("Service exception");
 		   service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
 			try {
 				CalendarFeed resultFeed = service.getFeed(new URL(METAFEED_URL_BASE + email + OWNCALENDARS_FEED_URL_SUFFIX), CalendarFeed.class);
