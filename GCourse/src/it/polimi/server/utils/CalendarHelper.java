@@ -21,12 +21,14 @@ import java.net.URL;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gdata.client.calendar.CalendarService;
+import com.google.gdata.data.DateTime;
 import com.google.gdata.data.PlainTextConstruct;
 import com.google.gdata.data.calendar.CalendarEntry;
 import com.google.gdata.data.calendar.CalendarEventEntry;
 import com.google.gdata.data.calendar.CalendarFeed;
 import com.google.gdata.data.calendar.HiddenProperty;
 import com.google.gdata.data.calendar.TimeZoneProperty;
+import com.google.gdata.data.extensions.When;
 import com.google.gdata.util.InvalidEntryException;
 import com.google.gdata.util.ServiceException;
 
@@ -213,6 +215,34 @@ public class CalendarHelper {
 		 URL privateFeedUrl = new URL(METAFEED_URL_BASE + cleanCalendarId(calendarIdURL) + PRIVATE_FEED_URL_SUFFIX);
 		 event.setContent(new PlainTextConstruct(strEvent));
 		 event.setQuickAdd(true);
+		 CalendarEventEntry newEvent = null;
+		 // Send the request and receive the response:
+		 try {
+			newEvent = service.insert(privateFeedUrl, event);	
+		} catch (ServiceException e) {
+			service.setAuthSubToken(LoadStore.refreshGoogleToken(email));
+			try {
+				newEvent = service.insert(privateFeedUrl, event);
+			} catch (ServiceException e1) {
+				Log.warn("ServiceException while creating a new Event");
+				e1.printStackTrace();
+			}
+		}
+		 return newEvent;
+	 }
+	 
+	 public CalendarEventEntry createEvent(String calendarIdURL, String title, String content, String date, String start, String end) throws IOException{
+		 CalendarEventEntry event = new CalendarEventEntry();
+		 URL privateFeedUrl = new URL(METAFEED_URL_BASE + cleanCalendarId(calendarIdURL) + PRIVATE_FEED_URL_SUFFIX);
+		 event.setTitle(new PlainTextConstruct(title));
+		 event.setContent(new PlainTextConstruct(content));
+
+		 DateTime startTime = DateTime.parseDateTime(date + "T" + start + ":00");
+		 DateTime endTime = DateTime.parseDateTime(date + "T" + end + ":00");
+		 When eventTimes = new When();
+		 eventTimes.setStartTime(startTime);
+		 eventTimes.setEndTime(endTime);
+		 event.addTime(eventTimes);
 		 CalendarEventEntry newEvent = null;
 		 // Send the request and receive the response:
 		 try {
