@@ -62,9 +62,9 @@ public class Register implements EntryPoint {
 		
 		final TextBox textBox = new TextBox();
 		layoutPanel_1.add(textBox);
-		textBox.setHeight("23");
-		layoutPanel_1.setWidgetLeftWidth(textBox, 233.0, Unit.PX, 163.0, Unit.PX);
-		layoutPanel_1.setWidgetTopHeight(textBox, 151.0, Unit.PX, 19.0, Unit.PX);
+		layoutPanel_1.setWidgetTopHeight(textBox, 147.0, Unit.PX, 23.0, Unit.PX);
+		textBox.setSize("153", "23");
+		layoutPanel_1.setWidgetLeftWidth(textBox, 233.0, Unit.PX, 207.0, Unit.PX);
 		
 		final Label lblVerrInviataUnemail = new Label("Verra' inviata un'email per la conferma all'indirizzo indicato");
 		layoutPanel_1.add(lblVerrInviataUnemail);

@@ -218,7 +218,10 @@ public class MailHandlerServlet extends HttpServlet {
 	    if(accessToken!=null){
 		    String secretToken = tempUser.getTwitterSecretToken();
 			TwitterManager t = new TwitterManager(new AccessToken(accessToken, secretToken), "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
-			t.sendTweet("Nuovo materiale disponibile al link: " + returned);
+			if(returned.contains("Nuovo evento creato nel calendario"))
+				t.sendTweet(returned);
+			else
+				t.sendTweet("Nuovo materiale disponibile al link: " + returned);
 	    }
 	}
 	
@@ -449,6 +452,7 @@ public class MailHandlerServlet extends HttpServlet {
 		        						{
 		        							calendarHelper.createEvent(id, this.pageName, this.pageContent, this.date, this.startTime, this.endTime);
 		        							msgBody += "Nuovo evento creato nel calendario del corso " + this.course;
+		        							this.postOnTwitter(tempUser, "Nuovo evento creato sul calendario del corso: " +  this.course);
 		        						}
 		        					}
 		        					else
