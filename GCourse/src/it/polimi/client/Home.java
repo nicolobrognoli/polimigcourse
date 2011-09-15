@@ -1,5 +1,6 @@
 package it.polimi.client;
 
+
 import java.util.List;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -240,7 +241,7 @@ public class Home implements EntryPoint {
 						
 						
 						
-						VerticalPanel aggiungiCorso = new VerticalPanel();
+						final VerticalPanel aggiungiCorso = new VerticalPanel();
 						corsiPanel.add(aggiungiCorso, strAggiungiCorso, false);
 						aggiungiCorso.setSize("100%", "100%");		
 						
@@ -420,6 +421,95 @@ public class Home implements EntryPoint {
 								}
 							});
 							aggiungiCorso.add(btnIscriviti);
+							
+							/*Inizio parte COLO*/
+							
+							Button btnGetContent = new Button("Prendi Contenuto");
+							btnGetContent.addClickHandler(new ClickHandler() {
+								@Override
+								public void onClick(ClickEvent event) {
+									int index = listCorsi.getSelectedIndex();
+									final String key = listCorsi.getValue(index);
+									final String course = listCorsi.getItemText(index);
+									final String nameCourse = course.substring(0,course.indexOf("-")).trim();
+									final String teacherEmail = course.substring(course.indexOf("-")+1).trim();
+									sitesService.listSiteContent(teacherEmail, nameCourse,  new AsyncCallback<List<String>>(){
+										@Override
+										public void onFailure(Throwable caught) {													
+										}
+		
+										@Override
+										public void onSuccess(List<String> result) {	
+											aggiungiCorso.clear();
+											aggiungiCorso.setSize("100%", "100%");	
+											final ListBox listTitoli = new ListBox(false);
+											String temp,title,content;
+											
+											for(int cont=0;cont<result.size();cont++){
+												temp=result.get(cont);
+												title=temp.substring(temp.indexOf("<t>")+3, temp.indexOf("</t>"));
+												content=temp.substring(temp.indexOf("<c>")+3, temp.indexOf("</c>"));
+												listTitoli.addItem(title,content);
+											}
+											listTitoli.setSelectedIndex(0);
+											listTitoli.setVisibleItemCount(6);	
+											aggiungiCorso.add(listTitoli);
+
+											Button btnCopyContent = new Button("Copia Contenuto");
+											btnCopyContent.addClickHandler(new ClickHandler() {
+												@Override
+												public void onClick(ClickEvent event) {
+													int index = listTitoli.getSelectedIndex();
+													final String content = listTitoli.getValue(index);
+													final String title = listTitoli.getItemText(index);
+														loadStoreService.getCourseDescription(nameCourse,teacherEmail,new AsyncCallback<String>(){
+														@Override
+														public void onFailure(Throwable caught) {
+															Window.alert("RPC error.");
+														}
+														@Override
+														public void onSuccess(String descr) {
+															String corso = course.substring(0, course.indexOf("-"));
+															corso = corso.trim();
+															sitesService.createNewPage(email, nameCourse, descr, new AsyncCallback<String>(){
+																@Override
+																public void onFailure(Throwable caught) {													
+																}
+								
+																@Override
+																public void onSuccess(String result) {	
+																	sitesService.createNewPage(email,title,content,nameCourse , new AsyncCallback<String>(){
+																		@Override
+																		public void onFailure(Throwable caught) {
+																			Window.alert("Errore nell'elaborazione dell'URL");
+																		}
+
+																		@Override
+																		public void onSuccess(String result) {
+																			Window.alert("Creazione avvenuta con successo.");
+
+																			Window.open("/home.html", "_self", "");
+																		}
+																	});
+																}
+															});
+														}
+													});
+
+
+												}
+											});
+											aggiungiCorso.add(btnCopyContent);
+											
+										}
+									});
+								}
+							});
+
+							aggiungiCorso.add(btnGetContent);
+							/*Fine parte COLO*/
+							
+							
 						}	
 						
 						VerticalPanel twitter = new VerticalPanel();

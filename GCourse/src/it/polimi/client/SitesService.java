@@ -1,5 +1,7 @@
 package it.polimi.client;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -9,4 +11,9 @@ public interface SitesService extends RemoteService{
 	String createNewPage(String email, String title, String content);
 	
 	String pushContentToStudents(String email, String course);
+
+	List<String> listSiteContent(String email, String course);
+
+	String createNewPage(String email, String title, String content,
+			String parent);
 }

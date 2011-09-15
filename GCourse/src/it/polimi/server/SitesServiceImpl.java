@@ -30,20 +30,23 @@ public class SitesServiceImpl extends RemoteServiceServlet implements SitesServi
 	private final String EXERCISE = "exercise";
 	private CourseManager courseManager;
 	
-	@Override
 	public String createNewPage(String email, String title, String content) {
+		return createNewPage(email,title,content,null);
+	}
+	@Override
+	public String createNewPage(String email, String title, String content,String parent) {
 		
 		SiteModifier siteModifier = new SiteModifier(LoadStore.getGoogleAccessToken(email), LoadStore.getUserSiteName(email));
 	    String returned = "";
 		try {
-			returned = siteModifier.createPage(title, content, null,null);
+			returned = siteModifier.createPage(title, content, parent,null);
 			if(returned.contains("expired")){
 				GoogleAccessProtectedResource access = new GoogleAccessProtectedResource(LoadStore.getGoogleAccessToken(email),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET, LoadStore.getGoogleRefreshToken(email));
 				access.refreshToken();
 				String newAccessToken = access.getAccessToken();
 				LoadStore.updateAccessToken(email, newAccessToken);
 				siteModifier = new SiteModifier(newAccessToken, LoadStore.getUserSiteName(email));
-				returned = siteModifier.createPage(title, content, null, null);
+				returned = siteModifier.createPage(title, content, parent, null);
 		    }
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -52,7 +55,25 @@ public class SitesServiceImpl extends RemoteServiceServlet implements SitesServi
 		}	    
 	    return returned;
 	}
-
+	public List<String> listSiteContent(String email, String course){
+		String returned;
+		this.courseManager = new CourseManager(course, LoadStore.loadUser(email));
+		List<String> listContent = new ArrayList<String>();
+		SiteModifier siteModifier = new SiteModifier(LoadStore.getGoogleAccessToken(email), LoadStore.getUserSiteName(email));
+	    try {		
+			GoogleAccessProtectedResource access = new GoogleAccessProtectedResource(LoadStore.getGoogleAccessToken(email),TRANSPORT,JSON_FACTORY,CLIENT_ID, CLIENT_SECRET, LoadStore.getGoogleRefreshToken(email));
+			access.refreshToken();
+			String newAccessToken = access.getAccessToken();
+			LoadStore.updateAccessToken(email, newAccessToken);
+			siteModifier = new SiteModifier(newAccessToken, LoadStore.getUserSiteName(email));
+			return siteModifier.listSiteContent(email, course);	
+	    } catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    return null;
+	}
 	@Override
 	public String pushContentToStudents(String email, String course) {
 		String returned;
@@ -141,5 +162,5 @@ public class SitesServiceImpl extends RemoteServiceServlet implements SitesServi
 		end = content.indexOf("</c>");
 		return content.substring(begin, end);
 	}
-
+	
 }
