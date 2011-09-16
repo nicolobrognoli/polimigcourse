@@ -2,6 +2,7 @@ package it.polimi.client;
 
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -45,4 +46,5 @@ public interface LoadStoreService extends RemoteService{
 	
 	String getCourseProfessor(String key);
 	
+	String deleteFromCourse(String key, String email);
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 
@@ -319,12 +320,10 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 		}
 		return null;
 	}
-
 	@Override
 	public boolean getCourseSettings(String key, String email, String parameter) {
 		return LoadStore.getCourseSettings(key, email, parameter);
 	}
-
 	@Override
 	public String storeCourseSettings(String key, String email,
 			boolean lecture, boolean exercise) {
@@ -421,6 +420,36 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 			pm.close();
 		}
 		return ret;
+	}
+
+	@Override
+	public String deleteFromCourse(String key, String email) {
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(AttendingPO.class);
+			@SuppressWarnings("unchecked")
+			List<AttendingPO> results = (List<AttendingPO>)query.execute();
+			Iterator<AttendingPO> iter = results.iterator();
+			AttendingPO attendingTemp;
+			// check empty results
+			if (results.isEmpty())
+				return "Attending empty";
+			else 
+			{
+				do{
+					attendingTemp = iter.next();
+					if(attendingTemp.getStudent().equals(email) && attendingTemp.getCourseKey().equals(key))					
+					{
+						pm.deletePersistent(attendingTemp);
+					}
+				}while(iter.hasNext());									
+			}
+		} finally {			
+			// close persistence manager
+			pm.close();
+		}
+		return null;
 	}
 
 	

@@ -49,5 +49,10 @@ public interface LoadStoreServiceAsync {
 
 	void getCourseProfessor(String key, AsyncCallback<String> callback);
 
+	void deleteFromCourse(String key, String email,
+			AsyncCallback<String> asyncCallback);
+
+
+
 
 }

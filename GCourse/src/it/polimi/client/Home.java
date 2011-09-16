@@ -138,6 +138,7 @@ public class Home implements EntryPoint {
 										final CheckBox lecture = new CheckBox("Appunti");
 										final CheckBox exercise = new CheckBox("Esercizi");
 										final Button confirm = new Button("Conferma");
+										final Button delete = new Button("Cancellati");
 										final Button download = new Button("Scarica il materiale gia' presente");
 										
 										loadStoreService.getCourseSettings(key, email, "lecture", new AsyncCallback<Boolean>(){
@@ -169,7 +170,25 @@ public class Home implements EntryPoint {
 										gestisciCorsi.add(exercise);
 										gestisciCorsi.add(confirm);
 										gestisciCorsi.add(download);
+										gestisciCorsi.add(delete);
 										
+										
+										delete.addClickHandler(new ClickHandler(){
+											@Override
+											public void onClick(ClickEvent event){
+												loadStoreService.deleteFromCourse(key,email,new AsyncCallback<String>(){
+													@Override
+													public void onFailure(Throwable caught) {
+														Window.alert("Errore nella lettura dei settings");
+													}
+					
+													@Override
+													public void onSuccess(String value) {
+														Window.open("/home.html", "_self", "");											
+													}
+												});	
+											}
+										});
 										confirm.addClickHandler(new ClickHandler() {
 											@Override
 											public void onClick(ClickEvent event) {
