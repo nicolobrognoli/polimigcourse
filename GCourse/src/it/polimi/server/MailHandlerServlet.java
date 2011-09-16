@@ -281,6 +281,11 @@ public class MailHandlerServlet extends HttpServlet {
 		            msg.setText(msgBody);
 		            Transport.send(msg);
 	        		throw new MessagingException();
+        		}else if(!tempUser.isProfessor()){
+        			msgBody+="Errore: Sei uno studente.\n";
+		            msg.setText(msgBody);
+		            Transport.send(msg);
+	        		throw new MessagingException();
         		}
 	        	returned=parseBody(content, subject);
 	        	if(returned.contains("Errore")){
