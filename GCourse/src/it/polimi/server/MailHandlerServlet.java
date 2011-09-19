@@ -306,12 +306,10 @@ public class MailHandlerServlet extends HttpServlet {
         				  postOnTwitter(tempUser,returned);
         				  if(!returned.contains("Errore")){
         					  for(count=0;count<partList.size();count++){
-	        					  msgBody+=returned+"\n";
 	        					  returned=this.siteModifier.uploadFile(partList.get(count),tempUser);
         					  }
         				  }
 
-    					  msgBody+=returned;
         			  }
         			  else{
         				  msgBody+="Errore: richiesta di \"Upload\" senza file.\n";
@@ -368,6 +366,7 @@ public class MailHandlerServlet extends HttpServlet {
 	        		if(subject.contains("Post") || subject.contains("post")){
 	        			msgBody=msgBody+"Richiesta di Post.\n";
 	        			returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,tempUser);
+	        			if(!returned.contains("Errore")){
 	        			//inviare aggiornamenti agli studenti
 	        			List<UserPO> listStudents = LoadStore.getStudentsEnrolled(LoadStore.getCourseKey(this.course, tempUser.getUser().getEmail()));
 	        			Iterator<UserPO> iter = listStudents.iterator();
@@ -406,7 +405,9 @@ public class MailHandlerServlet extends HttpServlet {
 		        			}
 	        			}
 	        			
-	        			
+	        		}else{
+	        			msgBody="Errore richiesta post.";
+	        		}
 	        		}
 	        		else 
 	        		{
@@ -421,14 +422,19 @@ public class MailHandlerServlet extends HttpServlet {
 				        			this.siteModifier=new SiteModifier(newAccessToken,tempUser.getSiteName());
 				        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
 			        		    }
-			        		    postOnTwitter(tempUser,returned);
-			        		    msgBody += "Corso creato alla pagina: " + returned;
-			        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
-			        			//creazione calendario associato al corso			        			
-        						calendarHelper = new CalendarHelper(tempUser.getUser().getEmail());
-	        					String id = calendarHelper.createCalendar(this.pageName, this.pageContent);
-        						LoadStore.storeCalendarId(id, this.pageName, tempUser.getUser().getEmail());
-        						msgBody += "\nE' stato creato un calendario associato al corso.";	        					
+			        		    if(!returned.contains("Errore")){
+				        		    postOnTwitter(tempUser,returned);
+				        		    msgBody += "Corso creato alla pagina: " + returned;
+				        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
+				        			//creazione calendario associato al corso			        			
+	        						calendarHelper = new CalendarHelper(tempUser.getUser().getEmail());
+		        					String id = calendarHelper.createCalendar(this.pageName, this.pageContent);
+	        						LoadStore.storeCalendarId(id, this.pageName, tempUser.getUser().getEmail());
+	        						msgBody += "\nE' stato creato un calendario associato al corso.";	 
+			        		    }else{
+			        		    	msgBody="Errore creazione corso.";
+			        		    }
+			        		    
 		        			}
 		        			else
 		        			{
