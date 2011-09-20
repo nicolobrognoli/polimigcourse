@@ -318,7 +318,7 @@ public class MailHandlerServlet extends HttpServlet {
         			List<UserPO> listStudents = LoadStore.getStudentsEnrolled(LoadStore.getCourseKey(this.course, tempUser.getUser().getEmail()));
         			Iterator<UserPO> iter = listStudents.iterator();
         			UserPO student;
-        			do{
+        			while(iter.hasNext()){
         				student = iter.next();
         				if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
         				{
@@ -358,7 +358,7 @@ public class MailHandlerServlet extends HttpServlet {
                   			  }   
         					}
         				}
-    				}while(iter.hasNext());	
+    				}
 		        		
 	        	}
 	        	else
