@@ -98,8 +98,9 @@ public class MailHandlerServlet extends HttpServlet {
 				{
 					this.pageName=body.substring(titleStart+6, titleEnd);
 					this.pageName = this.pageName.trim();
+					this.pageName=this.pageName.toLowerCase();
 					if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
-						this.pageName += "[Exercise]";
+						this.pageName += "-exercise";
 					if((contentStart>-1)&&(contentEnd>-1))
 					{
 						this.pageContent=body.substring(contentStart+9, contentEnd);
@@ -218,10 +219,7 @@ public class MailHandlerServlet extends HttpServlet {
 	    if(accessToken!=null){
 		    String secretToken = tempUser.getTwitterSecretToken();
 			TwitterManager t = new TwitterManager(new AccessToken(accessToken, secretToken), "GDwPipm8wdr40M6RHVcPA", "pduDWo2CbhpqJlRIcNX9PEG7F1AOqR8uo5A7yNt5Lo");
-			if(returned.contains("Nuovo evento creato nel calendario"))
-				t.sendTweet(returned);
-			else
-				t.sendTweet("Nuovo materiale disponibile al link: " + returned);
+			t.sendTweet(returned);
 	    }
 	}
 	
@@ -303,7 +301,8 @@ public class MailHandlerServlet extends HttpServlet {
 	        		
         			if(partList.size()!=0){
         				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,tempUser,stringList);
-        				  postOnTwitter(tempUser,returned);
+        				  msgBody+="Upload creato al link: "+returned;
+        				  postOnTwitter(tempUser,"Upload creato al link: "+returned);
         				  if(!returned.contains("Errore")){
         					  for(count=0;count<partList.size();count++){
 	        					  returned=this.siteModifier.uploadFile(partList.get(count),tempUser);
@@ -314,7 +313,6 @@ public class MailHandlerServlet extends HttpServlet {
         			  else{
         				  msgBody+="Errore: richiesta di \"Upload\" senza file.\n";
         			  }
-        			returned += "\nUtenti iscritti:\n";
         			List<UserPO> listStudents = LoadStore.getStudentsEnrolled(LoadStore.getCourseKey(this.course, tempUser.getUser().getEmail()));
         			Iterator<UserPO> iter = listStudents.iterator();
         			UserPO student;
@@ -374,7 +372,7 @@ public class MailHandlerServlet extends HttpServlet {
 	        			{
 	        				returned += "\nUtenti iscritti:\n";
 	        				UserPO student;
-		        			do{
+	        				while(iter.hasNext()){
 		        				student = iter.next();
 		        				if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
 		        				{
@@ -382,7 +380,7 @@ public class MailHandlerServlet extends HttpServlet {
 		        					{
 		        						returned += student.getUser().getEmail() + " \n";
 		    	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
-		    	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
+		    	    					returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
 		        					}
 		        				}
 		        				else
@@ -391,18 +389,16 @@ public class MailHandlerServlet extends HttpServlet {
 		        					{
 		        						returned += student.getUser().getEmail() + " \n";
 		    	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
-		    	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
+		    	    					returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
 		        					}
 		        				}
-		    				}while(iter.hasNext());	        			
-		        			
-		        			
-		        			if(!returned.contains("Errore")){
-		        				msgBody+=returned+"\n";
-		        			}else{
-		        				postOnTwitter(tempUser,returned);
-		        				msgBody+=returned+"\n";
-		        			}
+		    				}    
+	        			}
+	        			if(!returned.contains("Errore")){
+	        				postOnTwitter(tempUser,"Post creato al link: "+returned);
+	        				msgBody+=returned+"\n";
+	        			}else{
+	        				msgBody+=returned+"\n";
 	        			}
 	        			
 	        		}else{
@@ -411,7 +407,7 @@ public class MailHandlerServlet extends HttpServlet {
 	        		}
 	        		else 
 	        		{
-		        			if(subject.contains("Course") || subject.contains("course"))
+		        			if(subject.contains("Corso") || subject.contains("corso"))
 		        			{
 			        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
 			        		    if(returned.contains("expired")){
@@ -423,7 +419,7 @@ public class MailHandlerServlet extends HttpServlet {
 				        		    returned=this.siteModifier.createPage(this.pageName,this.pageContent,null,null);
 			        		    }
 			        		    if(!returned.contains("Errore")){
-				        		    postOnTwitter(tempUser,returned);
+				        		    postOnTwitter(tempUser,"Corso creato al link: "+returned);
 				        		    msgBody += "Corso creato alla pagina: " + returned;
 				        			LoadStore.storeNewCourse(tempUser,this.pageName, this.pageContent);
 				        			//creazione calendario associato al corso			        			

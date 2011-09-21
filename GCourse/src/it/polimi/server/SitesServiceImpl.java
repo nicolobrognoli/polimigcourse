@@ -104,7 +104,7 @@ public class SitesServiceImpl extends RemoteServiceServlet implements SitesServi
 							
 							student = iter.next();
 							studentEmail = student.getUser().getEmail();
-							if(title.contains("Exercise"))
+							if(title.contains("exercise"))
 							{
 								if(this.courseManager.checkStudentsSettings(student, this.EXERCISE))
 								{
