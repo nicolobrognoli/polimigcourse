@@ -55,6 +55,9 @@ public class SitesServiceImpl extends RemoteServiceServlet implements SitesServi
 		}	    
 	    return returned;
 	}
+	
+	
+	
 	public List<String> listSiteContent(String email, String course){
 		String returned;
 		this.courseManager = new CourseManager(course, LoadStore.loadUser(email));

@@ -86,7 +86,7 @@ public class MailHandlerServlet extends HttpServlet {
 				return "ok";
 			}
 			else
-			{ 
+			{
 				//creazione pagine + creazione calendario
 				titleStart=body.indexOf("Titolo");
 				titleEnd=body.indexOf("/Titolo");
@@ -99,6 +99,7 @@ public class MailHandlerServlet extends HttpServlet {
 					this.pageName=body.substring(titleStart+6, titleEnd);
 					this.pageName = this.pageName.trim();
 					this.pageName=this.pageName.toLowerCase();
+					this.pageName=this.pageName.replace(" ", "-");
 					if(subject.contains(this.EXERCISE) || subject.contains("Exercise"))
 						this.pageName += "-exercise";
 					if((contentStart>-1)&&(contentEnd>-1))

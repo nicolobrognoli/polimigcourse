@@ -85,7 +85,7 @@ public class SiteModifier {
 
 		    		for(count=0;count<stringList.size();count++){
 						file=stringList.get(count);
-						file.replace(" ", "_");
+						file=file.replace(" ", "_");
 						body+="<p><a href=\"https://sites.google.com/site/"+this.siteName+"/"+file+"\">"+file+"</a></p>";
 		    		}
 					xml.setBlob(body);
