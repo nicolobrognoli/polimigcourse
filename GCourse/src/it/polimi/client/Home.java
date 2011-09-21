@@ -530,61 +530,101 @@ public class Home implements EntryPoint {
 							
 							
 						}	
-						
-						VerticalPanel twitter = new VerticalPanel();
-						panel.add(twitter, "Twitter", false);
-						twitter.setSize("100%", "100%");
-						
-						HorizontalPanel horizontalPanel = new HorizontalPanel();
-						twitter.add(horizontalPanel);
-						
-						InlineLabel nlnlblConsentiAGcourse = new InlineLabel("Consenti a GCourse l'accesso al tuo account Twitter");
-						horizontalPanel.add(nlnlblConsentiAGcourse);
-						
-						Button btnTwitGrant = new Button("Vai");
-						btnTwitGrant.addClickHandler(new ClickHandler() {
-							@Override
-							public void onClick(ClickEvent event) {
-								twitterService.getAuthUrl(new AsyncCallback<String>(){
+						if(isProfessor)
+						{
+							VerticalPanel twitter = new VerticalPanel();
+							panel.add(twitter, "Twitter", false);
+							twitter.setSize("100%", "100%");
+							
+							HorizontalPanel horizontalPanel = new HorizontalPanel();
+							twitter.add(horizontalPanel);
+							
+							InlineLabel nlnlblConsentiAGcourse = new InlineLabel("Consenti a GCourse l'accesso al tuo account Twitter");
+							horizontalPanel.add(nlnlblConsentiAGcourse);
+							
+							Button btnTwitGrant = new Button("Vai");
+							btnTwitGrant.addClickHandler(new ClickHandler() {
 								@Override
-								public void onFailure(Throwable caught) {
-									Window.alert("Errore nell'elaborazione dell'URL");
-								}
+								public void onClick(ClickEvent event) {
+									twitterService.getAuthUrl(new AsyncCallback<String>(){
+									@Override
+									public void onFailure(Throwable caught) {
+										Window.alert("Errore nell'elaborazione dell'URL");
+									}
 
-								@Override
-								public void onSuccess(String result) {
-									Window.open(result, "_self", "");
+									@Override
+									public void onSuccess(String result) {
+										Window.open(result, "_self", "");
+									}
+								});
 								}
 							});
-							}
-						});
-						horizontalPanel.add(btnTwitGrant);
-						
-						HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
-						twitter.add(horizontalPanel_1);
-						
-						InlineLabel nlnlblScollegaIlTuo = new InlineLabel("Scollega il tuo account Twitter da GCourse");
-						horizontalPanel_1.add(nlnlblScollegaIlTuo);
-						
-						Button btnTwitDeny = new Button("Vai");
-						btnTwitDeny.addClickHandler(new ClickHandler() {
-							@Override
-							public void onClick(ClickEvent event) {
-								loadStoreService.deleteTwitterTokens(email, new AsyncCallback<String>(){
+							horizontalPanel.add(btnTwitGrant);
+							
+							HorizontalPanel horizontalPanel_1 = new HorizontalPanel();
+							twitter.add(horizontalPanel_1);
+							
+							InlineLabel nlnlblScollegaIlTuo = new InlineLabel("Scollega il tuo account Twitter da GCourse");
+							horizontalPanel_1.add(nlnlblScollegaIlTuo);
+							
+							Button btnTwitDeny = new Button("Vai");
+							btnTwitDeny.addClickHandler(new ClickHandler() {
 								@Override
-								public void onFailure(Throwable caught) {
-									Window.alert("Errore nella cancellazione dei permessi");
-								}
+								public void onClick(ClickEvent event) {
+									loadStoreService.deleteTwitterTokens(email, new AsyncCallback<String>(){
+									@Override
+									public void onFailure(Throwable caught) {
+										Window.alert("Errore nella cancellazione dei permessi");
+									}
 
-								@Override
-								public void onSuccess(String result) {
-									Window.alert(result);
+									@Override
+									public void onSuccess(String result) {
+										Window.alert(result);
+									}
+								});
 								}
 							});
+							horizontalPanel_1.add(btnTwitDeny);
+							
+							
+							//tab di informazioni per inviare le mail
+							VerticalPanel help = new VerticalPanel();
+							panel.add(help, "Help", false);
+							help.setSize("100%", "100%");
+							
+							HorizontalPanel horPanel = new HorizontalPanel();
+							help.add(horPanel);
+							
+							InlineLabel lblHelp = new InlineLabel("Istruzioni per creare contenuto: ");
+							Button btnHelp = new Button("Visualizza");
+							btnHelp.addClickHandler(new ClickHandler() {
+								@Override
+								public void onClick(ClickEvent event) {
+									Window.open("/help.html","_blank", "");
+								}
+							});
+							horPanel.add(lblHelp);
+							horPanel.add(btnHelp);	
+						}
+						panel.selectTab(0);	
+						
+						//tab per il logout
+						VerticalPanel logout = new VerticalPanel();
+						panel.add(logout, "Logout", false);
+						logout.setSize("100%", "100%");
+						
+						HorizontalPanel horPanel2 = new HorizontalPanel();
+						logout.add(horPanel2);						
+						
+						Button btnOut = new Button("Effettua il logout");
+						btnOut.addClickHandler(new ClickHandler() {
+							@Override
+							public void onClick(ClickEvent event) {
+								Window.open("/register.html","_self", "");
 							}
 						});
-						horizontalPanel_1.add(btnTwitDeny);
-						panel.selectTab(0);
+						
+						horPanel2.add(btnOut);	
 					}
 				});
 			}

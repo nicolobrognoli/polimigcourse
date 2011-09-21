@@ -31,6 +31,7 @@ public class SendRegistrationMailImpl extends RemoteServiceServlet implements Se
         Session session = Session.getDefaultInstance(props, null);
         String msgBody = "Clicca sul link per confermare la registrazione al servizio:\n" +
         		"http://polimigcourse.appspot.com/confirmregistration?email=" + dest;
+        msgBody += "\nLe istruzioni per usufruire del servizio sono disponibili al link: http://polimigcourse.appspot.com/help.html";
         User user = new User(dest, "google.com");
         boolean ok = true;
         

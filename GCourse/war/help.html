@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Guida all'utilizzo del servizio</title>
+  </head>
+  <body>
+  <h2> I messaggi devono essere inviati all'indirizzo: service@polimigocourse.appspotmail.com </h2><br><br>
+		L'oggetto del messaggio identifica l'operazione che deve essere compiuta dal programma, e nel corpo dell'email vengono specificati i parametri che devono essere modificati. 
+		<br><br>Vengono indicate di seguito tutte le operazioni messe a disposizione dal servizio, con il relativo pattern di struttura del body.
+		<br><br>
+		<h2>Creazione di un nuovo corso</h2>
+		<b>Subject:</b> Corso oppure corso<br>
+		<b>Body:</b>
+		<ul>
+		<li>Titolo  /Titolo: delimitatori per il riconoscimento del titolo del corso</li>
+		<li>Contenuto /Contenuto: racchiudono la descrizione del corso (apparirà come contenuto della pagina web corrispondente al corso)</li>
+		</ul>
+		
+		<br><br>
+		<h2>Creazione di una pagina senza allegati</h2>
+		<b>Subject:</b> Post, oppure post<br>
+		<b>Body:</b>
+		<ul>
+		<li>Titolo  /Titolo: delimitatori per il riconoscimento del titolo della pagina</li>
+		<li>Contenuto /Contenuto: delimitano il testo che si vuole inserire nella pagina web che si andrà a creare</li>
+		<li>Corso /Corso: fra le due stringhe si indica il corso al quale associare la pagina</li>
+		</ul>
+		
+		<br><br>
+		<h2>Creazione di una pagina con file allegati</h2>
+		<b>Subject:</b> Upload oppure upload<br>
+		<b>Body:</b>
+		<ul>
+		<li>Titolo  /Titolo: delimitatori per il riconoscimento del titolo della pagina</li>
+		<li>Contenuto /Contenuto: delimitano il testo che si vuole inserire nella pagina web che si andrà a creare</li>
+		<li>Corso /Corso: fra le due stringhe si indica il corso al quale associare la pagina</li>
+		</ul>
+		<b>Attachment:</b> file allegato che si vuole inserire sulla pagina web.
+		
+		<br> <br>
+		<i>Inoltre vi è la possibilità di differenziare il contenuto da caricare sul sito fra le categorie “appunti” ed “esercizi”. Per indicare all'applicazione la tipologia di contenuto è semplicemente necessario far seguire le parole chiave post, oppure upload dalla stringa “exercise” nel caso si tratti di un esercizio, mentre se non si indica nulla il materiale sarà classificato come “appunti”.</i>
+		<br><br>
+		<h2>Creazione di un calendario associato al corso.</h2>
+		<b>Subject:</b> New calendar<br>
+		<b>Body:</b>
+		<ul>
+		<li>Titolo  /Titolo: delimitatori per il nome del calendario</li>
+		<li>Contenuto /Contenuto: delimitano il commento al calendario</li>
+		<li>Corso /Corso: fra le due stringhe si indica il corso al quale associare il calendario</li>
+		</ul>
+		
+		<br><br>
+		<h2>Creazione di un evento nel calendario del corso</h2>
+		<b>Subject:</b>Evento oppure evento<br>
+		<b>Body:</b>
+		<ul>
+		<li>Titolo  /Titolo: delimitatori per il nome dell'evento</li>
+		<li>Contenuto /Contenuto: delimitano il testo dei dettagli dell'evento</li>
+		<li>Corso /Corso: fra le due stringhe si indica il corso al quale associare l'evento</li>
+		<li>Data /Data: indica la data in cui porre l'evento</li>
+		<li>Inizio /Inizio: delimitano il campo per specificare l'ora dell'inizio dell'evento</li>
+		<li>Fine /Fine: specificano l'orario di fine dell'evento</li>
+		</ul>
+		
+		<br><br>
+		<h2>Cancellazione del calendario del corso</h2>
+		<b>Subject:</b> delete calendar<br>
+		<b>Body:</b>
+		<ul>
+		<li>Corso /Corso: fra le due stringhe si indica il corso del quale cancellare il calendario</li>
+		</ul>
+  </body>
+</html>
