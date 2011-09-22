@@ -36,4 +36,17 @@ public class CalendarServiceImpl extends RemoteServiceServlet implements Calenda
 		return null;
 	}
 
+	@Override
+	public String createCalendar(String email, String name, String summary) {
+		String id = ""; 
+		CalendarHelper ch = new CalendarHelper(email);
+		try {
+			id = ch.createCalendar(name, summary);
+		} catch (IOException e) {
+			// Communications error
+		     Log.warn("There was a problem communicating with the service.");
+			e.printStackTrace();
+		}		
+		return id;
+	}
 }

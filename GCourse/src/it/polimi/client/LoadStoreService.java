@@ -26,7 +26,7 @@ public interface LoadStoreService extends RemoteService{
 	
 	List<String> getAllCourses();
 	
-	String storeNewCourse(String email, String name, String description);
+	String storeNewCourse(String email, String name, String description, String calendarId);
 	
 	String deleteTwitterTokens(String email);
 	

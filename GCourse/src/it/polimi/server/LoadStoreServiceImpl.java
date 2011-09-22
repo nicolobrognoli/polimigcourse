@@ -163,9 +163,9 @@ public class LoadStoreServiceImpl extends RemoteServiceServlet implements LoadSt
 	}
 
 	@Override
-	public String storeNewCourse(String email, String name, String description){
+	public String storeNewCourse(String email, String name, String description, String calendarId){
 		UserPO professor = LoadStore.loadUser(email);
-		String result = LoadStore.storeNewCourse(professor, name, description);
+		String result = LoadStore.storeNewCourse(professor, name, description, calendarId);
 		return result;
 	}
 

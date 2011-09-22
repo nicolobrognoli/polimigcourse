@@ -19,7 +19,7 @@ public interface LoadStoreServiceAsync {
 	void getTaughtCourses(String email, AsyncCallback<List<String>> asyncCallback);
 
 	void storeNewCourse(String email, String name, String description,
-			AsyncCallback<String> callback);
+			String calendarId, AsyncCallback<String> callback);
 
 	void deleteTwitterTokens(String email, AsyncCallback<String> callback);
 

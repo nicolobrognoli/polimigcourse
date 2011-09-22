@@ -327,20 +327,31 @@ public class Home implements EntryPoint {
 										@Override
 										public void onSuccess(String result) {
 											Window.alert("Pagina creata: " + result);											
-										}
-									});												
-				        		    //store the new course
-									loadStoreService.storeNewCourse(email, tbNome.getText(), taDescrizione.getText(), new AsyncCallback<String>(){
+										}										
+									});		
+									//TODO:create the calendar
+									calendarService.createCalendar(email, tbNome.getText(), taDescrizione.getText(),new AsyncCallback<String>(){
 										@Override
-										public void onFailure(Throwable caught) {
-											Window.alert("Errore nel salvataggio del corso");
+										public void onFailure(Throwable caught) {										
 										}
 
 										@Override
-										public void onSuccess(String result) {
-											Window.open("/home.html", "_self", "");
-										}
-									});
+										public void onSuccess(String calendarId) {
+											//store the new course
+											loadStoreService.storeNewCourse(email, tbNome.getText(), taDescrizione.getText(), calendarId, new AsyncCallback<String>(){
+												@Override
+												public void onFailure(Throwable caught) {
+													Window.alert("Errore nel salvataggio del corso");
+												}
+
+												@Override
+												public void onSuccess(String result) {
+													Window.open("/home.html", "_self", "");
+												}
+											});									
+										}										
+									});		
+				        		    
 								}
 							});
 							btnCorsoPanel.add(btnCreaCorso);

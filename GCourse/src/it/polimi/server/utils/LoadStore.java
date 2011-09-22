@@ -336,6 +336,50 @@ public class LoadStore {
 	}
 
 	
+	public static String storeNewCourse(UserPO user, String name, String description, String calendarId){
+		UserPO professor = null;
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		try {
+			// get POs from DataStore
+			Query query = pm.newQuery(CoursePO.class);
+			@SuppressWarnings("unchecked")
+			List<CoursePO> results = (List<CoursePO>)query.execute();
+			Iterator<CoursePO> iter = results.iterator();
+			CoursePO courseTemp;
+			// get POs from DataStore
+			Query query2 = pm.newQuery(UserPO.class);
+			@SuppressWarnings("unchecked")
+			List<UserPO> results2 = (List<UserPO>)query2.execute();
+			Iterator<UserPO> iter2 = results2.iterator();
+			UserPO userTemp;
+			do{
+				userTemp = (UserPO) iter2.next();
+				if(userTemp.getUser().getEmail().equals(user.getUser().getEmail()))				
+					professor = userTemp;
+				
+			}while(iter2.hasNext());	
+			do{
+				if (!results.isEmpty())
+				{
+					courseTemp = (CoursePO) iter.next();
+					if(courseTemp.getName().equals(name) && courseTemp.getProfessor().getUser().getEmail().equals(professor.getUser().getEmail()))
+						return "Course already exists";
+				}				
+			
+			}while(iter.hasNext());			
+			CoursePO course = new CoursePO();
+			course.setName(name);
+			course.setProfessor(professor);
+			course.setDescription(description);
+			course.setCalendarId(calendarId);
+			pm.makePersistent(course);
+		} finally {
+			// close persistence manager
+			pm.close();
+		}
+		return "Stored";
+	}
+	
 	public static String getUserSiteName(String email){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
