@@ -323,15 +323,13 @@ public class MailHandlerServlet extends HttpServlet {
         				{
         					if(this.courseManager.checkStudentsSettings(student, this.EXERCISE))
         					{
-        						returned += student.getUser().getEmail() + " \n";
             					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
             					if(partList.size()!=0)
             					{
                   				  returned=this.siteModifier.uploadRequest(this.course,this.pageContent,this.pageName,student,stringList);
                   				  if(!returned.contains("Errore"))
                   				  {
-                  					  for(count=0;count<partList.size();count++){
-          	        					  msgBody+=returned+"\n";
+                  					  for(count=0;count<partList.size();count++){          	        				
           	        					  returned=this.siteModifier.uploadFile(partList.get(count),student);
                   					  }
                   				  }
@@ -342,7 +340,6 @@ public class MailHandlerServlet extends HttpServlet {
         				{
         					if(this.courseManager.checkStudentsSettings(student, this.LECTURE))
         					{
-        						returned += student.getUser().getEmail() + " \n";
             					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
             					if(partList.size()!=0)
             					{
@@ -350,7 +347,6 @@ public class MailHandlerServlet extends HttpServlet {
                   				  if(!returned.contains("Errore"))
                   				  {
                   					  for(count=0;count<partList.size();count++){
-          	        					  msgBody+=returned+"\n";
           	        					  returned=this.siteModifier.uploadFile(partList.get(count),student);
                   					  }
                   				  }
@@ -371,7 +367,6 @@ public class MailHandlerServlet extends HttpServlet {
 	        			Iterator<UserPO> iter = listStudents.iterator();
 	        			if(listStudents != null && !listStudents.isEmpty())
 	        			{
-	        				returned += "\nUtenti iscritti:\n";
 	        				UserPO student;
 	        				while(iter.hasNext()){
 		        				student = iter.next();
@@ -379,18 +374,18 @@ public class MailHandlerServlet extends HttpServlet {
 		        				{
 		        					if(this.courseManager.checkStudentsSettings(student, this.EXERCISE))
 		        					{
-		        						returned += student.getUser().getEmail() + " \n";
+		        						
 		    	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
-		    	    					returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
+		    	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
 		        					}
 		        				}
 		        				else
 		        				{
 		        					if(this.courseManager.checkStudentsSettings(student, this.LECTURE))
 		        					{
-		        						returned += student.getUser().getEmail() + " \n";
+		        						
 		    	    					this.siteModifier = new SiteModifier(student.getGoogleAccessToken(),student.getSiteName());
-		    	    					returned=this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
+		    	    					this.siteModifier.postRequest(this.course,this.pageContent,this.pageName,student);
 		        					}
 		        				}
 		    				}    

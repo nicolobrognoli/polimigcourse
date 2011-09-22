@@ -40,7 +40,7 @@ public class CompleteRegistration implements EntryPoint {
 		
 		Label lblNome = new Label("Nickname:");
 		layoutPanel.add(lblNome);
-		layoutPanel.setWidgetLeftWidth(lblNome, 197.0, Unit.PX, 68.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(lblNome, 197.0, Unit.PX, 111.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(lblNome, 92.0, Unit.PX, 18.0, Unit.PX);
 		
 		final RadioButton rdbtnStudente = new RadioButton("radio", "Studente");
@@ -57,8 +57,8 @@ public class CompleteRegistration implements EntryPoint {
 		
 		final TextBox name = new TextBox();
 		layoutPanel.add(name);
-		layoutPanel.setWidgetLeftWidth(name, 271.0, Unit.PX, 129.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(name, 87.0, Unit.PX, 23.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(name, 318.0, Unit.PX, 129.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(name, 92.0, Unit.PX, 23.0, Unit.PX);
 		
 		Button btnProsegui = new Button("Prosegui");
 		layoutPanel.add(btnProsegui);
@@ -67,23 +67,23 @@ public class CompleteRegistration implements EntryPoint {
 		
 		final PasswordTextBox passwordTextBox = new PasswordTextBox();
 		layoutPanel.add(passwordTextBox);
-		layoutPanel.setWidgetLeftWidth(passwordTextBox, 271.0, Unit.PX, 129.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(passwordTextBox, 116.0, Unit.PX, 23.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(passwordTextBox, 318.0, Unit.PX, 129.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(passwordTextBox, 121.0, Unit.PX, 23.0, Unit.PX);
 		
 		Label lblPassword = new Label("Password:");
 		layoutPanel.add(lblPassword);
-		layoutPanel.setWidgetLeftWidth(lblPassword, 197.0, Unit.PX, 65.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(lblPassword, 197.0, Unit.PX, 111.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(lblPassword, 121.0, Unit.PX, 18.0, Unit.PX);
 		
 		final PasswordTextBox passwordCheckTextBox = new PasswordTextBox();
 		layoutPanel.add(passwordCheckTextBox);
-		layoutPanel.setWidgetLeftWidth(passwordCheckTextBox, 271.0, Unit.PX, 129.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(passwordCheckTextBox, 145.0, Unit.PX, 23.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(passwordCheckTextBox, 318.0, Unit.PX, 129.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(passwordCheckTextBox, 150.0, Unit.PX, 23.0, Unit.PX);
 		
 		Label lblConfermaPassword = new Label("Conferma password:");
 		layoutPanel.add(lblConfermaPassword);
 		layoutPanel.setWidgetTopHeight(lblConfermaPassword, 145.0, Unit.PX, 23.0, Unit.PX);
-		layoutPanel.setWidgetLeftWidth(lblConfermaPassword, 131.0, Unit.PX, 134.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(lblConfermaPassword, 131.0, Unit.PX, 177.0, Unit.PX);
 		
 		final Label lblSessione = new Label("Account email: ");
 		layoutPanel.add(lblSessione);
@@ -92,12 +92,12 @@ public class CompleteRegistration implements EntryPoint {
 		
 		final TextBox textSites = new TextBox();
 		layoutPanel.add(textSites);
-		layoutPanel.setWidgetLeftWidth(textSites, 271.0, Unit.PX, 129.0, Unit.PX);
-		layoutPanel.setWidgetTopHeight(textSites, 174.0, Unit.PX, 23.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(textSites, 318.0, Unit.PX, 129.0, Unit.PX);
+		layoutPanel.setWidgetTopHeight(textSites, 179.0, Unit.PX, 23.0, Unit.PX);
 		
 		Label lblGoogleSitesName = new Label("Google sites name:");
 		layoutPanel.add(lblGoogleSitesName);
-		layoutPanel.setWidgetLeftWidth(lblGoogleSitesName, 141.0, Unit.PX, 134.0, Unit.PX);
+		layoutPanel.setWidgetLeftWidth(lblGoogleSitesName, 141.0, Unit.PX, 167.0, Unit.PX);
 		layoutPanel.setWidgetTopHeight(lblGoogleSitesName, 174.0, Unit.PX, 18.0, Unit.PX);
 	
 		rdbtnDocente.addClickHandler(new ClickHandler() {

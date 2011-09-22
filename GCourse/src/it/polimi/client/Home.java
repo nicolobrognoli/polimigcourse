@@ -64,7 +64,7 @@ public class Home implements EntryPoint {
 							strAggiungiCorso = "Crea un corso";
 						}
 						else{
-							strAggiungiCorso = "Iscriviti ad un corso";
+							strAggiungiCorso = "Visualizza / Iscriviti ai corsi";
 						}
 						RootLayoutPanel rootLayoutPanel = RootLayoutPanel.get();
 						rootLayoutPanel.setSize("100%","100%");
@@ -329,7 +329,7 @@ public class Home implements EntryPoint {
 											Window.alert("Pagina creata: " + result);											
 										}										
 									});		
-									//TODO:create the calendar
+									//create the calendar
 									calendarService.createCalendar(email, tbNome.getText(), taDescrizione.getText(),new AsyncCallback<String>(){
 										@Override
 										public void onFailure(Throwable caught) {										
